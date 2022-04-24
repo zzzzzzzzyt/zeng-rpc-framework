@@ -12,7 +12,7 @@
 
 
 
-![1650802303310](C:\Users\asus\AppData\Roaming\Typora\typora-user-images\1650802303310.png)
+![1650802303310](images/架构图.png)
 
 
 
