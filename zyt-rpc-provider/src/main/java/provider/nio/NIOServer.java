@@ -5,14 +5,11 @@ import api.HelloService;
 import provider.api.ByeServiceImpl;
 import provider.api.HelloServiceImpl;
 
-import javax.sound.sampled.Port;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -23,6 +20,8 @@ public class NIOServer {
         start0(PORT);
     }
 
+    //TODO 当服务消费方下机时  保持开启状态
+
     /*
         真正启动的业务逻辑在这
         因为这是简易版 那么先把异常丢出去
@@ -30,7 +29,7 @@ public class NIOServer {
     private static void start0(int port) throws IOException {
         //创建对应的服务器端通道
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
-
+        System.out.println("-----------服务提供方启动-------------");
         //开启一个选择器 将自己要
         Selector selector = Selector.open();
 
@@ -76,8 +75,8 @@ public class NIOServer {
                     //进行调用方法并返回
                     //获得信息
                     StringBuffer stringBuffer = new StringBuffer();
-                    int read = 0;
-                    while (read!=-1)
+                    int read = 1;
+                    while (read!=0)
                     {
                         //先清空 防止残留
                         buffer.clear();
@@ -88,6 +87,7 @@ public class NIOServer {
                     //方法号和信息中间有个#进行分割
                     String msg = stringBuffer.toString();
                     String[] strings = msg.split("#");
+                    String response;
                     if (strings.length<2)
                     {
                         //当出现传入错误的时候 报异常
@@ -97,12 +97,12 @@ public class NIOServer {
                     if (strings[0].equals("1"))
                     {
                         HelloService helloService = new HelloServiceImpl();
-                        helloService.sayHello(strings[1]);
+                        response = helloService.sayHello(strings[1]);
                     }
-                    else if (stringBuffer.charAt(0)==2)
+                    else if (strings[0].equals("2"))
                     {
                         ByeService byeService = new ByeServiceImpl();
-                        byeService.sayBye(strings[1]);
+                        response = byeService.sayBye(strings[1]);
                     }
                     else
                     {
@@ -112,7 +112,9 @@ public class NIOServer {
                     }
                     String responseMsg = "收到信息" + strings[1] + "来自" + socketChannel.socket().getRemoteSocketAddress();
                     System.out.println(responseMsg);
-                    ByteBuffer responseBuffer = ByteBuffer.wrap(responseMsg.getBytes(StandardCharsets.UTF_8));
+                    //将调用方法后获得的信息回显
+                    ByteBuffer responseBuffer = ByteBuffer.wrap(response.getBytes(StandardCharsets.UTF_8));
+                    //写回信息
                     socketChannel.write(responseBuffer);
                 }
                 keyIterator.remove();
