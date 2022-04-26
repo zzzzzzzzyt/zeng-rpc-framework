@@ -12,6 +12,12 @@
     <artifactId>zyt-rpc-provider</artifactId>
     <dependencies>
 
+        <dependency>
+            <groupId>coder.zyt</groupId>
+            <artifactId>zyt-rpc-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <properties>
