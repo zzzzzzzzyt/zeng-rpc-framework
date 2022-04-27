@@ -12,7 +12,7 @@
 
 
 
-![1650802303310](C:\Users\asus\AppData\Roaming\Typora\typora-user-images\1650802303310.png)
+![1650802303310](images/架构图.png)
 
 
 
@@ -453,7 +453,7 @@ JDK自带序列化
 
 - **解决传输时 可能出现的沾包拆包问题**
 
-  ![1651044110072](C:\Users\asus\AppData\Roaming\Typora\typora-user-images\1651044110072.png)
+  ![1651044110072](images/1651044110072.png)
 
   
 
@@ -666,11 +666,11 @@ import java.util.Scanner;
 
   - 不多说直接追源码
 
-    ![1651067040657](C:\Users\asus\AppData\Roaming\Typora\typora-user-images\1651067040657.png)
+    ![1651067040657](images/1651067040657.png)
 
-![1651067081930](C:\Users\asus\AppData\Roaming\Typora\typora-user-images\1651067081930.png)
+![1651067081930](images/1651067081930.png)
 
-![1651067198890](C:\Users\asus\AppData\Roaming\Typora\typora-user-images\1651067198890.png)
+![1651067198890](images/1651067198890.png)
 
 第一段的意思是，创建一个从指定的InputStream读取的ObjectInputStream，序列化的流的头是从这个Stream中读取并验证的。此构造方法会一直阻塞直到相应的ObjectOutputStream已经写入并刷新头。
 
