@@ -50,7 +50,7 @@
 
 **（服务端启动的时候将服务名+服务地址+服务端口注册 然后客户端进行调用的时候 就通过查到相应服务的地址进行调用--相当于目录）**
 
-- zookeeper
+- zookeeper（试试放在linux的docker里玩下）
 - nacos
 
 ### **传输协议：**
@@ -68,13 +68,14 @@
 ### 其他机制：
 
 - 心跳机制
+- 解决粘包、拆包问题
 - 注解开发等等
 
 
 
 
 
-## 代码实现 : v1.0简易版
+## RPC框架v1.0简易版
 
 `要求简单实现远程调用`
 
@@ -424,16 +425,260 @@ JDK自带序列化
 
 
 
+### 更新（补丁）
+
+#### **v1.1**
+
+==*更新事项*==
+
+- **解决客户端断开连接后 服务器端也会强制下线的问题**
+
+  - 原因：当客户端断开连接后 服务端的select会监听到事件  isReadable()不仅会监听到读事件还会监听到玩家下线的事件。
+
+  - 解决方案：在读事件捕获异常 优雅的关闭管道    下面是代码实现
+
+    ```java
+    try{
+        //之前的业务逻辑
+    }
+    catch (IOException e) {                 
+        //进行关闭 并继续执行  取消键的注册 还有关闭管道     
+        SocketChannel unConnectChannel = (SocketChannel)key.channel();                     System.out.println(((unConnectChannel.socket().getRemoteSocketAddress())+"下线了"));
+    	key.cancel();
+        unConnectChannel.close();
+    } catch (RuntimeException e) {
+        e.printStackTrace();
+    }
+    ```
+
+- **解决传输时 可能出现的沾包拆包问题**
+
+  ![1651044110072](C:\Users\asus\AppData\Roaming\Typora\typora-user-images\1651044110072.png)
+
+  
+
+  - 原因：TCP是一个“流”协议，是没有界限的一串数据，TCP底层并不了解上层业务数据的具体含义，它会根据TCP缓冲区的实际情况进行包的划分，所以在业务上认为，一个完整的包可能会被TCP拆成多个包进行发送，也有可能把多个小的包封装成一个大的数据包发送，这就是所谓的TCP粘包和拆包问题。
+
+  - 解决方案：设置一个标识符  读到标识符时暂停   更换自己的消息发送方式 通过channel  现在改成io   
+`非阻塞的网络io读写只能用到read和write`但这个就是只能使用 阻塞的nio了`额外开了一个包`实现    下面是代码实现
+    
+    
+    
+    **尝试使用阻塞io解决粘包问题**
+    
+    ```java
+    //新建请求发送类
+    package entity;
+    
+    import lombok.AllArgsConstructor;
+    import lombok.Data;
+    import lombok.NoArgsConstructor;
+    
+    //网络传输请求   重点是要实现序列化 否则不能进行io传输
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public class RpcRequest implements Serializable{
+        //方法编号
+    int methodNum;
+        //消息体
+    String message;
+    }
+    ```
+    
+    ```java
+    //消费者端
+    package consumer.nio;
+    
+import entity.RpcRequest;
+    
+    import java.io.IOException;
+    import java.io.ObjectInputStream;
+    import java.io.ObjectOutputStream;
+    import java.net.InetSocketAddress;
+    import java.nio.channels.SocketChannel;
+import java.util.Scanner;
+    
+    //阻塞NIO消费端 解决沾包问题
+    public class NIOBlockingClient {
+        public static void start(String HostName, int PORT) throws IOException {
+            start0(HostName,PORT);
+        }
+    
+        //真正启动在这
+        private static void start0(String hostName, int port) throws IOException {
+            //得到一个网络通道
+            SocketChannel socketChannel = SocketChannel.open();
+            System.out.println("-----------服务消费方启动-------------");
+            //设置阻塞
+            socketChannel.configureBlocking(true);
+            //建立链接  阻塞连接  但我们是要等他连接上
+           socketChannel.connect(new InetSocketAddress(hostName,port));
+    
+            //真正的业务逻辑  等待键盘上的输入 进行发送信息
+            Scanner scanner = new Scanner(System.in);
+    
+            //输入输出通道都放在外面
+    
+            ObjectOutputStream outputStream = new ObjectOutputStream(socketChannel.socket().getOutputStream());
+            ObjectInputStream objectInputStream = new ObjectInputStream(socketChannel.socket().getInputStream());
+            //都是阻塞等待 发完了 接收完了 才能进行下一步 不然会报异常
+            while (true)
+            {
+                int methodNum = scanner.nextInt();
+                String message = scanner.next();
+                RpcRequest request = new RpcRequest(methodNum,message);
+                //进行修订 使得可以传送对象 通过自带的io流进行 避免出现沾包拆包现象
+    
+                outputStream.writeObject(request);
+                System.out.println("消息发送");
+                try {
+    
+                    String msg = (String)objectInputStream.readObject();
+                    System.out.println("收到来自客户端的消息"+msg);
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    
+    ```
+    
+    ```java
+    //服务提供方 主要的代码
+    
+    package provider.nio;
+    
+    import api.ByeService;
+    import api.HelloService;
+    import entity.RpcRequest;
+    import provider.api.ByeServiceImpl;
+    import provider.api.HelloServiceImpl;
+    
+    import java.io.*;
+    import java.net.InetSocketAddress;
+    import java.nio.channels.Selector;
+    import java.nio.channels.ServerSocketChannel;
+    import java.nio.channels.SocketChannel;
+    
+    //阻塞NIO服务提供端 解决沾包问题
+    public class NIOBlockingServer {
+        //启动
+        public static void start(int PORT) throws IOException {
+            start0(PORT);
+        }
+    
+        //TODO 当服务消费方下机时  保持开启状态
+    
+        /*
+            真正启动的业务逻辑在这
+            因为这是简易版 那么先把异常丢出去
+         */
+        private static void start0(int port) throws IOException {
+            //创建对应的服务器端通道
+            ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+            System.out.println("-----------服务提供方启动-------------");
+            //开启一个选择器 将自己要
+            Selector selector = Selector.open();
+    
+            //绑定端口开启
+            serverSocketChannel.bind(new InetSocketAddress(port));
+    
+            //设置阻塞
+            serverSocketChannel.configureBlocking(true);
+    
+            //真正的业务逻辑 就是下面
+            //循环等待客户端的连接和检查事件的发生
+            while (true)
+            {
+                SocketChannel channel = serverSocketChannel.accept();
+                System.out.println("来自"+channel.socket().getRemoteSocketAddress()+"的连接");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            //在内部不断的进行监听
+                            InputStream inputStream = channel.socket().getInputStream();
+                            OutputStream outputStream = channel.socket().getOutputStream();
+                            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+                            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+                            while (true)
+                            {
+                                String response;
+                                RpcRequest request = (RpcRequest)objectInputStream.readObject();
+                                if (request.getMethodNum()==1)
+                                {
+                                    HelloService helloService = new HelloServiceImpl();
+                                    response = helloService.sayHello(request.getMessage());
+                                }
+                                else if (request.getMethodNum()==2)
+                                {
+                                    ByeService helloService = new ByeServiceImpl();
+                                    response = helloService.sayBye(request.getMessage());
+                                }
+                                else
+                                {
+                                    System.out.println("传入错误");
+                                    throw new RuntimeException();
+                                }
+                                System.out.println("收到客户端"+channel.socket().getRemoteSocketAddress()+"的消息"+response);
+                                objectOutputStream.writeObject(response);
+                            }
+                        } catch (Exception e) {
+                            System.out.println("channel"+channel.socket().getRemoteSocketAddress()+"断开连接");
+                            try {
+                                channel.close();
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    }
+                }).start();
+            }
+        }
+    }
+    ```
+    
+    
+
+
+
+
+
+
+
 ### 遇到的问题
 
 - @Data注解在类上无法使用   `解决`我把我一些没导版本号的依赖加上版本后恢复
+  
+
 - 额外开启一个线程进行监听读事件  第一次可以监听的到 后面就监听不到了     `解决`迭代器iterator一定要记得remove否则就出错了
+  
 
+- 当关闭一个客户端的时候  服务端也自动关闭了  `解决` 更新v1.1
+  
 
+- 当利用io对request对象进行传输时出现 Exception in thread "main" java.nio.channels.IllegalBlockingModeException     `原因`  假如socker是非阻塞的话  可以用selector   但不能用io流 因为这是阻塞传输方式。
+  
+
+- 还遇到了做阻塞启动的时候，我获取了一个通道的输入流和输出流 然后出问题了直接死锁动弹不得 因为一个管道是半双工的 所以不能同时输入流输出流进行读写  我现在尝试去修改。 `修改成功`  我把输入流和输出流的创建顺序和他们的使用顺序保持 一致就成功了？  ==继续查找原因==  [(8条消息) ObjectInputStream与ObjectOutputStream的顺序问题_到中流遏飞舟的博客-CSDN博客](https://blog.csdn.net/qq_38746380/article/details/102993169)查看该网址 ，说的非常详细！ 如果两边创建的都是先ObjectInputStream会导致都阻塞在那边等待读写 
+
+  - 不多说直接追源码
+
+    ![1651067040657](C:\Users\asus\AppData\Roaming\Typora\typora-user-images\1651067040657.png)
+
+![1651067081930](C:\Users\asus\AppData\Roaming\Typora\typora-user-images\1651067081930.png)
+
+![1651067198890](C:\Users\asus\AppData\Roaming\Typora\typora-user-images\1651067198890.png)
+
+第一段的意思是，创建一个从指定的InputStream读取的ObjectInputStream，序列化的流的头是从这个Stream中读取并验证的。此构造方法会一直阻塞直到相应的ObjectOutputStream已经写入并刷新头。
+
+所以上述代码执行后会都阻塞，如果将创建ObjectInputStream的顺序修改成其他的顺序，便可正常通信。
 
 ### 总结
 
-跳过了BIO的方式直接进行了NIO的简易RPC的设计 比较简单
+跳过了BIO的方式直接进行了NIO的简易RPC的设计，比较简单，还有很多需要进行实现的东西。当然在搭轮子的途中我遇到了很多的坑，一点点的填，我自身也有了很大的长进，关于网络编程，关于io...未完待续...
 
 
 

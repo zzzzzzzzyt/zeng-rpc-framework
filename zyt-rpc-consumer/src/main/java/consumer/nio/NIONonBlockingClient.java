@@ -1,6 +1,9 @@
 package consumer.nio;
 
+import entity.RpcRequest;
+
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
@@ -10,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Scanner;
 
-public class NIOClient {
+public class NIONonBlockingClient {
     public static void start(String HostName, int PORT) throws IOException{
         start0(HostName,PORT);
     }
@@ -71,9 +74,12 @@ public class NIOClient {
         {
             int methodNum = scanner.nextInt();
             String message = scanner.next();
+            RpcRequest request = new RpcRequest(methodNum,message);
             String msg = new String(methodNum+"#"+message);
             socketChannel.write(ByteBuffer.wrap(msg.getBytes(StandardCharsets.UTF_8)));
             System.out.println("消息发送");
         }
     }
 }
+
+

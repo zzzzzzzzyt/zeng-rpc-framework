@@ -1,6 +1,8 @@
 package provider.bootstrap;
 
-import provider.nio.NIOServer;
+
+import provider.nio.NIOBlockingServer;
+import provider.nio.NIONonBlockingServer;
 
 import java.io.IOException;
 
@@ -9,6 +11,11 @@ import java.io.IOException;
  */
 public class NIOProviderBootStrap {
     public static void main(String[] args) throws IOException {
-        NIOServer.start(6666);
+
+        //非阻塞启动
+        // NIONonBlockingServer.start(6666);
+
+        //阻塞启动
+        NIOBlockingServer.start(6666);
     }
 }

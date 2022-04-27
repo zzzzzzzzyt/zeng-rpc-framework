@@ -1,6 +1,7 @@
 package consumer.bootstrap;
 
-import consumer.nio.NIOClient;
+import consumer.nio.NIOBlockingClient;
+import consumer.nio.NIONonBlockingClient;
 
 import java.io.IOException;
 
@@ -9,6 +10,11 @@ import java.io.IOException;
  */
 public class NIOConsumerBootStrap {
     public static void main(String[] args) throws IOException {
-        NIOClient.start("127.0.0.1",6666);
+
+        //非阻塞启动
+        // NIONonBlockingClient.start("127.0.0.1",6666);
+
+        //阻塞启动
+        NIOBlockingClient.start("127.0.0.1",6666);
     }
 }
