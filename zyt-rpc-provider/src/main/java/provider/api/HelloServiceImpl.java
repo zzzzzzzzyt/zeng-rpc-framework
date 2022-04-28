@@ -1,6 +1,6 @@
 package provider.api;
 
-import api.HelloService;
+import method.HelloService;
 
 public class HelloServiceImpl implements HelloService {
     @Override
