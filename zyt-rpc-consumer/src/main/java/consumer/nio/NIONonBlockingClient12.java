@@ -8,16 +8,16 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
-import java.util.Scanner;
+
 
 //v1.0版本非阻塞nio
 public class NIONonBlockingClient12 {
-    public static void start(String HostName, int PORT) throws IOException{
-        start0(HostName,PORT);
+    public static String start(String HostName, int PORT,String msg) throws IOException{
+        return start0(HostName,PORT,msg);
     }
 
     //真正启动在这
-    private static void start0(String hostName, int port) throws IOException {
+    private static String start0(String hostName, int port,String msg) throws IOException {
         //得到一个网络通道
         SocketChannel socketChannel = SocketChannel.open();
         System.out.println("-----------服务消费方启动-------------");
@@ -29,52 +29,39 @@ public class NIONonBlockingClient12 {
         //创建选择器 进行监听读事件
         Selector selector = Selector.open();
         socketChannel.register(selector, SelectionKey.OP_READ, ByteBuffer.allocate(1024));
-        //创建匿名线程进行监听读事件
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true)
-                {
-                    //捕获异常  监听读事件
-                    try {
-                        if (selector.select(1000)==0)
-                        {
-                            continue;
-                        }
-                        Iterator<SelectionKey> keyIterator = selector.selectedKeys().iterator();
-                        while (keyIterator.hasNext())
-                        {
-                            SelectionKey key = keyIterator.next();
-                            ByteBuffer buffer = (ByteBuffer)key.attachment();
-                            SocketChannel channel = (SocketChannel)key.channel();
-                            int read = 1;
-                            //用这个的原因是怕 多线程出现影响
-                            StringBuffer stringBuffer = new StringBuffer();
-                            while (read!=0)
-                            {
-                                buffer.clear();
-                                read = channel.read(buffer);
-                                stringBuffer.append(new String(buffer.array(),0,read));
-                            }
-                            System.out.println("收到服务端回信"+stringBuffer.toString());
-                            keyIterator.remove();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
 
-        //真正的业务逻辑  等待键盘上的输入 进行发送信息
-        Scanner scanner = new Scanner(System.in);
+        //进行发送 发的太快了 来不及收到
+        socketChannel.write(ByteBuffer.wrap(msg.getBytes(StandardCharsets.UTF_8)));
+
+        //直接进行监听
         while (true)
         {
-            int methodNum = scanner.nextInt();
-            String message = scanner.next();
-            String msg = new String(methodNum+"#"+message);
-            socketChannel.write(ByteBuffer.wrap(msg.getBytes(StandardCharsets.UTF_8)));
-            System.out.println("消息发送");
+            //捕获异常  监听读事件
+            try {
+                if (selector.select(1000)==0)
+                {
+                    continue;
+                }
+                Iterator<SelectionKey> keyIterator = selector.selectedKeys().iterator();
+                while (keyIterator.hasNext())
+                {
+                    SelectionKey key = keyIterator.next();
+                    ByteBuffer buffer = (ByteBuffer)key.attachment();
+                    SocketChannel channel = (SocketChannel)key.channel();
+                    int read = 1;
+                    //用这个的原因是怕 多线程出现影响
+                    StringBuffer stringBuffer = new StringBuffer();
+                    while (read!=0)
+                    {
+                        buffer.clear();
+                        read = channel.read(buffer);
+                        stringBuffer.append(new String(buffer.array(),0,read));
+                    }
+                    return stringBuffer.toString();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
