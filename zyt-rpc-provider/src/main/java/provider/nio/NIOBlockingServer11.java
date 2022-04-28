@@ -12,14 +12,14 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
+//v1.1阻塞nio服务器端
 //阻塞NIO服务提供端 解决沾包问题
-public class NIOBlockingServer {
+public class NIOBlockingServer11 {
     //启动
     public static void start(int PORT) throws IOException {
         start0(PORT);
     }
 
-    //TODO 当服务消费方下机时  保持开启状态
 
     /*
         真正启动的业务逻辑在这

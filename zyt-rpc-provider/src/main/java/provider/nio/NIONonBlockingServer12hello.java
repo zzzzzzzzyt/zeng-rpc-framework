@@ -2,21 +2,27 @@ package provider.nio;
 
 import api.ByeService;
 import api.HelloService;
+import org.apache.zookeeper.KeeperException;
 import provider.api.ByeServiceImpl;
 import provider.api.HelloServiceImpl;
+import zkService.ZkServiceRegistry;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.channels.*;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Set;
 
-public class NIONonBlockingServer {
+//v1.0版本非阻塞服务器端
+public class NIONonBlockingServer12hello {
 
     //启动
-    public static void start(int PORT) throws IOException {
+    public static void start(int PORT) throws IOException, InterruptedException, KeeperException {
         start0(PORT);
     }
 
@@ -25,7 +31,7 @@ public class NIONonBlockingServer {
         真正启动的业务逻辑在这
         因为这是简易版 那么先把异常丢出去
      */
-    private static void start0(int port) throws IOException {
+    private static void start0(int port) throws IOException, InterruptedException, KeeperException {
         //创建对应的服务器端通道
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
         System.out.println("-----------服务提供方启动-------------");
@@ -34,6 +40,9 @@ public class NIONonBlockingServer {
 
         //绑定端口开启
         serverSocketChannel.bind(new InetSocketAddress(port));
+
+        //将服务注册进zk中
+        ZkServiceRegistry.registerMethod("hello","127.0.0.1",port);
 
         //这里注意 要设置非阻塞   阻塞的话  他会一直等待事件或者是异常抛出的时候才会继续 会浪费cpu
         serverSocketChannel.configureBlocking(false);
@@ -84,33 +93,12 @@ public class NIONonBlockingServer {
                             //添加的时候  根据读入的数据进行
                             stringBuffer.append(new String(buffer.array(),0,read));
                         }
-                        //方法号和信息中间有个#进行分割
+
                         String msg = stringBuffer.toString();
-                        String[] strings = msg.split("#");
-                        if (strings.length<2)
-                        {
-                            //当出现传入错误的时候 报异常
-                            System.out.println("传入错误");
-                            throw new RuntimeException();
-                        }
-                        String response;
-                        if (strings[0].equals("1"))
-                        {
-                            HelloService helloService = new HelloServiceImpl();
-                            response = helloService.sayHello(strings[1]);
-                        }
-                        else if (strings[0].equals("2"))
-                        {
-                            ByeService byeService = new ByeServiceImpl();
-                            response = byeService.sayBye(strings[1]);
-                        }
-                        else
-                        {
-                            //当出现传入错误的时候 报异常
-                            System.out.println("传入错误");
-                            throw new RuntimeException();
-                        }
-                        String responseMsg = "收到信息" + strings[1] + "来自" + socketChannel.socket().getRemoteSocketAddress();
+                        HelloService helloService = new HelloServiceImpl();
+                        String response = helloService.sayHello(msg);
+
+                        String responseMsg = "收到信息" + msg + "来自" + socketChannel.socket().getRemoteSocketAddress();
                         System.out.println(responseMsg);
                         //将调用方法后获得的信息回显
                         ByteBuffer responseBuffer = ByteBuffer.wrap(response.getBytes(StandardCharsets.UTF_8));

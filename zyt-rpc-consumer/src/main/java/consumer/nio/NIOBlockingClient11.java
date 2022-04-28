@@ -9,8 +9,9 @@ import java.net.InetSocketAddress;
 import java.nio.channels.SocketChannel;
 import java.util.Scanner;
 
+//v1.1版本
 //阻塞NIO消费端 解决沾包问题
-public class NIOBlockingClient {
+public class NIOBlockingClient11 {
     public static void start(String HostName, int PORT) throws IOException {
         start0(HostName,PORT);
     }
