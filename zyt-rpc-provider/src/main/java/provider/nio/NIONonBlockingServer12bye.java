@@ -1,11 +1,9 @@
 package provider.nio;
 
-import api.ByeService;
-import api.HelloService;
+import method.ByeService;
 import org.apache.zookeeper.KeeperException;
 import provider.api.ByeServiceImpl;
-import provider.api.HelloServiceImpl;
-import zkService.ZkServiceRegistry;
+import provider.zkService.ZkServiceRegistry;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
