@@ -1,4 +1,4 @@
-package zkService;
+package consumer.zkService;
 
 import constants.RpcConstants;
 import consumer.nio.NIONonBlockingClient12;
@@ -7,7 +7,6 @@ import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
-
 
 import java.io.IOException;
 
@@ -42,7 +41,7 @@ public class ZkServiceDiscovery {
         return address;
     }
 
-    public static void getStart(String methodName) throws IOException, RpcException, InterruptedException, KeeperException {
+    public static String getStart(String methodName,String msg) throws IOException, RpcException, InterruptedException, KeeperException {
         //先进行连接
         getConnect();
         //获取相应的远端地址
@@ -52,6 +51,6 @@ public class ZkServiceDiscovery {
         //启动
         String address = strings[0];
         int port = Integer.valueOf(strings[1]);
-        NIONonBlockingClient12.start(address,port);
+        return NIONonBlockingClient12.start(address,port,msg);
     }
 }
