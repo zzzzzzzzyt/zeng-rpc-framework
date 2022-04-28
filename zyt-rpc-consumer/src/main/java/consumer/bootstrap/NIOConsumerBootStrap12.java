@@ -1,7 +1,9 @@
 package consumer.bootstrap;
 
-import consumer.nio.NIOBlockingClient11;
-import zkService.ZkServiceDiscovery;
+
+import consumer.proxy.RpcClientProxy;
+import method.Customer;
+
 
 import java.io.IOException;
 
@@ -11,9 +13,10 @@ import java.io.IOException;
 public class NIOConsumerBootStrap12 {
     public static void main(String[] args) throws IOException {
 
-        /*
-        TODO
-        */
-
+        RpcClientProxy clientProxy = new RpcClientProxy();
+        Customer customer = (Customer) clientProxy.getBean(Customer.class);
+        String response = customer.hello("success");
+        System.out.println(response);
+        System.out.println(customer.bye("fail"));
     }
 }

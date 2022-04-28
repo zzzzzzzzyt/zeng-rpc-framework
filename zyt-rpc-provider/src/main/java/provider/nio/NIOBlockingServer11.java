@@ -1,7 +1,7 @@
 package provider.nio;
 
-import api.ByeService;
-import api.HelloService;
+import method.ByeService;
+import method.HelloService;
 import entity.RpcRequest;
 import provider.api.ByeServiceImpl;
 import provider.api.HelloServiceImpl;
