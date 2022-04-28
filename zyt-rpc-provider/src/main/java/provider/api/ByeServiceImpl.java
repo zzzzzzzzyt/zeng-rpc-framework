@@ -1,6 +1,6 @@
 package provider.api;
 
-import api.ByeService;
+import method.ByeService;
 
 public class ByeServiceImpl implements ByeService {
     @Override
