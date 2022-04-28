@@ -1,4 +1,4 @@
-package zkService;
+package provider.zkService;
 
 import constants.RpcConstants;
 import org.apache.zookeeper.*;
