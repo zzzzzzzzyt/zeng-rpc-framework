@@ -1202,7 +1202,7 @@ JDK自带序列化
 
 - 获取动态代理对象的三个参数详解
 
-  ![1651145201343](C:\Users\asus\AppData\Roaming\Typora\typora-user-images\1651145201343.png)
+  ![1651145201343](images/1651145201343.png)
 
 - github不能同时上传太多的文件！重要
 
