@@ -9,6 +9,10 @@ import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class ZkServiceDiscovery {
     private static String connectString = RpcConstants.ZOOKEEPER_ADDRESS;
@@ -35,11 +39,44 @@ public class ZkServiceDiscovery {
             throw new RpcException();
         }
 
-        //到对应节点中获取地址   stat节点状态信息变量
-        byte[] data = zooKeeper.getData("/service/" + methodName, false,null);
-        String address = new String(data);
+        String prePath = "/service/"+methodName;
+        //v1.3更新 使用软负载
+        //到对应节点中获取下面的子节点
+        List<String> children = zooKeeper.getChildren(prePath, false, null);
+        if (children.isEmpty())
+        {
+            System.out.println("当前没有服务器提供该服务 请联系工作人员");
+        }
+
+        //进行排序 根据每个节点的访问次数 从小到大进行排序  然后选用最小的
+        Collections.sort(children, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+
+                try {
+                    return Integer.valueOf(new String(zooKeeper.getData(prePath+"/"+o1,false,null)))
+                            -
+                            Integer.valueOf(new String(zooKeeper.getData(prePath+"/"+o2,false,null)));
+                } catch (KeeperException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return 0;
+            }
+        });
+        //对选用的对象的访问量加1  todo 暂时不知道怎么让数据直接+1
+        // 获取节点数据+1，然后修改对应节点，
+        String chooseNode = children.get(0);
+        byte[] data = zooKeeper.getData(prePath+"/"+chooseNode, false, null);
+        int visitCount = Integer.valueOf(new String(data));
+        ++visitCount;
+        //version参数用于指定节点的数据版本，表名本次更新操作是针对指定的数据版本进行的。 cas
+        zooKeeper.setData(prePath+"/"+chooseNode,String.valueOf(visitCount).getBytes(StandardCharsets.UTF_8),-1);
+        String address = new String(children.get(0));
         return address;
     }
+
 
     public static String getStart(String methodName,String msg) throws IOException, RpcException, InterruptedException, KeeperException {
         //先进行连接

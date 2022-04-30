@@ -10,7 +10,7 @@ import java.io.IOException;
 
 //之后启动直接在这边启动根据 在注解中配置对应的版本号  将相应的操作封装到之后的操作中即可  这样很方便 就是每次咱加一个启动器还得改下switch
 //比如说这里的version 1.2 就是v1.2版本的启动器
-@RpcClientBootStrap(version = "1.1")
+@RpcClientBootStrap(version = "1.2")
 public class ClientBootStrap {
     public static void start() throws IOException{
         //获取当前的注解上的版本然后去调用相应的远端方法  反射的方法

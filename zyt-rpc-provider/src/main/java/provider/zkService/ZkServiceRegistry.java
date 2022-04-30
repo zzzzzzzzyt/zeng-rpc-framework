@@ -38,16 +38,28 @@ public class ZkServiceRegistry {
                         CreateMode.PERSISTENT
                 );
             }
+
+            //v1.3进行软负载均衡修改
+            exists = zooKeeper.exists("/service/"+RpcServiceName, false);
+            if (exists ==null) {
+                zooKeeper.create("/service/"+RpcServiceName,
+                        "".getBytes(StandardCharsets.UTF_8),
+                        ZooDefs.Ids.OPEN_ACL_UNSAFE,
+                        CreateMode.PERSISTENT
+                );
+            }
+
         }
 
         String date = hostname+":"+port;
 
         //权限目前都设置为全放开   创建方式均为持久化
-        zooKeeper.create("/service/"+RpcServiceName,
-                date.getBytes(StandardCharsets.UTF_8),
+        //修改 v1.3  数据为访问次数 应该是可以进行加减的  然后发现服务端取的是最低的然后再进行+1
+        zooKeeper.create("/service/"+RpcServiceName+"/"+date,
+                "0".getBytes(StandardCharsets.UTF_8),
                 ZooDefs.Ids.OPEN_ACL_UNSAFE,
                 CreateMode.PERSISTENT
-                );
+        );
     }
 
     /**

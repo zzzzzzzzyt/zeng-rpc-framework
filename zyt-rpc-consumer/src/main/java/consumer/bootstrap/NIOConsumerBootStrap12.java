@@ -17,6 +17,6 @@ public class NIOConsumerBootStrap12 {
         Customer customer = (Customer) clientProxy.getBean(Customer.class);
         String response = customer.hello("success");
         System.out.println(response);
-        System.out.println(customer.bye("fail"));
+        System.out.println(customer.hello("fail"));
     }
 }

@@ -28,6 +28,21 @@ public class NIOProviderBootStrap12 {
                 }
             }
         }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //因为每个服务提供端内部都是在监听循环阻塞 每个开启一个线程进行监听
+                try {
+                    NIONonBlockingServer12hello.start(6668);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (KeeperException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 
         //启动
         new Thread(new Runnable() {
