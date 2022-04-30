@@ -5,7 +5,4 @@ package consumer.bootstrap;
  */
 public class NettyConsumerBootStrap {
 
-
-
-
 }

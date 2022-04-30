@@ -13,6 +13,7 @@
         <module>zyt-rpc-provider</module>
         <module>zyt-rpc-api</module>
         <module>zyt-rpc-common</module>
+        <module>zyt-rpc-call</module>
     </modules>
 
     <properties>
