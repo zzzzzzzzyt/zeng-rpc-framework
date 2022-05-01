@@ -40,7 +40,7 @@ public class NIONonBlockingServer12bye {
         serverSocketChannel.bind(new InetSocketAddress(port));
 
         //将服务注册进zk中
-        ZkServiceRegistry.registerMethod("bye","127.0.0.1",port);
+        ZkServiceRegistry.registerMethod("Bye","127.0.0.1",port);
 
         //这里注意 要设置非阻塞   阻塞的话  他会一直等待事件或者是异常抛出的时候才会继续 会浪费cpu
         serverSocketChannel.configureBlocking(false);

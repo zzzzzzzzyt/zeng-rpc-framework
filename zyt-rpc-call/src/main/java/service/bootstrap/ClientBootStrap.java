@@ -5,12 +5,14 @@ import annotation.RpcClientBootStrap;
 import consumer.bootstrap.NIOConsumerBootStrap10;
 import consumer.bootstrap.NIOConsumerBootStrap11;
 import consumer.bootstrap.NIOConsumerBootStrap12;
+import consumer.bootstrap.NIOConsumerBootStrap14;
+
 
 import java.io.IOException;
 
 //之后启动直接在这边启动根据 在注解中配置对应的版本号  将相应的操作封装到之后的操作中即可  这样很方便 就是每次咱加一个启动器还得改下switch
 //比如说这里的version 1.2 就是v1.2版本的启动器
-@RpcClientBootStrap(version = "1.2")
+@RpcClientBootStrap(version = "1.4")
 public class ClientBootStrap {
     public static void start() throws IOException{
         //获取当前的注解上的版本然后去调用相应的远端方法  反射的方法
@@ -29,6 +31,9 @@ public class ClientBootStrap {
                 break;
             case "1.2":
                 NIOConsumerBootStrap12.main(null);
+                break;
+            case "1.4":
+                NIOConsumerBootStrap14.main(null);
                 break;
             default:
                 System.out.println("太着急了兄弟，这个版本还没出呢！要不你给我提个PR");

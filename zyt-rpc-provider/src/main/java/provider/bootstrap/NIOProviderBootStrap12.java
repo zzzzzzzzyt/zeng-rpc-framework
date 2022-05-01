@@ -13,8 +13,6 @@ import java.io.IOException;
  */
 public class NIOProviderBootStrap12 {
     public static void main(String[] args) throws IOException, InterruptedException, KeeperException {
-        //先对zk初始化
-        ZK.init();
 
         //启动
         new Thread(new Runnable() {
