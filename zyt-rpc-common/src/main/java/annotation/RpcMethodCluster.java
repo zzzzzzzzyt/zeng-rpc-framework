@@ -7,8 +7,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-//注解在方法上  然后根据方法获得对应的属性进行判断
-@Target(ElementType.METHOD)
+//注解在类上  然后根据方法获得对应的属性进行判断
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RpcMethodCluster {
     String[] method();

@@ -8,6 +8,7 @@ import provider.bootstrap.NIOProviderBootStrap10;
 import provider.bootstrap.NIOProviderBootStrap11;
 import provider.bootstrap.NIOProviderBootStrap12;
 import provider.bootstrap.NIOProviderBootStrap14;
+import service.call.ServerCall;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -17,8 +18,8 @@ import java.lang.reflect.Method;
 @RpcServerBootStrap(version = "1.4")
 public class ServerBootStrap {
 
-    //放在这个方法上 方法进行获取 然后根据对应的信息进行创建 传入方法和启动的集群数要相互对应
-    @RpcMethodCluster(method = {"Hello","Bye"},startNum = {2,3})
+
+
     public static void start() throws IOException, InterruptedException, KeeperException, NoSuchMethodException {
 
         //先对ZK进行初始化
@@ -30,8 +31,7 @@ public class ServerBootStrap {
 
         //获取对应的方法和个数 然后进行启动
         //1.获取对应方法 在获取对应的注解  注解中的属性
-        Method start = ServerBootStrap.class.getMethod("start", null);
-        RpcMethodCluster nowAnnotation = start.getAnnotation(RpcMethodCluster.class);
+        RpcMethodCluster nowAnnotation = ServerCall.class.getAnnotation(RpcMethodCluster.class);
         String[] methods = nowAnnotation.method();
         int[] startNums = nowAnnotation.startNum();
         //如果不存在那就返回
