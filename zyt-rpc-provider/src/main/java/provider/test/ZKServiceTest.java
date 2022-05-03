@@ -1,8 +1,6 @@
-package consumer.zkService;
+package provider.test;
 
 
-import annotation.LoadBalanceMethodImpl;
-import loadbalance.LoadBalance;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooDefs;
@@ -28,15 +26,4 @@ public class ZKServiceTest {
         if (zooKeeper.exists("/test", null)==null)zooKeeper.create("/test","".getBytes(StandardCharsets.UTF_8),ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
         zooKeeper.create("/test/hello","12".getBytes(StandardCharsets.UTF_8), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
     }
-
-
-    @Test
-    public void testInterface()
-    {
-        LoadBalanceMethodImpl annotation = LoadBalance.class.getAnnotation(LoadBalanceMethodImpl.class);
-        Class method = annotation.chosenMethod();
-
-    }
 }
-
-

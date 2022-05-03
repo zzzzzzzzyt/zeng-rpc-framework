@@ -1,4 +1,4 @@
-package consumer.bootstrap;
+package consumer.bootstrap.nio;
 
 import consumer.nio.NIOBlockingClient11;
 

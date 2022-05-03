@@ -80,5 +80,12 @@
             <version>4.3.0</version>
         </dependency>
 
+        <!--添加Nacos依赖  使用服务注册 服务发现-->
+        <dependency>
+            <groupId>com.alibaba.nacos</groupId>
+            <artifactId>nacos-spring-context</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
     </dependencies>
 </project>

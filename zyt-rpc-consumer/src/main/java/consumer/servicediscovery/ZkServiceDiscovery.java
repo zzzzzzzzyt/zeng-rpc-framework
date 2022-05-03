@@ -1,4 +1,4 @@
-package consumer.zkService;
+package consumer.servicediscovery;
 
 import annotation.LoadBalanceMethodImpl;
 import constants.RpcConstants;

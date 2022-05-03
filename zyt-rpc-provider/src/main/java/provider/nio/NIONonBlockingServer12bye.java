@@ -3,7 +3,7 @@ package provider.nio;
 import method.ByeService;
 import org.apache.zookeeper.KeeperException;
 import provider.api.ByeServiceImpl;
-import provider.zkService.ZkServiceRegistry;
+import provider.serviceregistry.ZkServiceRegistry;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

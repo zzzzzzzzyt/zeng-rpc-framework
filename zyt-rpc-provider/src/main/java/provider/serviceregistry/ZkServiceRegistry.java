@@ -1,4 +1,4 @@
-package provider.zkService;
+package provider.serviceregistry;
 
 import constants.RpcConstants;
 import org.apache.zookeeper.*;
@@ -74,7 +74,7 @@ public class ZkServiceRegistry {
         //先创建对应的额zooKeeper连接客户端再进行相应的注册
         createConnect();
         register(RpcServiceName,hostname,port);
-        System.out.println("服务端:"+hostname+":"+port+":"+RpcServiceName+"方法注册完毕");
+        System.out.println("服务端:"+hostname+":"+port+":"+RpcServiceName+"方法在zk中注册完毕");
 
     }
 }

@@ -1,9 +1,7 @@
 package provider.nio;
 
-import method.HelloService;
 import org.apache.zookeeper.KeeperException;
-import provider.api.HelloServiceImpl;
-import provider.zkService.ZkServiceRegistry;
+import provider.serviceregistry.ZkServiceRegistry;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

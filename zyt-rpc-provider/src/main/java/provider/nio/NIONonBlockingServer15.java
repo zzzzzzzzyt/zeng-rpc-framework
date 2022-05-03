@@ -1,10 +1,10 @@
 package provider.nio;
 
-import method.HelloService;
+import com.alibaba.nacos.api.exception.NacosException;
+import exception.RpcException;
 import org.apache.zookeeper.KeeperException;
-import provider.api.HelloServiceImpl;
-import provider.serviceregistry.ZkServiceRegistry;
-
+import provider.serviceregistry.NacosServiceRegistry;
+import provider.utils.MethodRegister;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -18,11 +18,11 @@ import java.util.Iterator;
 import java.util.Set;
 
 //v1.0版本非阻塞服务器端
-public class NIONonBlockingServer12hello {
+public class NIONonBlockingServer15 {
 
     //启动
-    public static void start(int PORT) throws IOException, InterruptedException, KeeperException {
-        start0(PORT);
+    public static void start(String METHOD,int PORT) throws IOException, InterruptedException, KeeperException, NacosException, RpcException {
+        start0(METHOD,PORT);
     }
 
 
@@ -30,7 +30,7 @@ public class NIONonBlockingServer12hello {
         真正启动的业务逻辑在这
         因为这是简易版 那么先把异常丢出去
      */
-    private static void start0(int port) throws IOException, InterruptedException, KeeperException {
+    private static void start0(String method,int port) throws IOException, InterruptedException, KeeperException, NacosException, RpcException {
         //创建对应的服务器端通道
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
         System.out.println("-----------服务提供方启动-------------");
@@ -40,8 +40,9 @@ public class NIONonBlockingServer12hello {
         //绑定端口开启
         serverSocketChannel.bind(new InetSocketAddress(port));
 
-        //将服务注册进zk中
-        ZkServiceRegistry.registerMethod("Hello","127.0.0.1",port);
+        //将服务注册进注册中心中  根据注解进行注册  去找哪个对应的注册中心的实际逻辑封装在方法中
+        MethodRegister.register(method,"127.0.0.1",port);
+
 
         //这里注意 要设置非阻塞   阻塞的话  他会一直等待事件或者是异常抛出的时候才会继续 会浪费cpu
         serverSocketChannel.configureBlocking(false);
@@ -94,8 +95,19 @@ public class NIONonBlockingServer12hello {
                         }
 
                         String msg = stringBuffer.toString();
-                        HelloService helloService = new HelloServiceImpl();
-                        String response = helloService.sayHello(msg);
+
+                        //这里要有新逻辑了 根据获得的方法名 去找到相应的方法
+                        //方法我们保存在固定位置 同时含有固定后缀
+                        String className = method + "ServiceImpl";
+                        Class<?> methodClass = Class.forName("provider.api."+className);
+                        //实例 要获取对应的实例 或者子对象才能进行反射执行方法
+                        Object instance = methodClass.newInstance();
+
+                        //要传入参数的类型
+                        String response = (String) methodClass.
+                                getMethod("say" + method,String.class).
+                                invoke(instance, msg);
+
 
                         String responseMsg = "收到信息" + msg + "来自" + socketChannel.socket().getRemoteSocketAddress();
                         System.out.println(responseMsg);
@@ -114,4 +126,5 @@ public class NIONonBlockingServer12hello {
             }
         }
     }
+
 }

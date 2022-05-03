@@ -4,18 +4,15 @@ import annotation.RpcMethodCluster;
 import annotation.RpcServerBootStrap;
 import init.ZK;
 import org.apache.zookeeper.KeeperException;
-import provider.bootstrap.NIOProviderBootStrap10;
-import provider.bootstrap.NIOProviderBootStrap11;
-import provider.bootstrap.NIOProviderBootStrap12;
-import provider.bootstrap.NIOProviderBootStrap14;
+import provider.bootstrap.nio.*;
 import service.call.ServerCall;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
+
 
 //之后启动直接在这边启动根据 在注解中配置对应的版本号  将相应的操作封装到之后的操作中即可
 //比如说这里的version 1.2 就是v1.2版本的启动器
-@RpcServerBootStrap(version = "1.4")
+@RpcServerBootStrap(version = "1.5")
 public class ServerBootStrap {
 
 
@@ -62,7 +59,12 @@ public class ServerBootStrap {
                 NIOProviderBootStrap12.main(null);
                 break;
             case "1.4":
+                //1.4 增加了注册中心 zk
                 NIOProviderBootStrap14.main(new String[]{methodBuilder.toString(), numBuilder.toString()});
+                break;
+            case "1.5":
+                //1.5 将注册中心换成了nacos
+                NIOProviderBootStrap15.main(new String[]{methodBuilder.toString(), numBuilder.toString()});
                 break;
             default:
                 System.out.println("太着急了兄弟，这个版本还没出呢！要不你给我提个PR");
