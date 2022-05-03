@@ -1,18 +1,19 @@
 package consumer.zkService;
 
+import annotation.LoadBalanceMethodImpl;
 import constants.RpcConstants;
 import consumer.nio.NIONonBlockingClient12;
 import exception.RpcException;
+import loadbalance.LoadBalance;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 
 public class ZkServiceDiscovery {
     private static String connectString = RpcConstants.ZOOKEEPER_ADDRESS;
@@ -30,7 +31,7 @@ public class ZkServiceDiscovery {
     }
 
     // 根据所请求的服务地址 获取对应的远端地址
-    public static String getMethodAddress(String methodName) throws RpcException, InterruptedException, KeeperException {
+    public static String getMethodAddress(String methodName) throws RpcException, InterruptedException, KeeperException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
         //判断节点中是否存在对应路径  不存在则抛出异常
         if (zooKeeper.exists("/service/"+methodName,null)==null)
@@ -40,45 +41,19 @@ public class ZkServiceDiscovery {
         }
 
         String prePath = "/service/"+methodName;
-        //v1.3更新 使用软负载
-        //到对应节点中获取下面的子节点
-        List<String> children = zooKeeper.getChildren(prePath, false, null);
-        if (children.isEmpty())
-        {
-            System.out.println("当前没有服务器提供该服务 请联系工作人员");
-        }
+        //v1.5修改使用负载均衡策略 根据接口上注解选择的实现类进行调用
+        LoadBalanceMethodImpl annotation = LoadBalance.class.getAnnotation(LoadBalanceMethodImpl.class);
+        Class methodClass = annotation.chosenMethod();
+        Method method = methodClass.getMethod("loadBalance", new Class[]{ZooKeeper.class, String.class});
+        //被选中的负载均衡实现类的对象  通过反射执行  获取对应的地址
+        Object methodChosenClass = methodClass.newInstance();
+        String address = (String) method.invoke(methodChosenClass,zooKeeper,prePath);
 
-        //进行排序 根据每个节点的访问次数 从小到大进行排序  然后选用最小的
-        Collections.sort(children, new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-
-                try {
-                    return Integer.valueOf(new String(zooKeeper.getData(prePath+"/"+o1,false,null)))
-                            -
-                            Integer.valueOf(new String(zooKeeper.getData(prePath+"/"+o2,false,null)));
-                } catch (KeeperException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return 0;
-            }
-        });
-        //对选用的对象的访问量加1  todo 暂时不知道怎么让数据直接+1
-        // 获取节点数据+1，然后修改对应节点，
-        String chooseNode = children.get(0);
-        byte[] data = zooKeeper.getData(prePath+"/"+chooseNode, false, null);
-        int visitCount = Integer.valueOf(new String(data));
-        ++visitCount;
-        //version参数用于指定节点的数据版本，表名本次更新操作是针对指定的数据版本进行的。 cas
-        zooKeeper.setData(prePath+"/"+chooseNode,String.valueOf(visitCount).getBytes(StandardCharsets.UTF_8),-1);
-        String address = new String(children.get(0));
         return address;
     }
 
 
-    public static String getStart(String methodName,String msg) throws IOException, RpcException, InterruptedException, KeeperException {
+    public static String getStart(String methodName,String msg) throws IOException, RpcException, InterruptedException, KeeperException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         //先进行连接
         getConnect();
         //获取相应的远端地址
