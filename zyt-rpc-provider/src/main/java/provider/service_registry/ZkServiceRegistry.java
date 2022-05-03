@@ -1,4 +1,4 @@
-package provider.serviceregistry;
+package provider.service_registry;
 
 import constants.RpcConstants;
 import org.apache.zookeeper.*;

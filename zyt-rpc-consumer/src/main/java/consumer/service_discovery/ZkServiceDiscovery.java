@@ -1,4 +1,4 @@
-package consumer.servicediscovery;
+package consumer.service_discovery;
 
 import annotation.LoadBalanceMethodImpl;
 import constants.RpcConstants;

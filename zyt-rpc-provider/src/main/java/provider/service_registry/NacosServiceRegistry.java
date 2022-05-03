@@ -1,4 +1,4 @@
-package provider.serviceregistry;
+package provider.service_registry;
 
 import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.exception.NacosException;

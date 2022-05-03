@@ -5,8 +5,8 @@ import com.alibaba.nacos.api.exception.NacosException;
 import exception.RpcException;
 import org.apache.zookeeper.KeeperException;
 import provider.bootstrap.nio.NIOProviderBootStrap;
-import provider.serviceregistry.NacosServiceRegistry;
-import provider.serviceregistry.ZkServiceRegistry;
+import provider.service_registry.NacosServiceRegistry;
+import provider.service_registry.ZkServiceRegistry;
 
 import java.io.IOException;
 

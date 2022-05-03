@@ -3,8 +3,8 @@ package consumer.proxy;
 import annotation.RegistryChosen;
 import com.alibaba.nacos.api.exception.NacosException;
 import consumer.bootstrap.nio.NIOConsumerBootstrap;
-import consumer.servicediscovery.NacosServiceDiscovery;
-import consumer.servicediscovery.ZkServiceDiscovery;
+import consumer.service_discovery.NacosServiceDiscovery;
+import consumer.service_discovery.ZkServiceDiscovery;
 import exception.RpcException;
 import org.apache.zookeeper.KeeperException;
 

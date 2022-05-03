@@ -1,4 +1,4 @@
-package consumer.servicediscovery;
+package consumer.service_discovery;
 
 import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.exception.NacosException;
@@ -7,11 +7,9 @@ import com.alibaba.nacos.api.naming.pojo.Instance;
 import constants.RpcConstants;
 import consumer.nio.NIONonBlockingClient12;
 import exception.RpcException;
-import org.apache.zookeeper.KeeperException;
+
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 import java.util.Properties;
 
 public class NacosServiceDiscovery {

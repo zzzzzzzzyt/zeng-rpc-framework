@@ -3,7 +3,7 @@ package provider.nio;
 import method.HelloService;
 import org.apache.zookeeper.KeeperException;
 import provider.api.HelloServiceImpl;
-import provider.serviceregistry.ZkServiceRegistry;
+import provider.service_registry.ZkServiceRegistry;
 
 
 import java.io.IOException;

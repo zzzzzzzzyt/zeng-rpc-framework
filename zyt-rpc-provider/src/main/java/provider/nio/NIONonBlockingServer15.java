@@ -3,7 +3,6 @@ package provider.nio;
 import com.alibaba.nacos.api.exception.NacosException;
 import exception.RpcException;
 import org.apache.zookeeper.KeeperException;
-import provider.serviceregistry.NacosServiceRegistry;
 import provider.utils.MethodRegister;
 
 import java.io.IOException;
