@@ -20,7 +20,7 @@ import java.util.Set;
 public class NIONonBlockingServer15 {
 
     //启动
-    public static void start(String METHOD,int PORT) throws IOException, InterruptedException, KeeperException, NacosException, RpcException {
+    public static void start(String METHOD,int PORT) throws Exception {
         start0(METHOD,PORT);
     }
 
@@ -29,7 +29,7 @@ public class NIONonBlockingServer15 {
         真正启动的业务逻辑在这
         因为这是简易版 那么先把异常丢出去
      */
-    private static void start0(String method,int port) throws IOException, InterruptedException, KeeperException, NacosException, RpcException {
+    private static void start0(String method,int port) throws Exception {
         //创建对应的服务器端通道
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
         System.out.println("-----------服务提供方启动-------------");

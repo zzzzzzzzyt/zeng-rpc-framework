@@ -6,6 +6,7 @@ import exception.RpcException;
 import org.apache.zookeeper.KeeperException;
 import provider.bootstrap.nio.NIOProviderBootStrap;
 import provider.service_registry.NacosServiceRegistry;
+import provider.service_registry.ZkCuratorRegistry;
 import provider.service_registry.ZkServiceRegistry;
 
 import java.io.IOException;
@@ -18,7 +19,7 @@ public class MethodRegister implements NIOProviderBootStrap {
      * @param ip  对应的ip
      * @param port    对应的port
      */
-    public static void register(String method, String ip, int port) throws NacosException, RpcException, IOException, InterruptedException, KeeperException {
+    public static void register(String method, String ip, int port) throws Exception {
 
         RegistryChosen annotation = MethodRegister.class.getInterfaces()[0].getAnnotation(RegistryChosen.class);
 
@@ -29,6 +30,9 @@ public class MethodRegister implements NIOProviderBootStrap {
                 break;
             case "zookeeper":
                 ZkServiceRegistry.registerMethod(method,ip,port);
+                break;
+            case "zkCurator":
+                ZkCuratorRegistry.registerMethod(method,ip,port);
                 break;
             default:
                 throw new RpcException("不存在该注册中心");

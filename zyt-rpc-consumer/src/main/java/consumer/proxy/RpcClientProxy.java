@@ -4,14 +4,13 @@ import annotation.RegistryChosen;
 import com.alibaba.nacos.api.exception.NacosException;
 import consumer.bootstrap.nio.NIOConsumerBootstrap;
 import consumer.service_discovery.NacosServiceDiscovery;
+import consumer.service_discovery.ZkCuratorDiscovery;
 import consumer.service_discovery.ZkServiceDiscovery;
 import exception.RpcException;
 import org.apache.zookeeper.KeeperException;
 
 
-import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -46,10 +45,10 @@ public class RpcClientProxy implements NIOConsumerBootstrap{
     /**
      * 实际去获得对应的服务 并完成方法调用的方法
      * @param methodName
-     * @param port
+     * @param msg 消息
      * @return
      */
-    private static String getResponse(String methodName, String port) throws RpcException, IOException, NacosException, InterruptedException, KeeperException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+    private static String getResponse(String methodName, String msg) throws Exception {
         //根据注解进行方法调用
         //根据在代理类上的注解调用  看清楚底下的因为是个class数组 可以直接继续获取 注解
         Class<NIOConsumerBootstrap>[] interfaces = (Class<NIOConsumerBootstrap>[]) RpcClientProxy.class.getInterfaces();
@@ -57,9 +56,11 @@ public class RpcClientProxy implements NIOConsumerBootstrap{
         switch (annotation.registryName())
         {
             case "nacos":
-                return NacosServiceDiscovery.getStart(methodName, port);
+                return NacosServiceDiscovery.getStart(methodName, msg);
             case "zookeeper":
-                return ZkServiceDiscovery.getStart(methodName,port);
+                return ZkServiceDiscovery.getStart(methodName,msg);
+            case "zkCurator":
+                return ZkCuratorDiscovery.getStart(methodName,msg);
             default:
                 throw new RpcException("不存在该注册中心");
         }
