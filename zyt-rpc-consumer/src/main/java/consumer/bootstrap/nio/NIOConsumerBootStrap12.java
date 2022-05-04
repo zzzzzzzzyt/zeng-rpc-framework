@@ -10,12 +10,9 @@ import java.io.IOException;
     以nio为网络编程框架的消费者端启动类
  */
 public class NIOConsumerBootStrap12 {
-    public static void main(String[] args) throws IOException {
+    public static Customer main(String[] args) throws IOException {
 
         RpcClientProxy clientProxy = new RpcClientProxy();
-        Customer customer = (Customer) clientProxy.getBean(Customer.class);
-        String response = customer.Hello("success");
-        System.out.println(response);
-        System.out.println(customer.Hello("fail"));
+        return (Customer) clientProxy.getBean(Customer.class);
     }
 }

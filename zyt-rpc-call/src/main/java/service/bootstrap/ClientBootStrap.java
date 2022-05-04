@@ -3,6 +3,8 @@ package service.bootstrap;
 import annotation.RpcClientBootStrap;
 
 import consumer.bootstrap.nio.*;
+import exception.RpcException;
+import method.Customer;
 
 
 import java.io.IOException;
@@ -11,7 +13,7 @@ import java.io.IOException;
 //比如说这里的version 1.2 就是v1.2版本的启动器
 @RpcClientBootStrap(version = "1.5")
 public class ClientBootStrap {
-    public static void start() throws IOException{
+    public static Customer start() throws IOException, RpcException {
         //获取当前的注解上的版本然后去调用相应的远端方法  反射的方法
         //当前客户端启动器class对象
         Class<ClientBootStrap> currentClientBootStrapClass = ClientBootStrap.class;
@@ -20,23 +22,21 @@ public class ClientBootStrap {
         //根据注解获得的版本进行判断是哪个版本 然后进行启动
         switch (currentVersion)
         {
-            case "1.0":
-                NIOConsumerBootStrap10.main(null);
-                break;
-            case "1.1":
-                NIOConsumerBootStrap11.main(null);
-                break;
+            //1.2版本之前都是键盘输入 所以不是根据代理对象来进行调用的  暂时注释掉
+            // case "1.0":
+            //     NIOConsumerBootStrap10.main(null);
+            //     break;
+            // case "1.1":
+            //     NIOConsumerBootStrap11.main(null);
+            //     break;
             case "1.2":
-                NIOConsumerBootStrap12.main(null);
-                break;
+                return NIOConsumerBootStrap12.main(null);
             case "1.4":
-                NIOConsumerBootStrap14.main(null);
-                break;
+                return NIOConsumerBootStrap14.main(null);
             case "1.5":
-                NIOConsumerBootStrap15.main(null);
-                break;
+                return NIOConsumerBootStrap15.main(null);
             default:
-                System.out.println("太着急了兄弟，这个版本还没出呢！要不你给我提个PR");
+                throw new RpcException("太着急了兄弟，这个版本还没出呢！要不你给我提个PR");
         }
     }
 }

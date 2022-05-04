@@ -11,13 +11,10 @@ import java.io.IOException;
  */
 
 public class NIOConsumerBootStrap15{
-    public static void main(String[] args) throws IOException {
+    public static Customer main(String[] args) throws IOException {
 
         RpcClientProxy clientProxy = new RpcClientProxy();
-        Customer customer = (Customer) clientProxy.getBean(Customer.class);
-        String response = customer.Hello("success");
-        System.out.println(response);
-        System.out.println(customer.Bye("fail"));
-        System.out.println(customer.Hello("fail"));
+        return (Customer) clientProxy.getBean(Customer.class);
+
     }
 }
