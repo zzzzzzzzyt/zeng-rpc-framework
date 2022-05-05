@@ -1,6 +1,6 @@
 package consumer.netty;
 
-import consumer.netty_client_handler.NettyClientHandler01;
+import consumer.netty_client_handler.NettyClientHandler20;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -21,7 +21,7 @@ public class NettyClient20 {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             ChannelPipeline pipeline = socketChannel.pipeline();
-                            pipeline.addLast(new NettyClientHandler01());
+                            pipeline.addLast(new NettyClientHandler20());
                         }
                     });
 

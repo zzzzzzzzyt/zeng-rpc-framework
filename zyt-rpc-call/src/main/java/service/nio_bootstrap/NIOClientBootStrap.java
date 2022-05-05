@@ -5,19 +5,19 @@ import annotation.RpcClientBootStrap;
 import consumer.bootstrap.nio.*;
 import exception.RpcException;
 import method.Customer;
+import service.ClientCall;
 
 
 import java.io.IOException;
 
 //之后启动直接在这边启动根据 在注解中配置对应的版本号  将相应的操作封装到之后的操作中即可  这样很方便 就是每次咱加一个启动器还得改下switch
 //比如说这里的version 1.2 就是v1.2版本的启动器
-@RpcClientBootStrap(version = "1.5")
+
 public class NIOClientBootStrap {
     public static Customer start() throws IOException, RpcException {
         //获取当前的注解上的版本然后去调用相应的远端方法  反射的方法
         //当前客户端启动器class对象
-        Class<NIOClientBootStrap> currentClientBootStrapClass = NIOClientBootStrap.class;
-        RpcClientBootStrap annotation = currentClientBootStrapClass.getAnnotation(RpcClientBootStrap.class);
+        RpcClientBootStrap annotation = ClientCall.class.getAnnotation(RpcClientBootStrap.class);
         String currentVersion = annotation.version();
         //根据注解获得的版本进行判断是哪个版本 然后进行启动
         switch (currentVersion)

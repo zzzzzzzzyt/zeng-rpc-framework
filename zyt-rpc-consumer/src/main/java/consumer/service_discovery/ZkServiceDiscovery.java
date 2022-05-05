@@ -31,7 +31,9 @@ public class ZkServiceDiscovery {
     }
 
     // 根据所请求的服务地址 获取对应的远端地址
-    public static String getMethodAddress(String methodName) throws RpcException, InterruptedException, KeeperException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    public static String getMethodAddress(String methodName) throws RpcException, InterruptedException, KeeperException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, IOException {
+        //先进行连接
+        getConnect();
 
         //判断节点中是否存在对应路径  不存在则抛出异常
         if (zooKeeper.exists("/service/"+methodName,null)==null)
@@ -54,8 +56,6 @@ public class ZkServiceDiscovery {
 
 
     public static String getStart(String methodName,String msg) throws IOException, RpcException, InterruptedException, KeeperException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-        //先进行连接
-        getConnect();
         //获取相应的远端地址
         String methodAddress = getMethodAddress(methodName);
         //进行连接

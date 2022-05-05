@@ -5,7 +5,7 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import provider.netty_server_handler.NettyServerHandler01;
+import provider.netty_server_handler.NettyServerHandler20;
 
 
 //简单实现  主要还是进行了一段回想
@@ -26,7 +26,7 @@ public class NettyServer20 {
                             //每个用户连接上都会进行初始化
                             System.out.println("客户socketChannel hashcode="+socketChannel.hashCode());
                             ChannelPipeline pipeline = socketChannel.pipeline();//每个通道都对应一个管道 将处理器往管道里放
-                            pipeline.addLast(new NettyServerHandler01());
+                            pipeline.addLast(new NettyServerHandler20());
                         }
                     });
 
