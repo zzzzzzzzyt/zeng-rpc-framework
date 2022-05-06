@@ -1,6 +1,7 @@
 package consumer.proxy;
 
 import annotation.RegistryChosen;
+import consumer.netty.NettyClient;
 import consumer.netty.NettyClient21;
 import consumer.service_discovery.NacosServiceDiscovery;
 import consumer.service_discovery.ZkCuratorDiscovery;
@@ -34,7 +35,7 @@ public class RpcNettyClientProxy {
                 String hostName = strings[0];
                 int port = Integer.valueOf(strings[1]);
                 //进行方法的调用  随即进行方法的调用
-                return NettyClient21.callMethod(hostName,port,param);
+                return NettyClient.callMethod(hostName,port,param,method);
             }
         });
     }

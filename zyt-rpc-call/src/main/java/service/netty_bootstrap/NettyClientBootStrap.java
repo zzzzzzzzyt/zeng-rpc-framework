@@ -3,6 +3,7 @@ package service.netty_bootstrap;
 import annotation.RpcClientBootStrap;
 import consumer.bootstrap.netty.NettyConsumerBootStrap20;
 import consumer.bootstrap.netty.NettyConsumerBootStrap21;
+import consumer.bootstrap.netty.NettyConsumerBootStrap22;
 import exception.RpcException;
 import method.Customer;
 import service.ClientCall;
@@ -25,6 +26,8 @@ public class NettyClientBootStrap {
                 return null;
             case "2.1":
                 return NettyConsumerBootStrap21.main(null);
+            case "2.2":
+                return NettyConsumerBootStrap22.main(null);
             default:
                 System.out.println("该版本还没出呢，你如果有想法可以私信我，或者提个pr");
                 throw new RpcException("出现问题");
