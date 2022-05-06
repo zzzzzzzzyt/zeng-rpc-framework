@@ -1,10 +1,6 @@
 package serialization.entity;
 
 
-
-
-import serialization.Serialization;
-
 import java.io.Serializable;
 
 //这是普通进行序列化传递需要
