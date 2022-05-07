@@ -130,7 +130,49 @@ public class AddCodec {
                     pipeline.addLast(new StringDecoder());
                 }
                 return;
-            case "kryo": //添加kryo的编解码器
+            case "kryo": //添加kryo的编解码器   kryo和protostuff的编解码器其实一样 因为都是byteArray或者string在传输
+                if (returnType!=String.class&&parameterType!=String.class)
+                {
+                    //都进行序列化后传输
+                    pipeline.addLast(new ByteArrayEncoder());
+                    pipeline.addLast(new ByteArrayDecoder());
+                }
+                else if (returnType!=String.class&&parameterType==String.class)
+                {
+                    //如果是客户端的话那么传出的是服务端传入的  所以这边编码那边就是解码
+                    if (isConsumer)
+                    {
+                        //根据传入传出进行对应的编码
+                        pipeline.addLast(new StringEncoder());
+                        pipeline.addLast(new ByteArrayDecoder());;
+                    }
+                    else
+                    {
+                        pipeline.addLast(new StringDecoder());
+                        pipeline.addLast(new ByteArrayEncoder());
+                    }
+                }
+                else if (returnType==String.class&&parameterType!=String.class)
+                {
+                    //客户端 会对参数进行编码，服务端是解码
+                    if (isConsumer)
+                    {
+                        pipeline.addLast(new ByteArrayEncoder());
+                        pipeline.addLast(new StringDecoder());
+                    }
+                    else
+                    {
+                        pipeline.addLast(new StringEncoder());
+                        //这个就是获取对应的实例 必须要这样传
+                        pipeline.addLast(new ByteArrayDecoder());
+                    }
+                }
+                else
+                {
+                    //因为传入参数和传出都是字符串类型 所以就传入字符串编解码器
+                    pipeline.addLast(new StringEncoder());
+                    pipeline.addLast(new StringDecoder());
+                }
                 return;
             case "protostuff": //在处理器那边进行判断 如果是解析器 是这个的话 就在上下加上编解码过程
                 if (returnType!=String.class&&parameterType!=String.class)

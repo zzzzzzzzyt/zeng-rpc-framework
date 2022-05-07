@@ -5,6 +5,7 @@ import annotation.CodecSelector;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import serialization.Serialization;
+import serialization.kryo.KryoUtils;
 import serialization.protostuff.ProtostuffUtils;
 
 import java.lang.reflect.Method;
@@ -35,6 +36,11 @@ public class NettyServerHandler22 extends ChannelInboundHandlerAdapter {
             ProtostuffUtils protostuffUtils = new ProtostuffUtils();
             msg = protostuffUtils.deserialize((byte[]) msg, method.getParameterTypes()[0]);
         }
+        else if (Serialization.class.getAnnotation(CodecSelector.class).Codec().equals("kryo")&&msg.getClass()!=String.class)
+        {
+            KryoUtils kryoUtils = new KryoUtils();
+            msg = kryoUtils.deserialize((byte[]) msg, method.getParameterTypes()[0]);
+        }
         else
         //因为我进行重写了 内部会有多个实现方法  所以就按照对应的传入参数 来判断是哪个方法
         {
@@ -47,7 +53,6 @@ public class NettyServerHandler22 extends ChannelInboundHandlerAdapter {
             }
         }
 
-
         Object instance = calledClass.newInstance();
         Object response = method.invoke(instance, msg);
         //获得对应信息并进行回传
@@ -57,6 +62,11 @@ public class NettyServerHandler22 extends ChannelInboundHandlerAdapter {
         {
             ProtostuffUtils protostuffUtils = new ProtostuffUtils();
             response = protostuffUtils.serialize(response);
+        }
+        if (Serialization.class.getAnnotation(CodecSelector.class).Codec().equals("kryo")&&response.getClass()!=String.class)
+        {
+            KryoUtils kryoUtils = new KryoUtils();
+            response = kryoUtils.serialize(response);
         }
 
         ctx.writeAndFlush(response);

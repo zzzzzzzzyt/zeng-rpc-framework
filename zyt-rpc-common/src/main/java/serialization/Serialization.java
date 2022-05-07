@@ -10,6 +10,6 @@ import annotation.CodecSelector;
     kryo
     protostuff
  */
-@CodecSelector(Codec = "protoc")
+@CodecSelector(Codec = "kryo")
 public interface Serialization {
 }

@@ -4,6 +4,7 @@ import annotation.CodecSelector;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import serialization.Serialization;
+import serialization.kryo.KryoUtils;
 import serialization.protostuff.ProtostuffUtils;
 
 import java.util.concurrent.Callable;
@@ -33,13 +34,17 @@ public class NettyClientHandler22 extends ChannelInboundHandlerAdapter implement
     @Override
     public synchronized void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         //在这要进行解码 获得传回来的信息  如果是遇到下面的msg 那就代表传回来的肯定是个byte[] 根据我们要的方法进行解码
-        if (Serialization.class.getAnnotation(CodecSelector.class).Codec()
-                .equals("protostuff")
-                &&msg.getClass()!=String.class)
+        if (Serialization.class.getAnnotation(CodecSelector.class).Codec().equals("protostuff") &&msg.getClass()!=String.class)
         {
             ProtostuffUtils protostuffUtils = new ProtostuffUtils();
             //反序列化的模板 是根据我传进来的参数进行改变的
             msg = protostuffUtils.deserialize((byte[]) msg,param.getClass());
+        }
+        if (Serialization.class.getAnnotation(CodecSelector.class).Codec().equals("kryo") &&msg.getClass()!=String.class)
+        {
+            KryoUtils kryoUtils = new KryoUtils();
+            //反序列化的模板 是根据我传进来的参数进行改变的
+            msg = kryoUtils.deserialize((byte[]) msg,param.getClass());
         }
         response = msg;
         notify();
@@ -56,6 +61,11 @@ public class NettyClientHandler22 extends ChannelInboundHandlerAdapter implement
         {
             ProtostuffUtils protostuffUtils = new ProtostuffUtils();
             request = protostuffUtils.serialize(param);
+        }
+        if (Serialization.class.getAnnotation(CodecSelector.class).Codec().equals("kryo")&&param.getClass()!=String.class)
+        {
+            KryoUtils kryoUtils = new KryoUtils();
+            request = kryoUtils.serialize(param);
         }
 
         context.writeAndFlush(request);
