@@ -19,8 +19,9 @@ public class KryoUtils implements Serializer {
      */
     private final ThreadLocal<Kryo> kryoThreadLocal = ThreadLocal.withInitial(() -> {
         Kryo kryo = new Kryo();
-        kryo.register(Person.class); //这里这个注册其实就有点类似于protostuff的scheme 就是一个模板
+        // kryo.register(Person.class); // 注册了能提高性能 减少了空间的 浪费 /但如果分布式系统中注册 不同的顺序可能导致错误
         // kryo.register(PersonPOJO.Person.class); //不能使用这个
+        kryo.setRegistrationRequired(false); //显式的关闭了注册的行为
         return kryo;
     });
 

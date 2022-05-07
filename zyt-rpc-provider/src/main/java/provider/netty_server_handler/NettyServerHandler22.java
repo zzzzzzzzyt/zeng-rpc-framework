@@ -13,7 +13,8 @@ import java.lang.reflect.Method;
 //实现简单的服务注册和回写
 public class NettyServerHandler22 extends ChannelInboundHandlerAdapter {
     private String methodName;
-
+    private boolean isProtostuff;
+    private boolean isKryo;
     //要传入对应的方法名 否则不知道 netty服务器能执行什么方法
     public NettyServerHandler22(String methodName)
     {
@@ -21,6 +22,14 @@ public class NettyServerHandler22 extends ChannelInboundHandlerAdapter {
     }
 
     //实现对应的方法
+
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        String codecType = Serialization.class.getAnnotation(CodecSelector.class).Codec();
+        if (codecType.equals("protostuff"))isProtostuff = true;
+        else if (codecType.equals("kryo"))isKryo = true;
+    }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -31,12 +40,12 @@ public class NettyServerHandler22 extends ChannelInboundHandlerAdapter {
         Method method = methods[0];
 
         //如果我传入的是protostuff 传进来的是相应的byte数组 那我就找不到对应的方法 现在默认是第一个方法  还有就是判断不是字符串
-        if (Serialization.class.getAnnotation(CodecSelector.class).Codec().equals("protostuff")&&msg.getClass()!=String.class)
+        if (isProtostuff&&msg.getClass()!=String.class)
         {
             ProtostuffUtils protostuffUtils = new ProtostuffUtils();
             msg = protostuffUtils.deserialize((byte[]) msg, method.getParameterTypes()[0]);
         }
-        else if (Serialization.class.getAnnotation(CodecSelector.class).Codec().equals("kryo")&&msg.getClass()!=String.class)
+        else if (isKryo&&msg.getClass()!=String.class)
         {
             KryoUtils kryoUtils = new KryoUtils();
             msg = kryoUtils.deserialize((byte[]) msg, method.getParameterTypes()[0]);
@@ -58,12 +67,12 @@ public class NettyServerHandler22 extends ChannelInboundHandlerAdapter {
         //获得对应信息并进行回传
 
         //判断是否需要通过对应的方法进行序列化
-        if (Serialization.class.getAnnotation(CodecSelector.class).Codec().equals("protostuff")&&response.getClass()!=String.class)
+        if (isProtostuff&&response.getClass()!=String.class)
         {
             ProtostuffUtils protostuffUtils = new ProtostuffUtils();
             response = protostuffUtils.serialize(response);
         }
-        if (Serialization.class.getAnnotation(CodecSelector.class).Codec().equals("kryo")&&response.getClass()!=String.class)
+        if (isKryo&&response.getClass()!=String.class)
         {
             KryoUtils kryoUtils = new KryoUtils();
             response = kryoUtils.serialize(response);
