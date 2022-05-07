@@ -1,4 +1,4 @@
-package serialization.entity;
+package entity;
 
 
 import java.io.Serializable;

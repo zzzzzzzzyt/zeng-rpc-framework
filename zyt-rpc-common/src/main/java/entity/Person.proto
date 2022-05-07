@@ -1,0 +1,8 @@
+syntax = "proto3";//版本
+option java_outer_classname = "PersonPOJO";//生成的外部类名同时也是文件名
+//protobuf 使用message管理真正的数据
+message Person{
+  string name = 1; //对应的参数类型 名称 属性序号
+}
+//千万记得指令中间的空格别少写或者多写
+//编写完成后使用指令  protoc.exe --java_out=. Person.proto   要到自己对应下载好的protoc.exe文件下

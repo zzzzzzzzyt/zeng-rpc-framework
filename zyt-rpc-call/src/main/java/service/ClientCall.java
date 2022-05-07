@@ -2,9 +2,10 @@ package service;
 
 import annotation.RpcClientBootStrap;
 import annotation.RpcToolsSelector;
+import entity.Person;
 import exception.RpcException;
 import method.Customer;
-import serialization.entity.Person;
+import entity.PersonPOJO;
 import service.call.ChosenClientCall;
 
 import java.io.IOException;
@@ -20,15 +21,19 @@ public class ClientCall {
 
         // long start = System.currentTimeMillis();
 
-        Person person = new Person("zz");
-        System.out.println(customer.GetPerson(person));
-        System.out.println(customer.GetName(new Person("祝英台")));
-        System.out.println(customer.GetName(new Person("祝英台")));
-        System.out.println(customer.GetName(new Person("祝英台")));
-        System.out.println(customer.Hello("success"));
-        System.out.println(customer.Bye("fail"));
-        System.out.println(customer.Bye("fail"));
-        System.out.println(customer.Bye("fail"));
+
+        //测试
+        // System.out.println(customer.GetPerson(new Person("zz")));
+        System.out.println(customer.GetPerson(PersonPOJO.Person.newBuilder().setName("炸油条").build()));
+
+        //测试
+        // System.out.println(customer.GetName(PersonPOJO.Person.newBuilder().setName("炸油条").build()));
+        // System.out.println(customer.GetName(new Person("祝英台")));
+
+        // System.out.println(customer.Hello("success"));
+        // System.out.println(customer.Bye("fail"));
+        // System.out.println(customer.Bye("fail"));
+        // System.out.println(customer.Bye("fail"));
 
 
         // long end = System.currentTimeMillis();
