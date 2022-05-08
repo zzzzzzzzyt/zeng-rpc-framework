@@ -4,6 +4,7 @@ import annotation.CodecSelector;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import serialization.Serialization;
+import serialization.hessian.HessianUtils;
 import serialization.kryo.KryoUtils;
 import serialization.protostuff.ProtostuffUtils;
 
@@ -19,6 +20,7 @@ public class NettyClientHandler22 extends ChannelInboundHandlerAdapter implement
     private ChannelHandlerContext context;
     private boolean isProtostuff;
     private boolean isKryo;
+    private boolean isHessian;
 
     public void setParam(Object param) {
         this.param = param;
@@ -32,6 +34,7 @@ public class NettyClientHandler22 extends ChannelInboundHandlerAdapter implement
         String codecType = Serialization.class.getAnnotation(CodecSelector.class).Codec();
         if (codecType.equals("protostuff"))isProtostuff = true;
         else if (codecType.equals("kryo"))isKryo = true;
+        else if (codecType.equals("hessian"))isHessian = true;
     }
 
     @Override
@@ -48,6 +51,12 @@ public class NettyClientHandler22 extends ChannelInboundHandlerAdapter implement
             KryoUtils kryoUtils = new KryoUtils();
             //反序列化的模板 是根据我传进来的参数进行改变的
             msg = kryoUtils.deserialize((byte[]) msg,param.getClass());
+        }
+        if (isHessian && msg.getClass()!=String.class)
+        {
+            HessianUtils hessianUtils = new HessianUtils();
+            //反序列化的模板 是根据我传进来的参数进行改变的
+            msg = hessianUtils.deserialize((byte[]) msg,param.getClass());
         }
         response = msg;
         notify();
@@ -69,6 +78,11 @@ public class NettyClientHandler22 extends ChannelInboundHandlerAdapter implement
         {
             KryoUtils kryoUtils = new KryoUtils();
             request = kryoUtils.serialize(param);
+        }
+        if (isHessian && param.getClass()!=String.class)
+        {
+            HessianUtils hessianUtils = new HessianUtils();
+            request = hessianUtils.serialize(param);
         }
 
         context.writeAndFlush(request);

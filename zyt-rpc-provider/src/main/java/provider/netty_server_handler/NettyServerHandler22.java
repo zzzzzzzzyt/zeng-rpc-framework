@@ -5,6 +5,7 @@ import annotation.CodecSelector;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import serialization.Serialization;
+import serialization.hessian.HessianUtils;
 import serialization.kryo.KryoUtils;
 import serialization.protostuff.ProtostuffUtils;
 
@@ -15,6 +16,7 @@ public class NettyServerHandler22 extends ChannelInboundHandlerAdapter {
     private String methodName;
     private boolean isProtostuff;
     private boolean isKryo;
+    private boolean isHessian;
     //要传入对应的方法名 否则不知道 netty服务器能执行什么方法
     public NettyServerHandler22(String methodName)
     {
@@ -29,6 +31,7 @@ public class NettyServerHandler22 extends ChannelInboundHandlerAdapter {
         String codecType = Serialization.class.getAnnotation(CodecSelector.class).Codec();
         if (codecType.equals("protostuff"))isProtostuff = true;
         else if (codecType.equals("kryo"))isKryo = true;
+        else if (codecType.equals("hessian"))isHessian = true;
     }
 
     @Override
@@ -49,6 +52,11 @@ public class NettyServerHandler22 extends ChannelInboundHandlerAdapter {
         {
             KryoUtils kryoUtils = new KryoUtils();
             msg = kryoUtils.deserialize((byte[]) msg, method.getParameterTypes()[0]);
+        }
+        else if (isHessian&&msg.getClass()!=String.class)
+        {
+            HessianUtils hessianUtils = new HessianUtils();
+            msg = hessianUtils.deserialize((byte[]) msg, method.getParameterTypes()[0]);
         }
         else
         //因为我进行重写了 内部会有多个实现方法  所以就按照对应的传入参数 来判断是哪个方法
@@ -76,6 +84,11 @@ public class NettyServerHandler22 extends ChannelInboundHandlerAdapter {
         {
             KryoUtils kryoUtils = new KryoUtils();
             response = kryoUtils.serialize(response);
+        }
+        if (isHessian&&response.getClass()!=String.class)
+        {
+            HessianUtils hessianUtils = new HessianUtils();
+            response = hessianUtils.serialize(response);
         }
 
         ctx.writeAndFlush(response);

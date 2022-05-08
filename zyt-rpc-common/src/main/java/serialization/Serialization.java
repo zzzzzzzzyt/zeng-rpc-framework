@@ -9,7 +9,8 @@ import annotation.CodecSelector;
     protoc
     kryo
     protostuff
+    hessian
  */
-@CodecSelector(Codec = "kryo")
+@CodecSelector(Codec = "hessian")
 public interface Serialization {
 }
