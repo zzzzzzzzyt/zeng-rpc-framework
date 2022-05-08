@@ -9,6 +9,8 @@
 注册中心 : Zookeeper Curator SpringCloud Alibaba Nacos
 传输协议 : 自己构造
 负载均衡 : 自己构造
+操作系统 : Linux Windows
+容器化 : Docker
 其他机制等等 💪
 ````
 
