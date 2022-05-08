@@ -4,6 +4,7 @@ import annotation.RpcClientBootStrap;
 import consumer.bootstrap.netty.NettyConsumerBootStrap20;
 import consumer.bootstrap.netty.NettyConsumerBootStrap21;
 import consumer.bootstrap.netty.NettyConsumerBootStrap22;
+import consumer.bootstrap.netty.NettyConsumerBootStrap24;
 import exception.RpcException;
 import method.Customer;
 import service.ClientCall;
@@ -28,6 +29,8 @@ public class NettyClientBootStrap {
                 return NettyConsumerBootStrap21.main(null);
             case "2.2":
                 return NettyConsumerBootStrap22.main(null);
+            case "2.4": //这个版本各种序列化工具的使用
+                return NettyConsumerBootStrap24.main(null);
             default:
                 System.out.println("该版本还没出呢，你如果有想法可以私信我，或者提个pr");
                 throw new RpcException("出现问题");

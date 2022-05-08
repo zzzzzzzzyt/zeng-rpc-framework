@@ -10,7 +10,12 @@ import annotation.CodecSelector;
     kryo
     protostuff
     hessian
+    fst
+    avro
+    jackson
+    fastjson
+    gson
  */
-@CodecSelector(Codec = "hessian")
+@CodecSelector(Codec = "fastjson")
 public interface Serialization {
 }

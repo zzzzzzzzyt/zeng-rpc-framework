@@ -1,7 +1,10 @@
 package serialization;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import exception.RpcException;
+
+import java.io.IOException;
 
 public interface Serializer {
     /**
@@ -10,7 +13,7 @@ public interface Serializer {
      * @param obj 要序列化的对象
      * @return 字节数组
      */
-    byte[] serialize(Object obj) throws RpcException;
+    byte[] serialize(Object obj) throws RpcException, JsonProcessingException;
 
     /**
      * 反序列化
@@ -21,5 +24,5 @@ public interface Serializer {
      *              如果不知道类的类型的话，使用 {@code Class<?>}
      * @return 反序列化的对象
      */
-    <T> T deserialize(byte[] bytes, Class<T> clazz) throws RpcException;
+    <T> T deserialize(byte[] bytes, Class<T> clazz) throws RpcException, IOException;
 }

@@ -7,6 +7,7 @@ import org.apache.zookeeper.KeeperException;
 import provider.bootstrap.netty.NettyProviderBootStrap20;
 import provider.bootstrap.netty.NettyProviderBootStrap21;
 import provider.bootstrap.netty.NettyProviderBootStrap22;
+import provider.bootstrap.netty.NettyProviderBootStrap24;
 import service.ServerCall;
 
 import java.io.IOException;
@@ -52,6 +53,9 @@ public class NettyServerBootStrap {
                 break;
             case "2.2": //沿用 就是 做个区分  这个版本时进行序列化的测试
                 NettyProviderBootStrap22.main(new String[]{methodBuilder.toString(),numBuilder.toString()});
+                break;
+            case "2.4": //这个版本是个大版本 各种序列化工具出现和使用
+                NettyProviderBootStrap24.main(new String[]{methodBuilder.toString(),numBuilder.toString()});
                 break;
             default:
                 System.out.println("兄弟，该版本还在脑海中构思，如果你有想法可以pr给我");

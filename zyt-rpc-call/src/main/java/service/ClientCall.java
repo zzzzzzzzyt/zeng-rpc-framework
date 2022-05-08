@@ -12,7 +12,7 @@ import java.io.IOException;
 
 //总客户端启动类  用户调用 什么版本的  和用什么工具 使用什么注册中心  序列化的选择 都可以用这个来玩
 //注册中心不能给过去 这样就是重复依赖了
-@RpcClientBootStrap(version = "2.2")
+@RpcClientBootStrap(version = "2.4")
 @RpcToolsSelector(rpcTool = "Netty")
 public class ClientCall {
     public static void main(String[] args) throws RpcException, IOException, InterruptedException {
@@ -29,6 +29,7 @@ public class ClientCall {
         //测试
         // System.out.println(customer.GetName(PersonPOJO.Person.newBuilder().setName("炸油条").build()));
         System.out.println(customer.GetName(new Person("祝英台")));
+        System.out.println(customer.GetName(new Person("zzz")));
 
         // System.out.println(customer.Hello("success"));
         // System.out.println(customer.Bye("fail"));

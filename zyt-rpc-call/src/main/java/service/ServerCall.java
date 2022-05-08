@@ -12,7 +12,7 @@ import java.io.IOException;
 //调用的是什么版本的服务端启动方法
 //方法的注册名必须和对应的方法一一对应
 @RpcMethodCluster(method = {"Hello","Bye","GetName","GetPerson"},startNum = {3,3,3,1})
-@RpcServerBootStrap(version = "2.2")
+@RpcServerBootStrap(version = "2.4")
 @RpcToolsSelector(rpcTool = "Netty")
 public class ServerCall {
     public static void main(String[] args) throws IOException, InterruptedException, KeeperException, NoSuchMethodException {
