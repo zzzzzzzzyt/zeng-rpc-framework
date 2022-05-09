@@ -1,6 +1,9 @@
 package provider.netty_server_handler;
 
 
+import annotation.CompressFunction;
+import compress.Compress;
+import compress.CompressTpyeTool;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import serialization.SerializationTool;
@@ -21,8 +24,14 @@ public class NettyServerHandler24 extends ChannelInboundHandlerAdapter {
 
     //静态实现序列化工具类
     static SerializationTool serializationTool = new SerializationTool();
-    //实现对应的方法
 
+    //获得是否进行解压缩
+    static boolean openFunction = Compress.class.getAnnotation(CompressFunction.class).isOpenFunction();
+
+    //解压缩工具
+    static CompressTpyeTool compressTool = new CompressTpyeTool();
+
+    //实现对应的方法
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -32,9 +41,13 @@ public class NettyServerHandler24 extends ChannelInboundHandlerAdapter {
         Method[] methods = calledClass.getMethods();
         Method method = methods[0];
 
-        //如果传入的不是数组 就去进行反序列化
+        byte[] msgByteArray = (byte[])msg;
 
-        msg = serializationTool.deserialize((byte[]) msg,method.getParameterTypes()[0]);
+        //根据首先进行解压  再进行反序列化
+        if (openFunction) msgByteArray = compressTool.deCompress((byte[]) msg);
+
+        //如果传入的不是数组 就去进行反序列化
+        msg = serializationTool.deserialize(msgByteArray,method.getParameterTypes()[0]);
 
         //因为我进行重写了 内部会有多个实现方法  所以就按照对应的传入参数 来判断是哪个方法  因为没有了protoc编译了 所以肯定是第一个
         // for (int i = 0; i < methods.length; i++) {
@@ -53,7 +66,13 @@ public class NettyServerHandler24 extends ChannelInboundHandlerAdapter {
         //判断是否需要通过对应的方法进行序列化  序列化都集成了
         response = serializationTool.serialize(response);
 
-        ctx.writeAndFlush(response);
+        //进一步进行压缩  压缩方法的集成
+        byte[] responseByteArray = (byte[]) response;
+        System.out.println("before compress"+responseByteArray.length);
+        if (openFunction) responseByteArray = compressTool.compress(responseByteArray);
+        System.out.println("after compress"+responseByteArray.length);
+
+        ctx.writeAndFlush(responseByteArray);
     }
 
 

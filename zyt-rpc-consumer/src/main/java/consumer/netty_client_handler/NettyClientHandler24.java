@@ -1,13 +1,15 @@
 package consumer.netty_client_handler;
 
 
+import annotation.CompressFunction;
+import compress.Compress;
+import compress.CompressTpyeTool;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
 import serialization.SerializationTool;
 
 import java.lang.reflect.Method;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Callable;
 
 
@@ -26,6 +28,12 @@ public class NettyClientHandler24 extends ChannelInboundHandlerAdapter implement
     //序列化工具
     static SerializationTool serializationTool = new SerializationTool();
 
+    //判断是否进行解压缩
+    static boolean openFunction = Compress.class.getAnnotation(CompressFunction.class).isOpenFunction();
+
+    //解压缩工具
+    static CompressTpyeTool compressTool = new CompressTpyeTool();
+
     public void setParam(Object param) {
         this.param = param;
     }
@@ -43,10 +51,14 @@ public class NettyClientHandler24 extends ChannelInboundHandlerAdapter implement
     @Override
     public synchronized void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
+        byte[] msgByteArray = (byte[]) msg;
+        // 根据是否解压 首先把收到的信息进行解压再进行反序列化
+        if (openFunction)msgByteArray = compressTool.deCompress((byte[]) msg);
+
         //在这要进行解码 获得传回来的信息  如果是遇到下面的msg 那就代表传回来的肯定是个byte[]
         // 根据我们要的方法进行解码 传回来的应该是方法的response的
         //根据需要的返回类型进行反序列化
-        msg = serializationTool.deserialize((byte[]) msg,method.getReturnType());
+        msg = serializationTool.deserialize(msgByteArray,method.getReturnType());
 
         response = msg;
         notify();
@@ -60,7 +72,14 @@ public class NettyClientHandler24 extends ChannelInboundHandlerAdapter implement
         //判断是否需要protostuff进行序列化 因为使用这个进行序列话 是我没有相应的解码器 2.4之后 就算是string也进行序列化
         request = serializationTool.serialize(request);
 
-        context.writeAndFlush(request);
+        //进一步进行压缩
+        byte[] requestByteArray = (byte[]) request;
+
+        //判断是否进行压缩
+        if (openFunction)requestByteArray = compressTool.compress(requestByteArray);
+
+        context.writeAndFlush(requestByteArray);
+
         wait();
         return response;
     }

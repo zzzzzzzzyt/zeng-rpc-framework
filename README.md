@@ -2,6 +2,7 @@
 手写自己的RPC框架/Handwritten RPC framework😀
 
 ## 技术选型 💻
+新技术可持续添加
 ````
 网络传输 : Bio Nio Netty
 序列化 : JDK自带序列化 JSON(Jackson Fastjson Gson) Kryo Protobuf Protostuff Hessian FST Avro Thrift 
@@ -9,8 +10,10 @@
 注册中心 : Zookeeper Curator SpringCloud Alibaba Nacos
 传输协议 : 自己构造
 负载均衡 : 自己构造
+压缩机制 : BZip Deflater GZip Lz4 Zip
 操作系统 : Linux Windows
 容器化 : Docker
+
 其他机制等等 💪
 ````
 
