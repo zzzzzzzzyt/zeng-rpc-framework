@@ -3,6 +3,7 @@ package consumer.netty_client_handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.timeout.IdleStateEvent;
 import serialization.SerializationTool;
 
 import java.lang.reflect.Method;
@@ -54,7 +55,6 @@ public class NettyClientHandler24 extends ChannelInboundHandlerAdapter implement
     //调用的时候  就进行传输
     @Override
     public synchronized Object call() throws Exception {
-
         //这个变量的目的就是保留原来的param实际参数类型，当返回的时候 可以当作反序列化的模板
         Object request = param;
         //判断是否需要protostuff进行序列化 因为使用这个进行序列话 是我没有相应的解码器 2.4之后 就算是string也进行序列化
@@ -63,6 +63,31 @@ public class NettyClientHandler24 extends ChannelInboundHandlerAdapter implement
         context.writeAndFlush(request);
         wait();
         return response;
+    }
+
+    //用来判断是否出现了空闲事件  如果出现了那就进行相应的处理
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        if (evt instanceof IdleStateEvent)
+        {
+            IdleStateEvent event = (IdleStateEvent) evt;
+            //设置一个事件字段
+            String eventType = null;
+            switch (event.state())
+            {
+                case READER_IDLE:
+                    eventType = "读空闲";
+                    break;
+                case WRITER_IDLE:
+                    eventType = "写空闲";
+                    break;
+                case ALL_IDLE:
+                    eventType = "读写空闲";
+                    break;
+            }
+            System.out.println(ctx.channel().remoteAddress()+"发生超时事件"+eventType+"：连接关闭");
+            ctx.close();
+        }
     }
 
     //异常处理

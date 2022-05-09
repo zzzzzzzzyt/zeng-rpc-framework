@@ -23,6 +23,7 @@ public class NettyServerHandler24 extends ChannelInboundHandlerAdapter {
     static SerializationTool serializationTool = new SerializationTool();
     //实现对应的方法
 
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         System.out.println("收到来自"+ctx.channel().remoteAddress()+"的信息");
@@ -54,6 +55,8 @@ public class NettyServerHandler24 extends ChannelInboundHandlerAdapter {
 
         ctx.writeAndFlush(response);
     }
+
+
 
     //出现异常的话 如何进行处理
     @Override

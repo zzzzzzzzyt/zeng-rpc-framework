@@ -7,6 +7,7 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.timeout.IdleStateHandler;
 import provider.netty_server_handler.NettyServerHandler24;
 import provider.utils.MethodRegister;
 
@@ -44,9 +45,9 @@ public class NettyServer24 {
                             //添加的处理器 根据相应的注解而定
                             Method method = Class.forName("provider.api." + methodName + "ServiceImpl").getMethods()[0];
                             AddCodec.addCodec(pipeline,method,false);
+
                             //传入的直接是方法本身了 而不是方法名字
                             pipeline.addLast(new NettyServerHandler24(methodName));
-
                         }
                     });
 
