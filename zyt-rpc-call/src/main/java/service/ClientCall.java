@@ -21,6 +21,7 @@ public class ClientCall {
 
         // long start = System.currentTimeMillis();
 
+        System.out.println(customer.GetName(new Person("祝英台")));
 
         //测试
         System.out.println(customer.GetPerson(new Person("zz")));
@@ -28,7 +29,7 @@ public class ClientCall {
 
         //测试
         // System.out.println(customer.GetName(PersonPOJO.Person.newBuilder().setName("炸油条").build()));
-        System.out.println(customer.GetName(new Person("祝英台")));
+
         System.out.println(customer.GetName(new Person("zzz")));
 
         // System.out.println(customer.Hello("success"));
