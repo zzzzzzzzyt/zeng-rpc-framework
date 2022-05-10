@@ -24,7 +24,6 @@ public class NIONonBlockingServer12bye {
         start0(PORT);
     }
 
-
     /*
         真正启动的业务逻辑在这
         因为这是简易版 那么先把异常丢出去
