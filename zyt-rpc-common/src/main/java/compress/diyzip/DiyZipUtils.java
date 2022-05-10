@@ -26,6 +26,7 @@ public class DiyZipUtils implements CompressType {
     @Override
     public byte[] deCompress(byte[] bytes) throws IOException, DataFormatException {
         byte[] deCompressBytes = huffmanUnZip(hashMapThreadLocal.get(), bytes);
+        hashMapThreadLocal.remove();
         return deCompressBytes;
     }
 

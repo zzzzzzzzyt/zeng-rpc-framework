@@ -28,11 +28,12 @@ public class NettyClient24 {
     //线程池 实现异步调用
     private static ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     private static HeartBeatTool heartBeatToolAnnotation = HeartBeat.class.getAnnotation(HeartBeatTool.class);
-    static NettyClientHandler24 clientHandler;
+    // static NettyClientHandler24 clientHandler;//跟他没关系 因为每次都新建一个
+    private static final ThreadLocal<NettyClientHandler24> nettyClientHandlerThreadLocal = ThreadLocal.withInitial(()->new NettyClientHandler24());
 
-    public static void initClient(String hostName,int port,Method method)
-    {
-        clientHandler = new NettyClientHandler24();
+    public static Object callMethod(String hostName, int port, Object param, Method method) throws Exception {
+
+        NettyClientHandler24 clientHandler = nettyClientHandlerThreadLocal.get();
         //建立客户端监听
         Bootstrap bootstrap = new Bootstrap();
         EventLoopGroup workGroup = new NioEventLoopGroup();
@@ -54,7 +55,6 @@ public class NettyClient24 {
                                 readerIdleTimeSeconds  多长时间没有读 就会传递一个心跳包进行检测
                                 writerIdleTimeSeconds  多长时间没有写 就会传递一个心跳包进行检测
                                 allIdleTimeSeconds     多长时间没有读写 就会传递一个心跳包进行检测
-
                                 当事件触发后会传递给下一个处理器进行处理，只需要在下一个处理器中实现userEventTriggered事件即可
                              */
                             //时间和实不实现 根据注解 判断是否开启
@@ -77,15 +77,14 @@ public class NettyClient24 {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    public static Object callMethod(String hostName, int port, Object param, Method method) throws Exception {
-
         //我是有多个地方进行调用的 不能只连接一个
-        initClient(hostName,port,method);
+        // initClient(hostName,port,method);
         clientHandler.setParam(param);
         clientHandler.setMethod(method);
         //接下来这就有关系到调用 直接调用
-        return executor.submit(clientHandler).get();
+        Object response = executor.submit(clientHandler).get();
+        nettyClientHandlerThreadLocal.remove(); //一个handler不能加到两个管道中 你说是吧
+        return response;
+
     }
 }

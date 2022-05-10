@@ -1,4 +1,4 @@
-#根据需要使用哪个解压缩的方法 打开对应的解压缩工具类注解即可
+#根据需要使用哪个解压缩的方法 打开对应的解压缩工具类注解即可 快捷键ctrl+/
 #compress.bzip.BZipUtils
 compress.deflater.DeflaterUtils
 #compress.gzip.GZipUtils

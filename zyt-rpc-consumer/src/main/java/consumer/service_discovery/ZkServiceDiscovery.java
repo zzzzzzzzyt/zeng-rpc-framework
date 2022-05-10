@@ -19,21 +19,25 @@ public class ZkServiceDiscovery {
     private static String connectString = RpcConstants.ZOOKEEPER_ADDRESS;
     private static int sessionTimeout = RpcConstants.ZOOKEEPER_SESSION_TIMEOUT;
     private static ZooKeeper zooKeeper;
+    private static ThreadLocal<ZooKeeper> zooKeeperThreadLocal = ThreadLocal.withInitial(()->{
+        try {
+            return new ZooKeeper(connectString, sessionTimeout, new Watcher() {
+                @Override
+                public void process(WatchedEvent watchedEvent) {
 
-    //第一步当然是连接到远端服务器上了
-    public static void getConnect() throws IOException {
-        zooKeeper = new ZooKeeper(connectString, sessionTimeout, new Watcher() {
-            @Override
-            public void process(WatchedEvent watchedEvent) {
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    });
 
-            }
-        });
-    }
 
     // 根据所请求的服务地址 获取对应的远端地址
     public static String getMethodAddress(String methodName) throws RpcException, InterruptedException, KeeperException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, IOException {
-        //先进行连接
-        getConnect();
+        //获取对应线程中的zookeeper
+        zooKeeper = zooKeeperThreadLocal.get();
 
         //判断节点中是否存在对应路径  不存在则抛出异常
         if (zooKeeper.exists("/service/"+methodName,null)==null)

@@ -21,16 +21,36 @@ public class ClientCall {
 
         // long start = System.currentTimeMillis();
 
-        System.out.println(customer.GetName(new Person("祝英台")));
+        // System.out.println(customer.GetName(new Person("祝英台")));
 
         //测试
         System.out.println(customer.GetPerson(new Person("zz")));
+
+        new Thread(()->{
+            Customer customer1 = null;
+            try {
+                customer1 = ChosenClientCall.start();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (RpcException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println(customer1.GetPerson(new Person("zz")));
+        }).start();
+
+        System.out.println(customer.GetName(new Person("zzz")));
+        System.out.println(customer.GetName(new Person("zzz")));
+        System.out.println(customer.GetName(new Person("zzz")));
+        System.out.println(customer.GetName(new Person("zzz")));
+
         // System.out.println(customer.GetPerson(PersonPOJO.Person.newBuilder().setName("炸油条").build()));
 
         //测试
         // System.out.println(customer.GetName(PersonPOJO.Person.newBuilder().setName("炸油条").build()));
 
-        System.out.println(customer.GetName(new Person("zzz")));
+
 
         // System.out.println(customer.Hello("success"));
         // System.out.println(customer.Bye("fail"));
