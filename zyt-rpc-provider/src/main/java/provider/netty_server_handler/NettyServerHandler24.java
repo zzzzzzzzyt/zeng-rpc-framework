@@ -3,7 +3,7 @@ package provider.netty_server_handler;
 
 import annotation.CompressFunction;
 import compress.Compress;
-import compress.CompressTpyeTool;
+import compress.CompressTypeTool;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import serialization.SerializationTool;
@@ -29,7 +29,7 @@ public class NettyServerHandler24 extends ChannelInboundHandlerAdapter {
     static boolean openFunction = Compress.class.getAnnotation(CompressFunction.class).isOpenFunction();
 
     //解压缩工具
-    static CompressTpyeTool compressTool = new CompressTpyeTool();
+    static CompressTypeTool compressTool = new CompressTypeTool();
 
     //实现对应的方法
 

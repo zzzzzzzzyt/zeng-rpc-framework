@@ -1,6 +1,6 @@
 package compress.zip;
 
-import compress.CompressTpye;
+import compress.CompressType;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -9,7 +9,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-public class ZipUtils implements CompressTpye {
+public class ZipUtils implements CompressType {
     private static final int BUFFER_SIZE = 8192;
     @Override
     public byte[] compress(byte[] bytes) throws IOException {

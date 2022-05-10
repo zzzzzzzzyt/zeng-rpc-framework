@@ -1,6 +1,6 @@
 package compress.gzip;
 
-import compress.CompressTpye;
+import compress.CompressType;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -9,7 +9,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 //gzip实现解压缩   实现过程和bzip很相似
-public class GZipUtils implements CompressTpye {
+public class GZipUtils implements CompressType {
     private static final int BUFFER_SIZE = 8192;
     @Override
     public byte[] compress(byte[] bytes) throws IOException {

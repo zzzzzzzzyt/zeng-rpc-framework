@@ -1,6 +1,6 @@
 package compress.bzip;
 
-import compress.CompressTpye;
+import compress.CompressType;
 import org.apache.tools.bzip2.CBZip2InputStream;
 import org.apache.tools.bzip2.CBZip2OutputStream;
 import java.io.ByteArrayInputStream;
@@ -8,7 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 //apache下的一个解压缩工具 bzip
-public class BZipUtils implements CompressTpye {
+public class BZipUtils implements CompressType {
 
     private static final int BUFFER_SIZE = 8192;
     @Override

@@ -3,7 +3,7 @@ package consumer.netty_client_handler;
 
 import annotation.CompressFunction;
 import compress.Compress;
-import compress.CompressTpyeTool;
+import compress.CompressTypeTool;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -32,7 +32,7 @@ public class NettyClientHandler24 extends ChannelInboundHandlerAdapter implement
     static boolean openFunction = Compress.class.getAnnotation(CompressFunction.class).isOpenFunction();
 
     //解压缩工具
-    static CompressTpyeTool compressTool = new CompressTpyeTool();
+    static CompressTypeTool compressTool = new CompressTypeTool();
 
     public void setParam(Object param) {
         this.param = param;

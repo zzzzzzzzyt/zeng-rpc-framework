@@ -1,7 +1,7 @@
 package compress.lz4;
 
 
-import compress.CompressTpye;
+import compress.CompressType;
 import net.jpountz.lz4.*;
 
 import java.io.ByteArrayInputStream;
@@ -9,7 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 
-public class Lz4Utils implements CompressTpye {
+public class Lz4Utils implements CompressType {
 
     private static final int BUFFER_SIZE = 8192;
 

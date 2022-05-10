@@ -1,13 +1,13 @@
 package compress.deflater;
 
-import compress.CompressTpye;
+import compress.CompressType;
 
 import java.io.ByteArrayOutputStream;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
-public class DeflaterUtils implements CompressTpye {
+public class DeflaterUtils implements CompressType {
 
     //固定读取字节数组大小
     private static final int BUFFER_SIZE = 8192;

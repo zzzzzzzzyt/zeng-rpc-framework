@@ -10,9 +10,9 @@
 注册中心 : Zookeeper Curator SpringCloud Alibaba Nacos
 传输协议 : 自己构造
 负载均衡 : 自己构造
-压缩机制 : BZip Deflater GZip Lz4 Zip
+压缩机制 : BZip Deflater GZip Lz4 Zip 霍夫曼编码实现编解码器
 操作系统 : Linux Windows
-容器化 : Docker
+容器化 : Docker 
 
 其他机制等等 💪
 ````
@@ -29,4 +29,8 @@ md格式的文档 可以私聊我取 qq 836585692 请注明来意🕶
 
 下载上传至其他地方，需注明源地址，否则将会依法溯源👮‍
 
-
+`尚未完成`
+-[ ] **霍夫曼实现自定义编解码器**
+-[ ] **服务监控中心（类似dubbo admin）**
+-[ ] **客户端与服务端通信协议（数据包结构）重新设计**
+-[ ] **另开一个模块解决粘包拆包问题**
