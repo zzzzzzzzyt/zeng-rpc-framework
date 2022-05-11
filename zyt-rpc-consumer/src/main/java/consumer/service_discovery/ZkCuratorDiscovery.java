@@ -8,10 +8,8 @@ import loadbalance.LoadBalance;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
-import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooKeeper;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 //简化zookeeper的使用  更加方便获取远端的方法的信息
