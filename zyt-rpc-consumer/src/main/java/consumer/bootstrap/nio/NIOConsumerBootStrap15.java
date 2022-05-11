@@ -2,6 +2,7 @@ package consumer.bootstrap.nio;
 
 
 import consumer.proxy.ClientProxyTool;
+import exception.RpcException;
 import method.Customer;
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.io.IOException;
  */
 
 public class NIOConsumerBootStrap15{
-    public static Customer main(String[] args) throws IOException {
+    public static Customer main(String[] args) throws IOException, RpcException {
 
         ClientProxyTool proxy = new ClientProxyTool();
         return (Customer)proxy.getBean(Customer.class);

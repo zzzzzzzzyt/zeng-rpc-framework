@@ -1,6 +1,3 @@
-package consumer.test;
-
-
 import annotation.LoadBalanceMethodImpl;
 import loadbalance.LoadBalance;
 import org.apache.zookeeper.CreateMode;

@@ -1,5 +1,3 @@
-package consumer.test;
-
 import constants.RpcConstants;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;

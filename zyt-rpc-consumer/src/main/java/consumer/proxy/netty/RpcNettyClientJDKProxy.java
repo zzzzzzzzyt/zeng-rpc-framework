@@ -12,12 +12,10 @@ import register.Register;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
 
 //就是获取代理类 通过代理类中的方法进行对应方法的执行和获取
 public class RpcNettyClientJDKProxy implements ClientProxy {
-    private static ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     //参数 就是我要对其生成代理类的类
     public Object getBean(final Class<?> serviceClass)
     {
