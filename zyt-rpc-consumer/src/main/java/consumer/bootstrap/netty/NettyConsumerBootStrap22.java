@@ -1,7 +1,7 @@
 package consumer.bootstrap.netty;
 
 
-import consumer.proxy.RpcNettyClientProxy;
+import consumer.proxy.ClientProxyTool;
 import method.Customer;
 
 /*
@@ -10,6 +10,7 @@ import method.Customer;
 //进行启动 提供类的方式即可
 public class NettyConsumerBootStrap22 {
     public static Customer main(String[] args) throws InterruptedException {
-        return (Customer) RpcNettyClientProxy.getBean(Customer.class);
+        ClientProxyTool proxy = new ClientProxyTool();
+        return (Customer)proxy.getBean(Customer.class);
     }
 }

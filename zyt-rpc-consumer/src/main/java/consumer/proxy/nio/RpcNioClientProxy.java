@@ -1,6 +1,8 @@
-package consumer.proxy;
+package consumer.proxy.nio;
 
 import annotation.RegistryChosen;
+import ch.qos.logback.core.net.server.Client;
+import consumer.proxy.ClientProxy;
 import consumer.service_discovery.NacosServiceDiscovery;
 import consumer.service_discovery.ZkCuratorDiscovery;
 import consumer.service_discovery.ZkServiceDiscovery;
@@ -13,10 +15,10 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 //代理类的实现  小修改了一下 就是不用频繁的去创建对象了 单例模式 每次启用
-public class RpcNioClientProxy {
+public class RpcNioClientProxy implements ClientProxy {
     public static Object rpcClientProxy;
     //获取代理对象 并返回 当前类别
-    public static Object getBean(final Class<?> serviceClass){
+    public  Object getBean(final Class<?> serviceClass){
         /*
             参数详解
             1、用哪个类加载器去加载对象

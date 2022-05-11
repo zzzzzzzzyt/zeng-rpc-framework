@@ -1,8 +1,8 @@
-package consumer.proxy;
+package consumer.proxy.netty;
 
 import annotation.RegistryChosen;
 import consumer.netty.NettyClient;
-import consumer.netty.NettyClient21;
+import consumer.proxy.ClientProxy;
 import consumer.service_discovery.NacosServiceDiscovery;
 import consumer.service_discovery.ZkCuratorDiscovery;
 import consumer.service_discovery.ZkServiceDiscovery;
@@ -16,10 +16,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 //就是获取代理类 通过代理类中的方法进行对应方法的执行和获取
-public class RpcNettyClientProxy {
+public class RpcNettyClientJDKProxy implements ClientProxy {
     private static ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     //参数 就是我要对其生成代理类的类
-    public static Object getBean(final Class<?> serviceClass)
+    public Object getBean(final Class<?> serviceClass)
     {
         return Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
                 new Class[]{serviceClass},
