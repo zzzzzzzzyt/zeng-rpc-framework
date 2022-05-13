@@ -1,8 +1,10 @@
 package constants;
 
 
+
 import java.util.Properties;
 
+//RPC常数类  因为@Value无法注入静态变量所以就采用直接赋值
 public class RpcConstants {
     static {
 

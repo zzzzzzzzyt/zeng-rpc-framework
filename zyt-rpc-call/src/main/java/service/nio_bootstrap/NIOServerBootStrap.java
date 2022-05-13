@@ -35,15 +35,16 @@ public class NIOServerBootStrap {
         //2.需要组合在一起传过去  如果不组合分别传 我怕就是端口号会出现问题
         StringBuilder methodBuilder = new StringBuilder();
         StringBuilder numBuilder = new StringBuilder();
-        for (String method : methods) {
-            methodBuilder.append(method);
+
+        //因为两个数量一致 那就不进行两次循环了
+        for (int i = 0;i< methods.length;++i) {
+            methodBuilder.append(methods[i]);
             methodBuilder.append(",");
-        }
-        methodBuilder.deleteCharAt(methodBuilder.length()-1);
-        for (int startNum : startNums) {
-            numBuilder.append(startNum);
+            numBuilder.append(startNums[i]);
             numBuilder.append(",");
         }
+        //除去最后多出来的,
+        methodBuilder.deleteCharAt(methodBuilder.length()-1);
         numBuilder.deleteCharAt(numBuilder.length()-1);
 
         switch (currentServerBootStrapVersion)

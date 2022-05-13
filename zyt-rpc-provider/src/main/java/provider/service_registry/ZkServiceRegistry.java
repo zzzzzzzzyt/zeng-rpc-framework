@@ -14,14 +14,20 @@ public class ZkServiceRegistry {
     private static int sessionTimeout = RpcConstants.ZOOKEEPER_SESSION_TIMEOUT;
     private static ZooKeeper zooKeeper;
 
-    static void createConnect() throws IOException {
-        zooKeeper = new ZooKeeper(connectString, sessionTimeout, new Watcher() {
-            @Override
-            public void process(WatchedEvent watchedEvent) {
-
-            }
-        });
+    //只需要初始化一次 每次都进行 会消耗资源
+    static {
+        try {
+            zooKeeper = new ZooKeeper(connectString, sessionTimeout, new Watcher() {
+                @Override
+                public void process(WatchedEvent watchedEvent) {}
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+
+
 
     //创建成功后把方法注册进去
     static void register(String RpcServiceName,String hostname,int port) throws InterruptedException, KeeperException {
@@ -71,10 +77,7 @@ public class ZkServiceRegistry {
      * @throws InterruptedException
      */
     public static void registerMethod(String RpcServiceName,String hostname,int port) throws IOException, InterruptedException, KeeperException {
-        //先创建对应的额zooKeeper连接客户端再进行相应的注册
-        createConnect();
         register(RpcServiceName,hostname,port);
         System.out.println("服务端:"+hostname+":"+port+":"+RpcServiceName+"方法在zk中注册完毕");
-
     }
 }

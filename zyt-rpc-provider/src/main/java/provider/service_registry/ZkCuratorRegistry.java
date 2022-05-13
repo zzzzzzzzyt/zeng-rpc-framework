@@ -12,10 +12,10 @@ import java.nio.charset.StandardCharsets;
 public class ZkCuratorRegistry {
     private static String connectString = RpcConstants.ZOOKEEPER_ADDRESS;
     public static void registerMethod(String RpcServiceName, String hostname, int port) throws Exception {
-        //创建连接 然后将对应的对象注册进去即可
-        //BackoffRetry 退避策略，决定失败后如何确定补偿值。
-        //ExponentialBackOffPolicy
-        //指数退避策略，需设置参数sleeper、initialInterval、
+        // 创建连接 然后将对应的对象注册进去即可
+        // BackoffRetry 退避策略，决定失败后如何确定补偿值。
+        // ExponentialBackOffPolicy
+        // 指数退避策略，需设置参数sleeper、initialInterval、
         // maxInterval和multiplier，initialInterval指定初始休眠时间，默认100毫秒，
         // maxInterval指定最大休眠时间，默认30秒，multiplier指定乘数，即下一次休眠时间为当前休眠时间*multiplier；
 

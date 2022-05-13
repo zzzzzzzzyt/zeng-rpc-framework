@@ -10,7 +10,6 @@ import java.util.Random;
 public class RandomLoadBalance implements LoadBalance{
     @Override
     public String loadBalance(ZooKeeper zooKeeper, String path) throws InterruptedException, KeeperException {
-        System.out.println(zooKeeper.hashCode());
         List<String> children = zooKeeper.getChildren(path, null,null);
         if (children.isEmpty())
         {
@@ -23,6 +22,7 @@ public class RandomLoadBalance implements LoadBalance{
         String chooseNode = children.get(randomIndex);
         byte[] data = zooKeeper.getData(path + "/" + chooseNode, null, null);
         int visitedCount = Integer.valueOf(new String(data));
+        //这个加了  就是让我们看的明显  随机性
         ++visitedCount;
         zooKeeper.setData(path+"/"+ chooseNode, String.valueOf(visitedCount).getBytes(StandardCharsets.UTF_8),-1);
         return chooseNode;

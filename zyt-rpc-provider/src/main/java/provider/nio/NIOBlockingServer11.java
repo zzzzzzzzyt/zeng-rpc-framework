@@ -29,8 +29,8 @@ public class NIOBlockingServer11 {
         //创建对应的服务器端通道
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
         System.out.println("-----------服务提供方启动-------------");
-        //开启一个选择器 将自己要
-        Selector selector = Selector.open();
+
+        //阻塞io不需要选择器
 
         //绑定端口开启
         serverSocketChannel.bind(new InetSocketAddress(port));
@@ -48,7 +48,7 @@ public class NIOBlockingServer11 {
                 @Override
                 public void run() {
                     try {
-                        //在内部不断的进行监听
+                        //在内部不断的进行监听  io流是阻塞的
                         InputStream inputStream = channel.socket().getInputStream();
                         OutputStream outputStream = channel.socket().getOutputStream();
                         ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
