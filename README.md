@@ -6,7 +6,7 @@
 ````
 网络传输 : Bio Nio Netty
 序列化 : JDK自带序列化 JSON(Jackson Fastjson Gson) Kryo Protobuf Protostuff Hessian FST Avro Thrift 
-代理 : 静态代理 动态代理JDK 动态代理Cglib
+代理 : 静态代理 动态代理JDK 动态代理CGLIB
 注册中心 : Zookeeper Curator SpringCloud Alibaba Nacos
 传输协议 : 自己构造
 负载均衡 : 自己构造
