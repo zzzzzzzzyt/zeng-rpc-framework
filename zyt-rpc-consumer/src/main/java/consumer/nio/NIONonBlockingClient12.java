@@ -28,7 +28,7 @@ public class NIONonBlockingClient12 {
         }
         //创建选择器 进行监听读事件
         Selector selector = Selector.open();
-        System.out.println(selector);
+
         socketChannel.register(selector, SelectionKey.OP_READ, ByteBuffer.allocate(1024));
 
         //进行发送 发的太快了 来不及收到
