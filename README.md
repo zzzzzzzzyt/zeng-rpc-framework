@@ -36,4 +36,12 @@ md格式的文档 可以私聊我取 qq 836585692 请注明来意🕶
 - [ ] **客户端与服务端通信协议（数据包结构）重新设计**
 - [ ] **另开一个模块解决粘包拆包问题**
 
-![Alt](https://repobeats.axiom.co/api/embed/423e830ffd8fa49677872eca6d7c6246babc07b5.svg "Repobeats analytics image")
+**Nio架构**
+
+
+[![O62VeA.png](https://s1.ax1x.com/2022/05/14/O62VeA.png)](https://imgtu.com/i/O62VeA)
+
+**Netty架构**
+
+
+![Alt](https://repobeats.axiom.co/api/embed/b0617848a5c59a1495eb8a88550e9214cdc650b1.svg "Repobeats analytics image")
