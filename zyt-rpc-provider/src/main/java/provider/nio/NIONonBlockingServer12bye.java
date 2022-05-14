@@ -34,6 +34,7 @@ public class NIONonBlockingServer12bye {
         System.out.println("-----------服务提供方启动-------------");
         //开启一个选择器 将自己要
         Selector selector = Selector.open();
+        System.out.println(selector);
 
         //绑定端口开启
         serverSocketChannel.bind(new InetSocketAddress(port));

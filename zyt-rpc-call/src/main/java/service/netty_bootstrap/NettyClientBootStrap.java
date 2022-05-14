@@ -30,6 +30,11 @@ public class NettyClientBootStrap {
             case "2.2":
                 return NettyConsumerBootStrap22.main(null);
             case "2.4": //这个版本各种序列化工具的使用
+            case "2.5":
+            case "2.6":
+            case "2.7":
+            case "2.8":
+            case "2.9":
                 return NettyConsumerBootStrap24.main(null);
             default:
                 System.out.println("该版本还没出呢，你如果有想法可以私信我，或者提个pr");

@@ -10,12 +10,12 @@ public class RpcConstants {
 
     }
     //zookeeper服务器连接地址
-    public static String ZOOKEEPER_ADDRESS = "zytCentos:2181";
+    public final static String ZOOKEEPER_ADDRESS = "zytCentos:2181";
     //超时时间
-    public static int ZOOKEEPER_SESSION_TIMEOUT = 2000;
+    public final static int ZOOKEEPER_SESSION_TIMEOUT = 2000;
 
 
-    public static String NACOS_DISCOVERY_ADDRESS = "http://192.168.18.128:8848/nacos/v1/ns/instance/list?";
+    public final static String NACOS_DISCOVERY_ADDRESS = "http://192.168.18.128:8848/nacos/v1/ns/instance/list?";
 
     //找到对应要注册的地方
     public static Properties NACOS_PROPERTIES= new Properties() ;

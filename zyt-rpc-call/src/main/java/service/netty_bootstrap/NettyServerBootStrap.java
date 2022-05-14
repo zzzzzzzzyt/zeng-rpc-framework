@@ -55,7 +55,11 @@ public class NettyServerBootStrap {
                 NettyProviderBootStrap22.main(new String[]{methodBuilder.toString(),numBuilder.toString()});
                 break;
             case "2.4": //这个版本是个大版本 各种序列化工具出现和使用
-
+            case "2.5":
+            case "2.6":
+            case "2.7":
+            case "2.8":
+            case "2.9":
                 NettyProviderBootStrap24.main(new String[]{methodBuilder.toString(),numBuilder.toString()});
                 break;
             default:
