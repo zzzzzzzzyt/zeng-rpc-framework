@@ -18,7 +18,7 @@ public class NettyServerHandler20 extends ChannelInboundHandlerAdapter {
         System.out.println("客户端地址："+ctx.channel().remoteAddress());
     }
 
-    //数据读取完毕
+    //数据读取完毕  这里已经是用到了byteBuffer
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         //读取完毕进行回显  写回并刷新

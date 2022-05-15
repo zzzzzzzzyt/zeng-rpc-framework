@@ -27,6 +27,7 @@ public class NettyClient20 {
 
             ChannelFuture channelFuture = bootstrap.connect(hostName, port).sync();
 
+            //因为上面其实已经是同步  所以下面的监听器可以不用
             channelFuture.addListener(new ChannelFutureListener() {
                 @Override
                 public void operationComplete(ChannelFuture channelFuture) throws Exception {

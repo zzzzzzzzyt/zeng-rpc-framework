@@ -69,7 +69,7 @@ public class NettyClientHandler24 extends ChannelInboundHandlerAdapter implement
     public synchronized Object call() throws Exception {
         //这个变量的目的就是保留原来的param实际参数类型，当返回的时候 可以当作反序列化的模板
         Object request = param;
-        //判断是否需要protostuff进行序列化 因为使用这个进行序列话 是我没有相应的解码器 2.4之后 就算是string也进行序列化
+        //判断是否需要进行序列化 因为使用这个进行序列话 是我没有相应的解码器 2.4之后 就算是string也进行序列化
         request = serializationTool.serialize(request);
 
         //进一步进行压缩

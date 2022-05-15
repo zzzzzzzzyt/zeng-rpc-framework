@@ -8,6 +8,7 @@ import consumer.netty.NettyClient20;
 //进行启动 提供类的方式即可
 public class NettyConsumerBootStrap20 {
     public static void main(String[] args) throws InterruptedException {
+        //在这里 第一参数是ip地址 第二个参数是端口号
         NettyClient20.start(args[0], Integer.parseInt(args[1]));
     }
 }
