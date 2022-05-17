@@ -1,17 +1,19 @@
 package provider.service_registry;
 
-import constants.RpcConstants;
 import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import static constants.RpcConstants.ZOOKEEPER_ADDRESS;
+import static constants.RpcConstants.ZOOKEEPER_SESSION_TIMEOUT;
+
 
 //该类将对应服务端的方法和相应的端口和地址，注册到zooKeeper中
 public class ZkServiceRegistry {
-    private static String connectString = RpcConstants.ZOOKEEPER_ADDRESS;
-    private static int sessionTimeout = RpcConstants.ZOOKEEPER_SESSION_TIMEOUT;
+    private static String connectString = ZOOKEEPER_ADDRESS;
+    private static int sessionTimeout = ZOOKEEPER_SESSION_TIMEOUT;
     private static ZooKeeper zooKeeper;
 
     //只需要初始化一次 每次都进行 会消耗资源

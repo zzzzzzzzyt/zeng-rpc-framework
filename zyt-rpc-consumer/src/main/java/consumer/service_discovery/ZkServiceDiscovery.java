@@ -1,7 +1,6 @@
 package consumer.service_discovery;
 
 import annotation.LoadBalanceMethodImpl;
-import constants.RpcConstants;
 import consumer.nio.NIONonBlockingClient12;
 import exception.RpcException;
 import loadbalance.LoadBalance;
@@ -14,10 +13,13 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import static constants.RpcConstants.ZOOKEEPER_ADDRESS;
+import static constants.RpcConstants.ZOOKEEPER_SESSION_TIMEOUT;
+
 
 public class ZkServiceDiscovery {
-    private static String connectString = RpcConstants.ZOOKEEPER_ADDRESS;
-    private static int sessionTimeout = RpcConstants.ZOOKEEPER_SESSION_TIMEOUT;
+    private static String connectString = ZOOKEEPER_ADDRESS;
+    private static int sessionTimeout = ZOOKEEPER_SESSION_TIMEOUT;
     private static ZooKeeper zooKeeper;
     private static ThreadLocal<ZooKeeper> zooKeeperThreadLocal = ThreadLocal.withInitial(()->{
         try {

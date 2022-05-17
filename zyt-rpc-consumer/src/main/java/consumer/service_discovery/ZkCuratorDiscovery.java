@@ -1,7 +1,6 @@
 package consumer.service_discovery;
 
 import annotation.LoadBalanceMethodImpl;
-import constants.RpcConstants;
 import consumer.nio.NIONonBlockingClient12;
 import exception.RpcException;
 import loadbalance.LoadBalance;
@@ -12,9 +11,11 @@ import org.apache.zookeeper.ZooKeeper;
 
 import java.lang.reflect.Method;
 
+import static constants.RpcConstants.ZOOKEEPER_ADDRESS;
+
 //简化zookeeper的使用  更加方便获取远端的方法的信息
 public class ZkCuratorDiscovery {
-    private static String connectString = RpcConstants.ZOOKEEPER_ADDRESS;
+    private static String connectString = ZOOKEEPER_ADDRESS;
 
     //获取对应的地址
     public static String getMethodAddress(String methodName) throws Exception {

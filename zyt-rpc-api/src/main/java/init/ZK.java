@@ -1,6 +1,5 @@
 package init;
 
-import constants.RpcConstants;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
@@ -9,13 +8,16 @@ import org.apache.zookeeper.ZooKeeper;
 import java.io.IOException;
 import java.util.List;
 
+import static constants.RpcConstants.ZOOKEEPER_ADDRESS;
+import static constants.RpcConstants.ZOOKEEPER_SESSION_TIMEOUT;
+
 //zookeeper 进行一键初始化的方法
 public class ZK {
 
     private static ZooKeeper zooKeeper;
 
     public static void init() throws IOException, InterruptedException, KeeperException {
-        zooKeeper = new ZooKeeper(RpcConstants.ZOOKEEPER_ADDRESS, RpcConstants.ZOOKEEPER_SESSION_TIMEOUT, new Watcher() {
+        zooKeeper = new ZooKeeper(ZOOKEEPER_ADDRESS, ZOOKEEPER_SESSION_TIMEOUT, new Watcher() {
             @Override
             public void process(WatchedEvent watchedEvent) {
 

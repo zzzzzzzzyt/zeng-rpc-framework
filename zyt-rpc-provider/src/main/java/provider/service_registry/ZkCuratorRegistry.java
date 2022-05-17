@@ -1,16 +1,17 @@
 package provider.service_registry;
 
-import constants.RpcConstants;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 
 import java.nio.charset.StandardCharsets;
 
+import static constants.RpcConstants.ZOOKEEPER_ADDRESS;
+
 
 //通过curator简化 zookeeper对相应的服务端服务注册的流程 更轻松的看懂
 public class ZkCuratorRegistry {
-    private static String connectString = RpcConstants.ZOOKEEPER_ADDRESS;
+    private static String connectString = ZOOKEEPER_ADDRESS;
     public static void registerMethod(String RpcServiceName, String hostname, int port) throws Exception {
         // 创建连接 然后将对应的对象注册进去即可
         // BackoffRetry 退避策略，决定失败后如何确定补偿值。
