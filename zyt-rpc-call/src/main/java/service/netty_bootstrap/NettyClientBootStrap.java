@@ -6,16 +6,21 @@ import consumer.bootstrap.netty.NettyConsumerBootStrap21;
 import consumer.bootstrap.netty.NettyConsumerBootStrap22;
 import consumer.bootstrap.netty.NettyConsumerBootStrap24;
 import exception.RpcException;
+import lombok.extern.slf4j.Slf4j;
 import method.Customer;
 import service.ClientCall;
 
 //netty客户端的启动类
+/**
+ * @author 祝英台炸油条
+ */
+@Slf4j
 public class NettyClientBootStrap {
-    public static Customer start() throws InterruptedException, RpcException {
+    public static Customer start() {
         return start0();
     }
 
-    private static Customer start0() throws InterruptedException, RpcException {
+    private static Customer start0(){
 
         //获取对应的版本号  然后选取对应的版本进行调用
         String currentClientVersion = ClientCall.class.getAnnotation(RpcClientBootStrap.class).version();
@@ -37,8 +42,11 @@ public class NettyClientBootStrap {
             case "2.9":
                 return NettyConsumerBootStrap24.main(null);
             default:
-                System.out.println("该版本还没出呢，你如果有想法可以私信我，或者提个pr");
-                throw new RpcException("出现问题");
+                try {
+                    throw new RpcException("该版本还没出呢，你如果有想法可以私信我，或者提个pr");
+                } catch (RpcException e) {
+                    log.error(e.getMessage(),e);
+                }
         }
     }
 }

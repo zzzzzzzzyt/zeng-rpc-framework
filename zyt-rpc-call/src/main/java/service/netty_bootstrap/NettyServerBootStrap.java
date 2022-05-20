@@ -2,18 +2,21 @@ package service.netty_bootstrap;
 
 import annotation.RpcMethodCluster;
 import annotation.RpcServerBootStrap;
+import exception.RpcException;
 import init.ZK;
-import org.apache.zookeeper.KeeperException;
+import lombok.extern.slf4j.Slf4j;
 import provider.bootstrap.netty.NettyProviderBootStrap20;
 import provider.bootstrap.netty.NettyProviderBootStrap21;
 import provider.bootstrap.netty.NettyProviderBootStrap22;
 import provider.bootstrap.netty.NettyProviderBootStrap24;
 import service.ServerCall;
 
-import java.io.IOException;
-
+/**
+ * @author 祝英台炸油条
+ */
+@Slf4j
 public class NettyServerBootStrap {
-    public static void start() throws InterruptedException, IOException, KeeperException {
+    public static void start(){
         //先对ZK进行初始化
         ZK.init();
         RpcServerBootStrap annotation = ServerCall.class.getAnnotation(RpcServerBootStrap.class);
@@ -63,7 +66,11 @@ public class NettyServerBootStrap {
                 NettyProviderBootStrap24.main(new String[]{methodBuilder.toString(),numBuilder.toString()});
                 break;
             default:
-                System.out.println("兄弟，该版本还在脑海中构思，如果你有想法可以pr给我");
+                try {
+                    throw new RpcException("该版本还没出呢，你如果有想法可以私信我，或者提个pr");
+                } catch (RpcException e) {
+                    log.error(e.getMessage(),e);
+                }
         }
     }
 }

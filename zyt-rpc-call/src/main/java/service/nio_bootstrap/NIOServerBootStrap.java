@@ -2,22 +2,22 @@ package service.nio_bootstrap;
 
 import annotation.RpcMethodCluster;
 import annotation.RpcServerBootStrap;
+import exception.RpcException;
 import init.ZK;
-import org.apache.zookeeper.KeeperException;
+import lombok.extern.slf4j.Slf4j;
 import provider.bootstrap.nio.*;
 import service.ServerCall;
-
-import java.io.IOException;
 
 
 //之后启动直接在这边启动根据 在注解中配置对应的版本号  将相应的操作封装到之后的操作中即可
 //比如说这里的version 1.2 就是v1.2版本的启动器
-
+/**
+ * @author 祝英台炸油条
+ */
+@Slf4j
 public class NIOServerBootStrap {
 
-
-
-    public static void start() throws IOException, InterruptedException, KeeperException, NoSuchMethodException {
+    public static void start()  {
 
         //先对ZK进行初始化
         ZK.init();
@@ -67,7 +67,11 @@ public class NIOServerBootStrap {
                 NIOProviderBootStrap15.main(new String[]{methodBuilder.toString(), numBuilder.toString()});
                 break;
             default:
-                System.out.println("太着急了兄弟，这个版本还没出呢！要不你给我提个PR");
+                try {
+                    throw new RpcException("太着急了兄弟，这个版本还没出呢！要不你给我提个PR");
+                } catch (RpcException e) {
+                    log.error(e.getMessage(),e);
+                }
         }
     }
 }

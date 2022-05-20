@@ -1,12 +1,15 @@
 package compress.deflater;
 
 import compress.CompressType;
-
+import lombok.extern.slf4j.Slf4j;
 import java.io.ByteArrayOutputStream;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
-
+/**
+ * @author 祝英台炸油条
+ */
+@Slf4j
 public class DeflaterUtils implements CompressType {
 
     //固定读取字节数组大小
@@ -32,18 +35,23 @@ public class DeflaterUtils implements CompressType {
 
     //解压
     @Override
-    public byte[] deCompress(byte[] bytes) throws DataFormatException {
+    public byte[] deCompress(byte[] bytes){
         int length;
-        Inflater inflater = new Inflater();
-        inflater.setInput(bytes);
-        byte[] outputBytes = new byte[BUFFER_SIZE];
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        while (!inflater.finished())
-        {
-            length = inflater.inflate(outputBytes);
-            bos.write(outputBytes,0,length);
+        ByteArrayOutputStream bos = null;
+        try {
+            Inflater inflater = new Inflater();
+            inflater.setInput(bytes);
+            byte[] outputBytes = new byte[BUFFER_SIZE];
+            bos = new ByteArrayOutputStream();
+            while (!inflater.finished())
+            {
+                length = inflater.inflate(outputBytes);
+                bos.write(outputBytes,0,length);
+            }
+            inflater.end();
+        } catch (DataFormatException e) {
+            log.error(e.getMessage(),e);
         }
-        inflater.end();
         return bos.toByteArray();
     }
 }

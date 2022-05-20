@@ -10,15 +10,18 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
-
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import lombok.extern.slf4j.Slf4j;
 import serialization.Serialization;
 import entity.PersonPOJO;
-
 import java.lang.reflect.Method;
 
 //公共类 根据对应选择的注解进行编码器的添加
+/**
+ * @author 祝英台炸油条
+ */
+@Slf4j
 public class AddCodec {
 
     /**
@@ -26,8 +29,9 @@ public class AddCodec {
      * @param pipeline
      * @param method 方法，来获取对应的输入输出类
      * @throws RpcException
+     *
      */
-    public static  void addCodec(ChannelPipeline pipeline, Method method,boolean isConsumer) throws RpcException, InstantiationException, IllegalAccessException {
+    public static  void addCodec(ChannelPipeline pipeline, Method method,boolean isConsumer)  {
         //根据注解进行编解码器的选择
         CodecSelector annotation = Serialization.class.getAnnotation(CodecSelector.class);
 
@@ -190,7 +194,11 @@ public class AddCodec {
                 pipeline.addLast(new ByteArrayDecoder());
                 return;
             default:  //如果都不是那就不加了
-                return;
+                try {
+                    throw new RpcException("兄弟 你并没有指定相应的方法 我无法进行编解码器");
+                } catch (RpcException e) {
+                    log.error(e.getMessage(),e);
+                }
         }
     }
 }

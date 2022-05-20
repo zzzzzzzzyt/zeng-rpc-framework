@@ -4,10 +4,11 @@ import compress.CompressType;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.zip.DataFormatException;
 
 // todo  尚未完成 有一定的问题 对这块完成度还有问题
-
+/**
+ * @author 祝英台炸油条
+ */
 //自己实现自定义解压缩工具  使用霍夫曼编码 霍夫曼解码
 public class DiyZipUtils implements CompressType {
 
@@ -24,7 +25,7 @@ public class DiyZipUtils implements CompressType {
 
 
     @Override
-    public byte[] deCompress(byte[] bytes) throws IOException, DataFormatException {
+    public byte[] deCompress(byte[] bytes) {
         byte[] deCompressBytes = huffmanUnZip(hashMapThreadLocal.get(), bytes);
         hashMapThreadLocal.remove();
         return deCompressBytes;

@@ -1,7 +1,6 @@
 package consumer.proxy.nio;
 
 import annotation.RegistryChosen;
-import ch.qos.logback.core.net.server.Client;
 import consumer.proxy.ClientProxy;
 import consumer.service_discovery.NacosServiceDiscovery;
 import consumer.service_discovery.ZkCuratorDiscovery;

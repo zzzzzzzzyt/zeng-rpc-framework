@@ -1,12 +1,12 @@
 package compress;
 
-import java.io.IOException;
-import java.util.zip.DataFormatException;
-
 //实现压缩的接口
+/**
+ * @author 祝英台炸油条
+ */
 public interface CompressType {
     //压缩方法
-    public byte[] compress(byte[] bytes) throws IOException;
+    byte[] compress(byte[] bytes);
     //解压方法
-    public byte[] deCompress(byte[] bytes) throws IOException, DataFormatException;
+    byte[] deCompress(byte[] bytes) ;
 }
