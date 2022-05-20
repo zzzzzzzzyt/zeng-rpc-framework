@@ -12,7 +12,7 @@ public class CGLIBTest {
 
         TestCGLib testCGLib = new TestCGLib();
         TestInterface o = (TestInterface) testCGLib.getInstance(TestInterface.class);
-        System.out.println(o.getHalloWorld());
+        log.info(o.getHalloWorld());
     }
 }
 class TestCGLib implements MethodInterceptor {

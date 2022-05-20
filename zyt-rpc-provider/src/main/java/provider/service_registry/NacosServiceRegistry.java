@@ -15,6 +15,6 @@ public class NacosServiceRegistry {
         NamingService namingService = NacosFactory.createNamingService(properties);
         //进行注册
         namingService.registerInstance(RpcServiceName, hostname, port, "DEFAULT");
-        System.out.println("服务端:"+hostname+":"+port+":"+RpcServiceName+"方法在nacos中注册完毕");
+        log.info("服务端:"+hostname+":"+port+":"+RpcServiceName+"方法在nacos中注册完毕");
     }
 }

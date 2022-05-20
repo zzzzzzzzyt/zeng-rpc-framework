@@ -19,6 +19,6 @@ public class NacosTest {
         NamingService namingService = NacosFactory.createNamingService(properties);
         namingService.registerInstance("nacos.test.3", "11.11.11.11", 8888, "DEFAULT");
         namingService.registerInstance("nacos.test.3", "2.2.2.2", 9999, "DEFAULT");
-        System.out.println(namingService.getAllInstances("nacos.test.3"));
+        log.info(namingService.getAllInstances("nacos.test.3"));
     }
 }

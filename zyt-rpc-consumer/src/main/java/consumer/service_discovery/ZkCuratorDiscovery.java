@@ -71,6 +71,7 @@ public class ZkCuratorDiscovery {
 
     public static String getStart(String methodName, String msg) {
         String methodAddress = getMethodAddress(methodName);
+        assert methodAddress != null;
         String[] strings = methodAddress.split(":");
         //启动
         String address = strings[0];

@@ -80,6 +80,6 @@ public class ZkServiceRegistry {
      */
     public static void registerMethod(String RpcServiceName,String hostname,int port) throws IOException, InterruptedException, KeeperException {
         register(RpcServiceName,hostname,port);
-        System.out.println("服务端:"+hostname+":"+port+":"+RpcServiceName+"方法在zk中注册完毕");
+        log.info("服务端:"+hostname+":"+port+":"+RpcServiceName+"方法在zk中注册完毕");
     }
 }

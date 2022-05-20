@@ -45,6 +45,7 @@ public class NacosServiceDiscovery {
 
     public static String getStart(String methodName,String msg) {
         //获取相应的远端地址
+
         String methodAddress = getMethodAddress(methodName);
         //进行连接
         String[] strings = methodAddress.split(":");

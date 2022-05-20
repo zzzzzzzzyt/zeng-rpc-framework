@@ -30,19 +30,21 @@ public class NettyClient20 {
                         }
                     });
 
-            ChannelFuture channelFuture = bootstrap.connect(hostName, port).sync();
+            ChannelFuture channelFuture = null;
+            try {
+                channelFuture = bootstrap.connect(hostName, port).sync();
+            } catch (InterruptedException e) {
+                log.error(e.getMessage(),e);
+            }
 
             //因为上面其实已经是同步  所以下面的监听器可以不用
-            channelFuture.addListener(new ChannelFutureListener() {
-                @Override
-                public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                    if (channelFuture.isSuccess()) {
-                        log.info("连接"+hostName+":"+port+"成功");
-                    }
-                    else
-                    {
-                        log.info("连接"+hostName+":"+port+"失败");
-                    }
+            channelFuture.addListener((ChannelFutureListener) channelFuture1 -> {
+                if (channelFuture1.isSuccess()) {
+                    log.info("连接"+hostName+":"+port+"成功");
+                }
+                else
+                {
+                    log.info("连接"+hostName+":"+port+"失败");
                 }
             });
 

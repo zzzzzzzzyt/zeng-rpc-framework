@@ -6,8 +6,6 @@ import exception.RpcException;
 import loadbalance.LoadBalance;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.KeeperException;
-import org.apache.zookeeper.WatchedEvent;
-import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
 
 import java.io.IOException;
@@ -64,6 +62,7 @@ public class ZkServiceDiscovery {
         //获取相应的远端地址
         String methodAddress = getMethodAddress(methodName);
         //进行连接
+        assert methodAddress != null;
         String[] strings = methodAddress.split(":");
         //启动
         String address = strings[0];

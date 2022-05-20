@@ -41,6 +41,6 @@ public class ZkCuratorRegistry {
         String date = hostname+":"+port;
         client.create().forPath("/service/"+RpcServiceName+"/"+date,"0".getBytes(StandardCharsets.UTF_8));
         client.close();
-        System.out.println("服务端:"+hostname+":"+port+":"+RpcServiceName+"方法在zkCurator中注册完毕");
+        log.info("服务端:"+hostname+":"+port+":"+RpcServiceName+"方法在zkCurator中注册完毕");
     }
 }

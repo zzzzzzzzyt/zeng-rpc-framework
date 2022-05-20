@@ -1,9 +1,12 @@
 package provider.api;
 
-import method.GetNameService;
 import entity.Person;
 import entity.PersonPOJO;
+import method.GetNameService;
 
+/**
+ * @author 祝英台炸油条
+ */
 public class GetNameServiceImpl implements GetNameService {
     @Override
     public String sayGetName(Person person) {

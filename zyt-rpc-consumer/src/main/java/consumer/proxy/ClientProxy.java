@@ -7,5 +7,5 @@ import exception.RpcException;
  * @author 祝英台炸油条
  */
 public interface ClientProxy {
-    Object getBean(final Class<?> serviceClass) throws RpcException;
+    Object getBean(final Class<?> serviceClass);
 }
