@@ -5,14 +5,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-//根据该注解判断选择当遇到传对象的相应的方法时，采用什么编解码方式
-
 /**
- * @author 祝英台炸油条
- */
-@Deprecated
+ * @Author ףӢ̨ը����
+ * @Time : 2022/5/20 20:55
+ **/
+
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CodecSelector {
-    String Codec() default "ObjectCodec";
+public @interface CompressSelector {
+    String CompressTool();
 }

@@ -12,7 +12,9 @@ import annotation.RegistryChosen;
 
 /**
  * @author 祝英台炸油条
+ * 注册中心的配置类  过时了
  */
+@Deprecated
 @RegistryChosen(registryName = "zookeeper")
 public interface Register {
 }

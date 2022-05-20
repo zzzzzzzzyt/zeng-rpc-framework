@@ -1,6 +1,7 @@
 package serialization;
 
-import annotation.CodecSelector;
+import annotation.RpcSerializationSelector;
+import configuration.GlobalConfiguration;
 import exception.RpcException;
 import lombok.extern.slf4j.Slf4j;
 import serialization.fst.FSTUtils;
@@ -19,11 +20,11 @@ import serialization.protostuff.ProtostuffUtils;
 @Slf4j
 public class SerializationTool implements Serializer {
 
-    static String codec = Serialization.class.getAnnotation(CodecSelector.class).Codec();
+    static String serialization = GlobalConfiguration.class.getAnnotation(RpcSerializationSelector.class).RpcSerialization();
 
     @Override
     public byte[] serialize(Object obj) {
-        switch (codec) {
+        switch (serialization) {
             case "kryo":
                 return new KryoUtils().serialize(obj);
             case "protostuff":
@@ -50,7 +51,7 @@ public class SerializationTool implements Serializer {
 
     @Override
     public <T> T deserialize(byte[] bytes, Class<T> clazz) {
-        switch (codec) {
+        switch (serialization) {
             case "kryo":
                 return new KryoUtils().deserialize(bytes, clazz);
             case "protostuff":

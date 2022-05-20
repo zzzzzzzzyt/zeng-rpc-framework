@@ -15,8 +15,14 @@ import java.util.List;
 @Slf4j
 public class ConsistentLoadBalance implements LoadBalance {
     @Override
-    public String loadBalance(ZooKeeper zooKeeper, String path) throws InterruptedException, KeeperException {
-        List<String> children = zooKeeper.getChildren(path, false, null);
+    public String loadBalance(ZooKeeper zooKeeper, String path) {
+        List<String> children = null;
+        try {
+            children = zooKeeper.getChildren(path, false, null);
+        } catch (KeeperException | InterruptedException e) {
+            log.error(e.getMessage(),e);
+        }
+        assert children != null;
         if (children.isEmpty()) {
             try {
                 throw new RpcException("当前没有服务器提供该服务 请联系工作人员");

@@ -1,12 +1,12 @@
 package provider.utils;
 
 import annotation.RegistryChosen;
+import configuration.GlobalConfiguration;
 import exception.RpcException;
 import lombok.extern.slf4j.Slf4j;
 import provider.service_registry.NacosServiceRegistry;
 import provider.service_registry.ZkCuratorRegistry;
 import provider.service_registry.ZkServiceRegistry;
-import register.Register;
 
 
 //直接实现启动类根据启动类接口上的注解选择对应需要选取的方法
@@ -25,7 +25,7 @@ public class MethodRegister {
      */
     public static void register(String method, String ip, int port) {
 
-        RegistryChosen annotation = Register.class.getAnnotation(RegistryChosen.class);
+        RegistryChosen annotation = GlobalConfiguration.class.getAnnotation(RegistryChosen.class);
 
         switch (annotation.registryName()) {
             case "nacos":

@@ -11,13 +11,14 @@ import service.ServerCall;
 
 //之后启动直接在这边启动根据 在注解中配置对应的版本号  将相应的操作封装到之后的操作中即可
 //比如说这里的version 1.2 就是v1.2版本的启动器
+
 /**
  * @author 祝英台炸油条
  */
 @Slf4j
 public class NIOServerBootStrap {
 
-    public static void start()  {
+    public static void start() {
 
         //先对ZK进行初始化
         ZK.init();
@@ -31,24 +32,23 @@ public class NIOServerBootStrap {
         String[] methods = nowAnnotation.method();
         int[] startNums = nowAnnotation.startNum();
         //如果不存在那就返回
-        if (methods.length==0)return;
+        if (methods.length == 0) return;
         //2.需要组合在一起传过去  如果不组合分别传 我怕就是端口号会出现问题
         StringBuilder methodBuilder = new StringBuilder();
         StringBuilder numBuilder = new StringBuilder();
 
         //因为两个数量一致 那就不进行两次循环了
-        for (int i = 0;i< methods.length;++i) {
+        for (int i = 0; i < methods.length; ++i) {
             methodBuilder.append(methods[i]);
             methodBuilder.append(",");
             numBuilder.append(startNums[i]);
             numBuilder.append(",");
         }
         //除去最后多出来的,
-        methodBuilder.deleteCharAt(methodBuilder.length()-1);
-        numBuilder.deleteCharAt(numBuilder.length()-1);
+        methodBuilder.deleteCharAt(methodBuilder.length() - 1);
+        numBuilder.deleteCharAt(numBuilder.length() - 1);
 
-        switch (currentServerBootStrapVersion)
-        {
+        switch (currentServerBootStrapVersion) {
             case "1.0":
                 NIOProviderBootStrap10.main(null);
                 break;
@@ -70,7 +70,7 @@ public class NIOServerBootStrap {
                 try {
                     throw new RpcException("太着急了兄弟，这个版本还没出呢！要不你给我提个PR");
                 } catch (RpcException e) {
-                    log.error(e.getMessage(),e);
+                    log.error(e.getMessage(), e);
                 }
         }
     }

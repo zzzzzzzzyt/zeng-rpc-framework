@@ -1,9 +1,9 @@
 package consumer.service_discovery;
 
 import annotation.LoadBalanceMethodImpl;
+import configuration.GlobalConfiguration;
 import consumer.nio.NIONonBlockingClient12;
 import exception.RpcException;
-import loadbalance.LoadBalance;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -52,7 +52,7 @@ public class ZkCuratorDiscovery {
         //v1.5修改使用负载均衡策略 根据接口上注解选择的实现类进行调用
         String methodAddress = null;
         try {
-            LoadBalanceMethodImpl annotation = LoadBalance.class.getAnnotation(LoadBalanceMethodImpl.class);
+            LoadBalanceMethodImpl annotation = GlobalConfiguration.class.getAnnotation(LoadBalanceMethodImpl.class);
             Class methodClass = annotation.chosenMethod();
             Method method = methodClass.getMethod("loadBalance", ZooKeeper.class, String.class);
             //被选中的负载均衡实现类的对象  通过反射执行  获取对应的地址

@@ -2,8 +2,8 @@ package provider.netty_server_handler;
 
 
 import annotation.CompressFunction;
-import compress.Compress;
 import compress.CompressTypeTool;
+import configuration.GlobalConfiguration;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class NettyServerHandler24 extends ChannelInboundHandlerAdapter {
     static SerializationTool serializationTool = new SerializationTool();
 
     //获得是否进行解压缩
-    static boolean openFunction = Compress.class.getAnnotation(CompressFunction.class).isOpenFunction();
+    static boolean openFunction = GlobalConfiguration.class.getAnnotation(CompressFunction.class).isOpenFunction();
 
     //解压缩工具
     static CompressTypeTool compressTool = new CompressTypeTool();

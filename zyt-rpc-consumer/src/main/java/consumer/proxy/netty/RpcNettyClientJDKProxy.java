@@ -1,6 +1,7 @@
 package consumer.proxy.netty;
 
 import annotation.RegistryChosen;
+import configuration.GlobalConfiguration;
 import consumer.netty.NettyClient;
 import consumer.proxy.ClientProxy;
 import consumer.service_discovery.NacosServiceDiscovery;
@@ -8,7 +9,6 @@ import consumer.service_discovery.ZkCuratorDiscovery;
 import consumer.service_discovery.ZkServiceDiscovery;
 import exception.RpcException;
 import lombok.extern.slf4j.Slf4j;
-import register.Register;
 
 import java.lang.reflect.Proxy;
 
@@ -52,7 +52,7 @@ public class RpcNettyClientJDKProxy implements ClientProxy {
     private static String getMethodAddress(String methodName) {
         //根据注解进行方法调用
         //根据在代理类上的注解调用  看清楚底下的因为是个class数组 可以直接继续获取 注解
-        RegistryChosen annotation = Register.class.getAnnotation(RegistryChosen.class);
+        RegistryChosen annotation = GlobalConfiguration.class.getAnnotation(RegistryChosen.class);
         switch (annotation.registryName()) {
             case "nacos":
                 return NacosServiceDiscovery.getMethodAddress(methodName);

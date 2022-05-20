@@ -4,6 +4,7 @@ package consumer.netty_client_handler;
 import annotation.CompressFunction;
 import compress.Compress;
 import compress.CompressTypeTool;
+import configuration.GlobalConfiguration;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -34,7 +35,7 @@ public class NettyClientHandler24 extends ChannelInboundHandlerAdapter implement
     static SerializationTool serializationTool = new SerializationTool();
 
     //判断是否进行解压缩
-    static boolean openFunction = Compress.class.getAnnotation(CompressFunction.class).isOpenFunction();
+    static boolean openFunction = GlobalConfiguration.class.getAnnotation(CompressFunction.class).isOpenFunction();
 
     //解压缩工具
     static CompressTypeTool compressTool = new CompressTypeTool();

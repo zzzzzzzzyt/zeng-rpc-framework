@@ -1,10 +1,10 @@
 package consumer.netty_client_handler;
 
-import annotation.CodecSelector;
+import annotation.RpcSerializationSelector;
+import configuration.GlobalConfiguration;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
-import serialization.Serialization;
 import serialization.hessian.HessianUtils;
 import serialization.kryo.KryoUtils;
 import serialization.protostuff.ProtostuffUtils;
@@ -36,10 +36,10 @@ public class NettyClientHandler22 extends ChannelInboundHandlerAdapter implement
     public void channelActive(ChannelHandlerContext ctx) {
         context = ctx;
         log.info("U•ェ•*U 成功连接");
-        String codecType = Serialization.class.getAnnotation(CodecSelector.class).Codec();
-        if (codecType.equals("protostuff")) isProtostuff = true;
-        else if (codecType.equals("kryo")) isKryo = true;
-        else if (codecType.equals("hessian")) isHessian = true;
+        String serialization = GlobalConfiguration.class.getAnnotation(RpcSerializationSelector.class).RpcSerialization();
+        if (serialization.equals("protostuff")) isProtostuff = true;
+        else if (serialization.equals("kryo")) isKryo = true;
+        else if (serialization.equals("hessian")) isHessian = true;
     }
 
     @Override

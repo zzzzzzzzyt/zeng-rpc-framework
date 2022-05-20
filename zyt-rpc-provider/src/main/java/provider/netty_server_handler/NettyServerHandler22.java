@@ -1,12 +1,12 @@
 package provider.netty_server_handler;
 
 
-import annotation.CodecSelector;
+import annotation.RpcSerializationSelector;
+import configuration.GlobalConfiguration;
 import exception.RpcException;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
-import serialization.Serialization;
 import serialization.hessian.HessianUtils;
 import serialization.kryo.KryoUtils;
 import serialization.protostuff.ProtostuffUtils;
@@ -36,8 +36,8 @@ public class NettyServerHandler22 extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        String codecType = Serialization.class.getAnnotation(CodecSelector.class).Codec();
-        switch (codecType) {
+        String serialization = GlobalConfiguration.class.getAnnotation(RpcSerializationSelector.class).RpcSerialization();
+        switch (serialization) {
             case "protostuff":
                 isProtostuff = true;
                 break;

@@ -3,6 +3,7 @@ package consumer.netty;
 
 import annotation.HeartBeatTool;
 import codec.AddCodec;
+import configuration.GlobalConfiguration;
 import consumer.netty_client_handler.NettyClientHandler24;
 import heartbeat.HeartBeat;
 import io.netty.bootstrap.Bootstrap;
@@ -34,7 +35,7 @@ public class NettyClient24 {
 
     //线程池 实现异步调用
     private static final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-    private static final HeartBeatTool heartBeatToolAnnotation = HeartBeat.class.getAnnotation(HeartBeatTool.class);
+    private static final HeartBeatTool heartBeatToolAnnotation = GlobalConfiguration.class.getAnnotation(HeartBeatTool.class);
     // static NettyClientHandler24 clientHandler;//跟他没关系 因为每次都新建一个
     private static final ThreadLocal<NettyClientHandler24> nettyClientHandlerThreadLocal = ThreadLocal.withInitial(() -> new NettyClientHandler24());
 

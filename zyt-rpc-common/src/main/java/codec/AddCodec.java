@@ -1,6 +1,8 @@
 package codec;
 
 import annotation.CodecSelector;
+import annotation.RpcSerializationSelector;
+import configuration.GlobalConfiguration;
 import entity.PersonPOJO;
 import exception.RpcException;
 import io.netty.channel.ChannelPipeline;
@@ -14,7 +16,6 @@ import io.netty.handler.codec.serialization.ObjectEncoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import lombok.extern.slf4j.Slf4j;
-import serialization.Serialization;
 
 import java.lang.reflect.Method;
 
@@ -29,15 +30,15 @@ public class AddCodec {
 
     public static void addCodec(ChannelPipeline pipeline, Method method, boolean isConsumer) {
         //根据注解进行编解码器的选择
-        CodecSelector annotation = Serialization.class.getAnnotation(CodecSelector.class);
+        RpcSerializationSelector annotation = GlobalConfiguration.class.getAnnotation(RpcSerializationSelector.class);
 
         //目前而来我的传输 传入的参数都是一个 所以根据这一个传入和返回的参数的类型进行判断
         //下面是我传入的参数 和传出的参数
         Class<?> returnType = method.getReturnType();
         Class<?> parameterType = method.getParameterTypes()[0];
 
-        String codec = annotation.Codec();
-        switch (codec) {
+        String rpcSerialization = annotation.RpcSerialization();
+        switch (rpcSerialization) {
             case "ObjectCodec": //2.2版本之前会使用
                 if (returnType != String.class && parameterType != String.class) {
                     pipeline.addLast(new ObjectEncoder());

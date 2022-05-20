@@ -1,6 +1,7 @@
 package consumer.proxy.netty;
 
 import annotation.RegistryChosen;
+import configuration.GlobalConfiguration;
 import consumer.netty.NettyClient;
 import consumer.proxy.ClientProxy;
 import consumer.service_discovery.NacosServiceDiscovery;
@@ -11,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
-import register.Register;
 
 import java.lang.reflect.Method;
 
@@ -65,7 +65,7 @@ public class RpcNettyClientCGLIBProxy implements ClientProxy, MethodInterceptor 
     private static String getMethodAddress(String methodName) {
         //根据注解进行方法调用
         //根据在代理类上的注解调用  看清楚底下的因为是个class数组 可以直接继续获取 注解
-        RegistryChosen annotation = Register.class.getAnnotation(RegistryChosen.class);
+        RegistryChosen annotation = GlobalConfiguration.class.getAnnotation(RegistryChosen.class);
         switch (annotation.registryName()) {
             case "nacos":
                 return NacosServiceDiscovery.getMethodAddress(methodName);
