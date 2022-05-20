@@ -11,7 +11,7 @@ import java.util.ServiceLoader;
 public class SPICompressUtils {
     public static CompressType getUtils() {
         ServiceLoader<CompressType> loader = ServiceLoader.load(CompressType.class);
-        CompressType resultType = null;
+        CompressType resultType;
         for (CompressType compressType : loader) {
             resultType = compressType;
             return resultType;
@@ -19,8 +19,8 @@ public class SPICompressUtils {
         try {
             throw new RpcException("没有去配置对应的解压缩方法");
         } catch (RpcException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
-        return resultType;
+        return null;
     }
 }

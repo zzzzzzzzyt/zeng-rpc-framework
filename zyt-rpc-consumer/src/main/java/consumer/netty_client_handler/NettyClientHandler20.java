@@ -22,7 +22,7 @@ public class NettyClientHandler20 extends ChannelInboundHandlerAdapter {
     //这个是收到信息
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf buf = (ByteBuf)msg;
-        log.info("收到来自"+ctx.channel().remoteAddress()+"的消息"+buf.toString(CharsetUtil.UTF_8));
+        ByteBuf buf = (ByteBuf) msg;
+        log.info("收到来自" + ctx.channel().remoteAddress() + "的消息" + buf.toString(CharsetUtil.UTF_8));
     }
 }

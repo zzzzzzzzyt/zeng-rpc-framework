@@ -16,12 +16,11 @@ public class CompressTypeTool implements CompressType {
 
     static {
         compressUtils = SPICompressUtils.getUtils();
-        if (compressUtils==null)
-        {
+        if (compressUtils == null) {
             try {
                 throw new RpcException("相应工具类为空");
             } catch (RpcException e) {
-                log.error(e.getMessage(),e);
+                log.error(e.getMessage(), e);
             }
         }
     }
@@ -33,7 +32,7 @@ public class CompressTypeTool implements CompressType {
     }
 
     @Override
-    public byte[] deCompress(byte[] bytes)  {
+    public byte[] deCompress(byte[] bytes) {
         return compressUtils.deCompress(bytes);
     }
 }

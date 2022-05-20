@@ -2,6 +2,7 @@ package service;
 
 import annotation.RpcClientBootStrap;
 import annotation.RpcToolsSelector;
+import entity.Person;
 import lombok.extern.slf4j.Slf4j;
 import method.Customer;
 import service.call.ChosenClientCall;
@@ -14,8 +15,8 @@ import service.call.ChosenClientCall;
  * @author 祝英台炸油条
  */
 @Slf4j
-@RpcClientBootStrap(version = "1.2")
-@RpcToolsSelector(rpcTool = "Nio")
+@RpcClientBootStrap(version = "2.4")
+@RpcToolsSelector(rpcTool = "Netty")
 public class ClientCall {
     public static void main(String[] args) {
         //实现调用
@@ -25,27 +26,23 @@ public class ClientCall {
         // long start = System.currentTimeMillis();
         // log.info(customer.GetName(new Person("祝英台")));
         //
-        // //测试 2.0版本之后
-        // log.info(customer.GetPerson(new Person("zz")));
-        // //
-        // new Thread(()->{
-        //     Customer customer1 = null;
-        //     try {
-        //         customer1 = ChosenClientCall.start();
-        //     } catch (InterruptedException e) {
-        //         e.printStackTrace();
-        //     } catch (RpcException e) {
-        //         e.printStackTrace();
-        //     } catch (IOException e) {
-        //         e.printStackTrace();
-        //     }
-        //     log.info(customer1.GetPerson(new Person("zz")));
-        // }).start();
+        //测试 2.0版本之后
+        Person person1 = customer.GetPerson(new Person("zz"));
+        String msg1 = "获取对应类" + person1.getClass() + "，名字为" + person1.getName();
+        log.info(msg1);
         //
-        // log.info(customer.GetName(new Person("zzz")));
-        // log.info(customer.GetName(new Person("zzz")));
-        // log.info(customer.GetName(new Person("zzz")));
-        // log.info(customer.GetName(new Person("zzz")));
+        new Thread(() -> {
+            Customer customer1 = null;
+            customer1 = ChosenClientCall.start();
+            Person person2 = customer1.GetPerson(new Person("zz"));
+            String msg2 = new String("获取对应类" + person2.getClass() + "，名字为" + person2.getName());
+            log.info(msg2);
+        }).start();
+
+        log.info(customer.GetName(new Person("zzz")));
+        log.info(customer.GetName(new Person("zzz")));
+        log.info(customer.GetName(new Person("zzz")));
+        log.info(customer.GetName(new Person("zzz")));
         //2.4版本之前的测试
         // log.info(customer.GetPerson(PersonPOJO.Person.newBuilder().setName("炸油条").build()));
         //测试
@@ -53,11 +50,11 @@ public class ClientCall {
 
 
         // nio使用测试
-
-        log.info(customer.Hello("success"));
-        log.info(customer.Bye("fail"));
-        log.info(customer.Bye("fail"));
-        log.info(customer.Bye("fail"));
+        //
+        // log.info(customer.Hello("success"));
+        // log.info(customer.Bye("fail"));
+        // log.info(customer.Bye("fail"));
+        // log.info(customer.Bye("fail"));
 
 
         // long end = System.currentTimeMillis();

@@ -16,6 +16,7 @@ import java.lang.reflect.Method;
 import static constants.RpcConstants.ZOOKEEPER_ADDRESS;
 
 //简化zookeeper的使用  更加方便获取远端的方法的信息
+
 /**
  * @author 祝英台炸油条
  */
@@ -40,15 +41,14 @@ public class ZkCuratorDiscovery {
         ZooKeeper zooKeeper = null;
         try {
             zooKeeper = client.getZookeeperClient().getZooKeeper();
-            if (zooKeeper.exists("/service/"+methodName,null)==null)
-            {
+            if (zooKeeper.exists("/service/" + methodName, null) == null) {
                 throw new RpcException("不存在该方法");
             }
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
 
-        String prePath = "/service/"+methodName;
+        String prePath = "/service/" + methodName;
         //v1.5修改使用负载均衡策略 根据接口上注解选择的实现类进行调用
         String methodAddress = null;
         try {
@@ -57,12 +57,11 @@ public class ZkCuratorDiscovery {
             Method method = methodClass.getMethod("loadBalance", ZooKeeper.class, String.class);
             //被选中的负载均衡实现类的对象  通过反射执行  获取对应的地址
             Object methodChosenClass = methodClass.newInstance();
-            methodAddress = (String) method.invoke(methodChosenClass,zooKeeper,prePath);
+            methodAddress = (String) method.invoke(methodChosenClass, zooKeeper, prePath);
             client.close();
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            log.error(e.getMessage(),e);
-        }
-        finally {
+            log.error(e.getMessage(), e);
+        } finally {
             client.close();
         }
         return methodAddress;
@@ -76,6 +75,6 @@ public class ZkCuratorDiscovery {
         //启动
         String address = strings[0];
         int port = Integer.parseInt(strings[1]);
-        return NIONonBlockingClient12.start(address,port,msg);
+        return NIONonBlockingClient12.start(address, port, msg);
     }
 }

@@ -25,6 +25,7 @@ import java.util.concurrent.Executors;
 
 //实际客户端启动类  进行操作
 //不确定能返回什么 所以判断是对象
+
 /**
  * @author 祝英台炸油条
  */
@@ -32,10 +33,10 @@ import java.util.concurrent.Executors;
 public class NettyClient24 {
 
     //线程池 实现异步调用
-    private static ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-    private static HeartBeatTool heartBeatToolAnnotation = HeartBeat.class.getAnnotation(HeartBeatTool.class);
+    private static final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+    private static final HeartBeatTool heartBeatToolAnnotation = HeartBeat.class.getAnnotation(HeartBeatTool.class);
     // static NettyClientHandler24 clientHandler;//跟他没关系 因为每次都新建一个
-    private static final ThreadLocal<NettyClientHandler24> nettyClientHandlerThreadLocal = ThreadLocal.withInitial(()->new NettyClientHandler24());
+    private static final ThreadLocal<NettyClientHandler24> nettyClientHandlerThreadLocal = ThreadLocal.withInitial(() -> new NettyClientHandler24());
 
     public static Object callMethod(String hostName, int port, Object param, Method method) {
 
@@ -53,7 +54,7 @@ public class NettyClient24 {
                             ChannelPipeline pipeline = socketChannel.pipeline();
 
                             //加编解码器的逻辑，根据对应的注解进行编码器的添加 这里面有实现对应的逻辑 //
-                            AddCodec.addCodec(pipeline,method,true);
+                            AddCodec.addCodec(pipeline, method, true);
 
                             /*
                                 v2.5更新添加读写空闲处理器
@@ -65,8 +66,7 @@ public class NettyClient24 {
                              */
                             //时间和实不实现 根据注解 判断是否开启
                             //记住后面一定是要有一个处理器 用来处理触发事件
-                            if (heartBeatToolAnnotation.isOpenFunction())
-                            {
+                            if (heartBeatToolAnnotation.isOpenFunction()) {
                                 pipeline.addLast(new IdleStateHandler(
                                         heartBeatToolAnnotation.readerIdleTimeSeconds(),
                                         heartBeatToolAnnotation.writerIdleTimeSeconds(),
@@ -81,7 +81,7 @@ public class NettyClient24 {
             bootstrap.connect(hostName, port).sync();
 
         } catch (InterruptedException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
         //我是有多个地方进行调用的 不能只连接一个
         // initClient(hostName,port,method);
@@ -92,7 +92,7 @@ public class NettyClient24 {
         try {
             response = executor.submit(clientHandler).get();
         } catch (InterruptedException | ExecutionException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
         nettyClientHandlerThreadLocal.remove(); //一个handler不能加到两个管道中 你说是吧
         return response;

@@ -2,7 +2,6 @@ package provider.nio;
 
 import lombok.extern.slf4j.Slf4j;
 import method.HelloService;
-import org.apache.zookeeper.KeeperException;
 import provider.api.HelloServiceImpl;
 import provider.service_registry.ZkServiceRegistry;
 

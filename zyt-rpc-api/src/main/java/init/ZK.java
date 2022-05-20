@@ -26,14 +26,13 @@ public class ZK {
             });
 
             //如果存在就删  不存在就不删
-            if (zooKeeper.exists("/service",false)!=null)
-            {
+            if (zooKeeper.exists("/service", false) != null) {
                 //内部得实现递归删除
                 deleteAll("/service");
             }
             zooKeeper.close();
         } catch (IOException | KeeperException | InterruptedException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -41,15 +40,14 @@ public class ZK {
     private static void deleteAll(String prePath) {
         try {
             List<String> children = zooKeeper.getChildren(prePath, false);
-            if (!children.isEmpty())
-            {
+            if (!children.isEmpty()) {
                 for (String child : children) {
-                    deleteAll(prePath+"/"+child);
+                    deleteAll(prePath + "/" + child);
                 }
             }
-            zooKeeper.delete(prePath,-1);
+            zooKeeper.delete(prePath, -1);
         } catch (KeeperException | InterruptedException e) {
-            log.error(e.getMessage(),e); //将错误的信息要输出 而不是丢出去 给最外面进行处理
+            log.error(e.getMessage(), e); //将错误的信息要输出 而不是丢出去 给最外面进行处理
         }
     }
 }

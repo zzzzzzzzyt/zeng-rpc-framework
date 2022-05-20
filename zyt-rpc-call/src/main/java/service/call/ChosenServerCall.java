@@ -10,6 +10,7 @@ import service.call.nio_call.NIOServerCall;
 
 
 //根据获取对应的启动类注解 来选择启动方法
+
 /**
  * @author 祝英台炸油条
  */
@@ -17,8 +18,7 @@ import service.call.nio_call.NIOServerCall;
 public class ChosenServerCall {
     public static void start() {
         RpcToolsSelector annotation = ServerCall.class.getAnnotation(RpcToolsSelector.class);
-        switch (annotation.rpcTool())
-        {
+        switch (annotation.rpcTool()) {
             case "Netty":
                 NettyServerCall.main(null);
                 break;
@@ -29,7 +29,7 @@ public class ChosenServerCall {
                 try {
                     throw new RpcException("暂时还没有该方法，博主正在努力跟进中"); //抛出异常后进行捕获
                 } catch (RpcException e) {
-                    log.error(e.getMessage(),e);
+                    log.error(e.getMessage(), e);
                 }
         }
     }

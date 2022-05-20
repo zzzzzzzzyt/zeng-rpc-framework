@@ -6,11 +6,13 @@ import serialization.Serializer;
 import java.nio.charset.StandardCharsets;
 
 //gson
+
 /**
  * @author 祝英台炸油条
  */
 public class GsonUtils implements Serializer {
     static Gson gson = new Gson();
+
     @Override
     public byte[] serialize(Object obj) {
         return gson.toJson(obj).getBytes(StandardCharsets.UTF_8);
@@ -20,6 +22,6 @@ public class GsonUtils implements Serializer {
 
     @Override
     public <T> T deserialize(byte[] bytes, Class<T> clazz) {
-        return gson.fromJson(new String(bytes,StandardCharsets.UTF_8),clazz);
+        return gson.fromJson(new String(bytes, StandardCharsets.UTF_8), clazz);
     }
 }

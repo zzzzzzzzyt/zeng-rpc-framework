@@ -23,11 +23,11 @@ public class Lz4Utils implements CompressType {
         ByteArrayOutputStream outputStream = null;
         try {
             outputStream = new ByteArrayOutputStream();
-            LZ4BlockOutputStream lz4BlockOutputStream = new LZ4BlockOutputStream(outputStream,BUFFER_SIZE,compressor);
+            LZ4BlockOutputStream lz4BlockOutputStream = new LZ4BlockOutputStream(outputStream, BUFFER_SIZE, compressor);
             lz4BlockOutputStream.write(bytes);
             lz4BlockOutputStream.close();
         } catch (IOException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
         return outputStream.toByteArray();
     }
@@ -40,16 +40,15 @@ public class Lz4Utils implements CompressType {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
 
         try {
-            LZ4BlockInputStream decompressedInputStream = new LZ4BlockInputStream(inputStream,decompressor);
+            LZ4BlockInputStream decompressedInputStream = new LZ4BlockInputStream(inputStream, decompressor);
             int count;
             byte[] buffer = new byte[BUFFER_SIZE];
-            while ((count=decompressedInputStream.read(buffer))!=-1)
-            {
-                outputStream.write(buffer,0,count);
+            while ((count = decompressedInputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, count);
             }
             decompressedInputStream.close();
         } catch (IOException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
         return outputStream.toByteArray();
     }

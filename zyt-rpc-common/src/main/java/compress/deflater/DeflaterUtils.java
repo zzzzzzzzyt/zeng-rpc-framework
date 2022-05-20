@@ -7,6 +7,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
+
 /**
  * @author 祝英台炸油条
  */
@@ -25,10 +26,9 @@ public class DeflaterUtils implements CompressType {
 
         byte[] outputBytes = new byte[BUFFER_SIZE];
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        while (!deflater.finished())
-        {
+        while (!deflater.finished()) {
             length = deflater.deflate(outputBytes);
-            bos.write(outputBytes,0,length);
+            bos.write(outputBytes, 0, length);
         }
         deflater.end();
         return bos.toByteArray();
@@ -36,7 +36,7 @@ public class DeflaterUtils implements CompressType {
 
     //解压
     @Override
-    public byte[] deCompress(byte[] bytes){
+    public byte[] deCompress(byte[] bytes) {
         int length;
         ByteArrayOutputStream bos = null;
         try {
@@ -44,14 +44,13 @@ public class DeflaterUtils implements CompressType {
             inflater.setInput(bytes);
             byte[] outputBytes = new byte[BUFFER_SIZE];
             bos = new ByteArrayOutputStream();
-            while (!inflater.finished())
-            {
+            while (!inflater.finished()) {
                 length = inflater.inflate(outputBytes);
-                bos.write(outputBytes,0,length);
+                bos.write(outputBytes, 0, length);
             }
             inflater.end();
         } catch (DataFormatException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
         return bos.toByteArray();
     }

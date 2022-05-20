@@ -15,14 +15,15 @@ import java.util.concurrent.Callable;
 
 
 /*
-*   在2.4版本之后我们就暂时淘汰JDK序列化和protoc编译成的类进行处理了
-* */
+ *   在2.4版本之后我们就暂时淘汰JDK序列化和protoc编译成的类进行处理了
+ * */
 //实现了Callable接口实现了异步调用
+
 /**
  * @author 祝英台炸油条
  */
 @Slf4j
-public class NettyClientHandler24 extends ChannelInboundHandlerAdapter implements Callable{
+public class NettyClientHandler24 extends ChannelInboundHandlerAdapter implements Callable {
     //传入的参数
     private Object param;
     private Method method;
@@ -41,6 +42,7 @@ public class NettyClientHandler24 extends ChannelInboundHandlerAdapter implement
     public void setParam(Object param) {
         this.param = param;
     }
+
     public void setMethod(Method method) {
         this.method = method;
     }
@@ -57,12 +59,12 @@ public class NettyClientHandler24 extends ChannelInboundHandlerAdapter implement
 
         byte[] msgByteArray = (byte[]) msg;
         // 根据是否解压 首先把收到的信息进行解压再进行反序列化
-        if (openFunction)msgByteArray = compressTool.deCompress((byte[]) msg);
+        if (openFunction) msgByteArray = compressTool.deCompress((byte[]) msg);
 
         //在这要进行解码 获得传回来的信息  如果是遇到下面的msg 那就代表传回来的肯定是个byte[]
         // 根据我们要的方法进行解码 传回来的应该是方法的response的
         //根据需要的返回类型进行反序列化
-        msg = serializationTool.deserialize(msgByteArray,method.getReturnType());
+        msg = serializationTool.deserialize(msgByteArray, method.getReturnType());
 
         response = msg;
         notifyAll();
@@ -80,14 +82,14 @@ public class NettyClientHandler24 extends ChannelInboundHandlerAdapter implement
         byte[] requestByteArray = (byte[]) request;
 
         //判断是否进行压缩
-        if (openFunction)requestByteArray = compressTool.compress(requestByteArray);
+        if (openFunction) requestByteArray = compressTool.compress(requestByteArray);
 
         context.writeAndFlush(requestByteArray);
 
         try {
             wait();
         } catch (InterruptedException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
         return response;
     }
@@ -95,13 +97,11 @@ public class NettyClientHandler24 extends ChannelInboundHandlerAdapter implement
     //用来判断是否出现了空闲事件  如果出现了那就进行相应的处理
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) {
-        if (evt instanceof IdleStateEvent)
-        {
+        if (evt instanceof IdleStateEvent) {
             IdleStateEvent event = (IdleStateEvent) evt;
             //设置一个事件字段
             String eventType = null;
-            switch (event.state())
-            {
+            switch (event.state()) {
                 case READER_IDLE:
                     eventType = "读空闲";
                     break;
@@ -112,7 +112,7 @@ public class NettyClientHandler24 extends ChannelInboundHandlerAdapter implement
                     eventType = "读写空闲";
                     break;
             }
-            log.info(ctx.channel().remoteAddress()+"发生超时事件"+eventType+"：连接关闭");
+            log.info(ctx.channel().remoteAddress() + "发生超时事件" + eventType + "：连接关闭");
             ctx.close();
         }
     }
@@ -120,7 +120,7 @@ public class NettyClientHandler24 extends ChannelInboundHandlerAdapter implement
     //异常处理
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        log.error(cause.getMessage(),cause);
+        log.error(cause.getMessage(), cause);
         ctx.close();
     }
 }

@@ -12,6 +12,7 @@ import serialization.kryo.KryoUtils;
 import serialization.protostuff.ProtostuffUtils;
 
 //这是一个进行统一序列化的一个工具
+
 /**
  * @author 祝英台炸油条
  */
@@ -41,7 +42,7 @@ public class SerializationTool implements Serializer {
                 try {
                     throw new RpcException("你所找的序列化方法还没编写，或者可能在该版本被废弃了，你可以看看2.2版本");
                 } catch (RpcException e) {
-                    log.error(e.getMessage(),e);
+                    log.error(e.getMessage(), e);
                     return new byte[0];
                 }
         }
@@ -59,16 +60,16 @@ public class SerializationTool implements Serializer {
             case "fst":
                 return new FSTUtils().deserialize(bytes, clazz);
             case "jackson":
-                return new JacksonUtils().deserialize(bytes,clazz);
+                return new JacksonUtils().deserialize(bytes, clazz);
             case "fastjson":
-                return new FastJsonUtils().deserialize(bytes,clazz);
+                return new FastJsonUtils().deserialize(bytes, clazz);
             case "gson":
-                return new GsonUtils().deserialize(bytes,clazz);
+                return new GsonUtils().deserialize(bytes, clazz);
             default:
                 try {
                     throw new RpcException("你所找的序列化方法还没编写，或者可能在该版本被废弃了，你可以看看2.2版本");
                 } catch (RpcException e) {
-                    log.error(e.getMessage(),e);
+                    log.error(e.getMessage(), e);
                     return null;
                 }
         }

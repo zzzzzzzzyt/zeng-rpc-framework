@@ -16,11 +16,12 @@ import register.Register;
 import java.lang.reflect.Method;
 
 //Cglib实现代理模式
+
 /**
  * @author 祝英台炸油条
  */
 @Slf4j
-public class RpcNettyClientCGLIBProxy implements ClientProxy,MethodInterceptor{
+public class RpcNettyClientCGLIBProxy implements ClientProxy, MethodInterceptor {
 
     @Override
     public Object getBean(Class serviceClass) {
@@ -37,7 +38,7 @@ public class RpcNettyClientCGLIBProxy implements ClientProxy,MethodInterceptor{
     }
 
     /**
-     * @param obj           代理对象（增强的对象）
+     * @param obj         代理对象（增强的对象）
      * @param method      被拦截的方法（需要增强的方法）
      * @param args        方法入参
      * @param methodProxy 用于调用原始方法
@@ -48,27 +49,24 @@ public class RpcNettyClientCGLIBProxy implements ClientProxy,MethodInterceptor{
         try {
             methodAddress = getMethodAddress(method.getName());
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
+        assert methodAddress != null;
         String[] split = methodAddress.split(":");
-        return NettyClient.callMethod(split[0],Integer.valueOf(split[1]),args[0],method);
+        return NettyClient.callMethod(split[0], Integer.parseInt(split[1]), args[0], method);
     }
-
-
 
 
     /**
      * 实际去获得对应的服务 并完成方法调用的方法
-     * @param methodName  根据方法名  根据添加的注册中心注解来选择相应的注册中心进行  实现负载均衡获取一个方法对应地址
-     * @param
-     * @return
+     *
+     * @param methodName 根据方法名  根据添加的注册中心注解来选择相应的注册中心进行  实现负载均衡获取一个方法对应地址
      */
     private static String getMethodAddress(String methodName) {
         //根据注解进行方法调用
         //根据在代理类上的注解调用  看清楚底下的因为是个class数组 可以直接继续获取 注解
         RegistryChosen annotation = Register.class.getAnnotation(RegistryChosen.class);
-        switch (annotation.registryName())
-        {
+        switch (annotation.registryName()) {
             case "nacos":
                 return NacosServiceDiscovery.getMethodAddress(methodName);
             case "zookeeper":
@@ -79,7 +77,7 @@ public class RpcNettyClientCGLIBProxy implements ClientProxy,MethodInterceptor{
                 try {
                     throw new RpcException("不存在该注册中心");
                 } catch (RpcException e) {
-                    log.error(e.getMessage(),e);
+                    log.error(e.getMessage(), e);
                     return null;
                 }
         }

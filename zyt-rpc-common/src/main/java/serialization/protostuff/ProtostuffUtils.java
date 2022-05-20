@@ -8,6 +8,7 @@ import serialization.Serializer;
 
 
 //进行序列化和反序列化  这些是固定的代码
+
 /**
  * @author 祝英台炸油条
  */
@@ -25,7 +26,7 @@ public class ProtostuffUtils implements Serializer {
         Schema schema = RuntimeSchema.getSchema(clazz);
         byte[] bytes;
         try {
-                bytes = ProtostuffIOUtil.toByteArray(obj, schema, BUFFER);
+            bytes = ProtostuffIOUtil.toByteArray(obj, schema, BUFFER);
         } finally {
             BUFFER.clear();
         }

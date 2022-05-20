@@ -2,6 +2,7 @@ package provider.netty_server_handler;
 
 
 import annotation.CodecSelector;
+import exception.RpcException;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +47,12 @@ public class NettyServerHandler22 extends ChannelInboundHandlerAdapter {
             case "hessian":
                 isHessian = true;
                 break;
+            default:
+                try {
+                    throw new RpcException("没有对应的序列化器");
+                } catch (RpcException e) {
+                    log.error(e.getMessage(), e);
+                }
         }
     }
 

@@ -19,20 +19,15 @@ import serialization.Serialization;
 import java.lang.reflect.Method;
 
 //公共类 根据对应选择的注解进行编码器的添加
+
 /**
  * @author 祝英台炸油条
  */
 @Slf4j
 public class AddCodec {
 
-    /**
-     *
-     * @param pipeline
-     * @param method 方法，来获取对应的输入输出类
-     * @throws RpcException
-     *
-     */
-    public static  void addCodec(ChannelPipeline pipeline, Method method,boolean isConsumer)  {
+
+    public static void addCodec(ChannelPipeline pipeline, Method method, boolean isConsumer) {
         //根据注解进行编解码器的选择
         CodecSelector annotation = Serialization.class.getAnnotation(CodecSelector.class);
 
@@ -42,94 +37,68 @@ public class AddCodec {
         Class<?> parameterType = method.getParameterTypes()[0];
 
         String codec = annotation.Codec();
-        switch (codec)
-        {
+        switch (codec) {
             case "ObjectCodec": //2.2版本之前会使用
-                if (returnType!=String.class&&parameterType!=String.class)
-                {
+                if (returnType != String.class && parameterType != String.class) {
                     pipeline.addLast(new ObjectEncoder());
                     //传的参是固定写法
                     pipeline.addLast(new ObjectDecoder(Integer.MAX_VALUE,
                             ClassResolvers.weakCachingResolver(null)));
-                }
-                else if (returnType!=String.class&&parameterType==String.class)
-                {
+                } else if (returnType != String.class && parameterType == String.class) {
                     //如果是客户端的话那么传出的是服务端传入的  所以这边编码那边就是解码
-                    if (isConsumer)
-                    {
+                    if (isConsumer) {
                         //根据传入传出进行对应的编码
                         pipeline.addLast(new StringEncoder());
                         pipeline.addLast(new ObjectDecoder(Integer.MAX_VALUE,
                                 ClassResolvers.weakCachingResolver(null)));
-                    }
-                    else
-                    {
+                    } else {
                         pipeline.addLast(new ObjectEncoder());
                         pipeline.addLast(new StringDecoder());
                     }
 
-                }
-                else if (parameterType != String.class)
-                {
+                } else if (parameterType != String.class) {
                     //客户端 会对参数进行编码，服务端是解码
-                    if (isConsumer)
-                    {
+                    if (isConsumer) {
                         pipeline.addLast(new ObjectEncoder());
                         pipeline.addLast(new StringDecoder());
-                    }
-                    else
-                    {
+                    } else {
                         pipeline.addLast(new StringEncoder());
                         pipeline.addLast(new ObjectDecoder(Integer.MAX_VALUE,
                                 ClassResolvers.weakCachingResolver(null)));
                     }
-                }
-                else
-                {
+                } else {
                     //因为传入参数和传出都是字符串类型 所以就传入字符串编解码器
                     pipeline.addLast(new StringEncoder());
                     pipeline.addLast(new StringDecoder());
                 }
                 return;
             case "protoc":  //添加protobuf的编解码器   如果是protobuf的编解码器的话 那可能还需要一点其他操作  2.2版本之前会使用
-                if (returnType!=String.class&&parameterType!=String.class)
-                {
+                if (returnType != String.class && parameterType != String.class) {
                     pipeline.addLast(new ProtobufEncoder());
                     //对什么实例解码
                     pipeline.addLast(new ProtobufDecoder(PersonPOJO.Person.getDefaultInstance()));
-                }
-                else if (returnType != String.class)
-                {
+                } else if (returnType != String.class) {
                     //如果是客户端的话那么传出的是服务端传入的  所以这边编码那边就是解码
-                    if (isConsumer)
-                    {
+                    if (isConsumer) {
                         //根据传入传出进行对应的编码
                         pipeline.addLast(new StringEncoder());
-                        pipeline.addLast(new ProtobufDecoder(PersonPOJO.Person.getDefaultInstance()));;
-                    }
-                    else
-                    {
+                        pipeline.addLast(new ProtobufDecoder(PersonPOJO.Person.getDefaultInstance()));
+                        ;
+                    } else {
                         pipeline.addLast(new ProtobufEncoder());
                         pipeline.addLast(new StringDecoder());
                     }
-                }
-                else if (parameterType != String.class)
-                {
+                } else if (parameterType != String.class) {
                     //客户端 会对参数进行编码，服务端是解码
-                    if (isConsumer)
-                    {
+                    if (isConsumer) {
                         pipeline.addLast(new ProtobufEncoder());
                         pipeline.addLast(new StringDecoder());
-                    }
-                    else
-                    {
+                    } else {
                         pipeline.addLast(new StringEncoder());
                         //这个就是获取对应的实例 必须要这样传
                         pipeline.addLast(new ProtobufDecoder(PersonPOJO.Person.getDefaultInstance()));
                     }
-                }
-                else
-                {
+                } else {
                     //因为传入参数和传出都是字符串类型 所以就传入字符串编解码器
                     pipeline.addLast(new StringEncoder());
                     pipeline.addLast(new StringDecoder());
@@ -198,7 +167,7 @@ public class AddCodec {
                 try {
                     throw new RpcException("兄弟 你并没有指定相应的方法 我无法进行编解码器");
                 } catch (RpcException e) {
-                    log.error(e.getMessage(),e);
+                    log.error(e.getMessage(), e);
                 }
         }
     }

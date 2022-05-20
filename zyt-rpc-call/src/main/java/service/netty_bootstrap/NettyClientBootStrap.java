@@ -11,6 +11,7 @@ import method.Customer;
 import service.ClientCall;
 
 //netty客户端的启动类
+
 /**
  * @author 祝英台炸油条
  */
@@ -20,13 +21,12 @@ public class NettyClientBootStrap {
         return start0();
     }
 
-    private static Customer start0(){
+    private static Customer start0() {
 
         //获取对应的版本号  然后选取对应的版本进行调用
         String currentClientVersion = ClientCall.class.getAnnotation(RpcClientBootStrap.class).version();
 
-        switch (currentClientVersion)
-        {
+        switch (currentClientVersion) {
             case "2.0": //2.0就是简单实现远端调用 所以没实现太那个
                 NettyConsumerBootStrap20.main(new String[]{"127.0.0.1", String.valueOf(6668)});
                 return null;
@@ -45,7 +45,7 @@ public class NettyClientBootStrap {
                 try {
                     throw new RpcException("该版本还没出呢，你如果有想法可以私信我，或者提个pr");
                 } catch (RpcException e) {
-                    log.error(e.getMessage(),e);
+                    log.error(e.getMessage(), e);
                     return null;
                 }
         }

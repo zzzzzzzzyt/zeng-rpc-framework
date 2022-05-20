@@ -8,25 +8,25 @@ import org.apache.zookeeper.ZooKeeper;
 import java.util.List;
 
 //一致性哈希 进行负载均衡计算
+
 /**
  * @author 祝英台炸油条
  */
 @Slf4j
-public class ConsistentLoadBalance implements LoadBalance{
+public class ConsistentLoadBalance implements LoadBalance {
     @Override
     public String loadBalance(ZooKeeper zooKeeper, String path) throws InterruptedException, KeeperException {
         List<String> children = zooKeeper.getChildren(path, false, null);
-        if (children.isEmpty())
-        {
+        if (children.isEmpty()) {
             try {
                 throw new RpcException("当前没有服务器提供该服务 请联系工作人员");
             } catch (RpcException e) {
-                log.error(e.getMessage(),e);
+                log.error(e.getMessage(), e);
             }
         }
         //我这个属于的是简单版的一致性哈希
         int zkHashCode = zooKeeper.hashCode();
-        return children.get(zkHashCode%children.size());
+        return children.get(zkHashCode % children.size());
 
         //细致版一致性哈希 太麻烦了
         /*

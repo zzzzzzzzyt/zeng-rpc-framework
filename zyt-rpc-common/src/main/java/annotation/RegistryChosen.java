@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 //注册中心选择  默认采用zookeeper
+
 /**
  * @author 祝英台炸油条
  */

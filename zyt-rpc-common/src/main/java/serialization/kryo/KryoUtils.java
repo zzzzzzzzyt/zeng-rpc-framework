@@ -10,6 +10,7 @@ import java.io.ByteArrayOutputStream;
 
 
 //通过KryoUtils实现序列化
+
 /**
  * @author 祝英台炸油条
  */
@@ -35,7 +36,7 @@ public class KryoUtils implements Serializer {
         //需要的参数有Output是它自带的 要创建一个
         Output output = new Output(byteArrayOutputStream);
         Kryo kryo = kryoThreadLocal.get();
-        kryo.writeObject(output,obj);
+        kryo.writeObject(output, obj);
         kryoThreadLocal.remove();
         return output.toBytes();
     }

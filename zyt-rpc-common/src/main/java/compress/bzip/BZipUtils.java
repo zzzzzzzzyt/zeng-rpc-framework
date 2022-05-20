@@ -10,6 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 //apache下的一个解压缩工具 bzip
+
 /**
  * @author 祝英台炸油条
  */
@@ -17,6 +18,7 @@ import java.io.IOException;
 public class BZipUtils implements CompressType {
 
     private static final int BUFFER_SIZE = 8192;
+
     @Override
     public byte[] compress(byte[] bytes) {
         //数组输出流
@@ -33,7 +35,7 @@ public class BZipUtils implements CompressType {
             cbZip2OutputStream.close();
             bos.close();
         } catch (IOException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
 
         return request;
@@ -51,9 +53,8 @@ public class BZipUtils implements CompressType {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             byte[] buffer = new byte[BUFFER_SIZE];
             int n;
-            while ((n=cbZip2InputStream.read(buffer))>-1)
-            {
-                out.write(buffer,0,n);
+            while ((n = cbZip2InputStream.read(buffer)) > -1) {
+                out.write(buffer, 0, n);
             }
             response = out.toByteArray();
 
@@ -62,7 +63,7 @@ public class BZipUtils implements CompressType {
             cbZip2InputStream.close();
             bis.close();
         } catch (IOException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
 
         return response;

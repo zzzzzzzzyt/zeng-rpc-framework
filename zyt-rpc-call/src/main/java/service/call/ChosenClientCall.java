@@ -15,10 +15,9 @@ import service.call.nio_call.NIOClientCall;
  */
 @Slf4j
 public class ChosenClientCall {
-    public static Customer start(){
+    public static Customer start() {
         RpcToolsSelector annotation = ClientCall.class.getAnnotation(RpcToolsSelector.class);
-        switch (annotation.rpcTool())
-        {
+        switch (annotation.rpcTool()) {
             //暂时还没有 return的对象
             case "Netty":
                 return NettyClientCall.main(null);
@@ -28,7 +27,7 @@ public class ChosenClientCall {
                 try {
                     throw new RpcException("暂时还没有该方法，博主正在努力跟进中"); //抛出异常后进行捕获
                 } catch (RpcException e) {
-                    log.error(e.getMessage(),e);
+                    log.error(e.getMessage(), e);
                     return null;
                 }
         }

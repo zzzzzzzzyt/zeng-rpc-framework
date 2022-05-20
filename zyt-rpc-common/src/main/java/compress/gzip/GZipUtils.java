@@ -10,14 +10,16 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 //gzip实现解压缩   实现过程和bzip很相似
+
 /**
  * @author 祝英台炸油条
  */
 @Slf4j
 public class GZipUtils implements CompressType {
     private static final int BUFFER_SIZE = 8192;
+
     @Override
-    public byte[] compress(byte[] bytes)  {
+    public byte[] compress(byte[] bytes) {
         //数组输出流
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] request = new byte[0];
@@ -33,7 +35,7 @@ public class GZipUtils implements CompressType {
             gzipOutputStream.close();
             bos.close();
         } catch (IOException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
 
         return request;
@@ -52,9 +54,8 @@ public class GZipUtils implements CompressType {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             byte[] buffer = new byte[BUFFER_SIZE];
             int n;
-            while ((n=gzipInputStream.read(buffer))>-1)
-            {
-                out.write(buffer,0,n);
+            while ((n = gzipInputStream.read(buffer)) > -1) {
+                out.write(buffer, 0, n);
             }
             response = out.toByteArray();
 
@@ -63,7 +64,7 @@ public class GZipUtils implements CompressType {
             gzipInputStream.close();
             bis.close();
         } catch (IOException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
 
         return response;

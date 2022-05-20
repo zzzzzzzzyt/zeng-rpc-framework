@@ -13,17 +13,18 @@ import java.util.Iterator;
 
 
 //v1.0版本非阻塞nio
+
 /**
  * @author 祝英台炸油条
  */
 @Slf4j
 public class NIONonBlockingClient12 {
     public static String start(String hostName, int port, String msg) {
-        return start0(hostName, port,msg);
+        return start0(hostName, port, msg);
     }
 
     //真正启动在这
-    private static String start0(String hostName, int port,String msg) {
+    private static String start0(String hostName, int port, String msg) {
         //得到一个网络通道
         Selector selector = null;
         try {
@@ -31,8 +32,8 @@ public class NIONonBlockingClient12 {
             log.info("-----------服务消费方启动-------------");
             socketChannel.configureBlocking(false);
             //建立链接  非阻塞连接  但我们是要等他连接上
-            if (!socketChannel.connect(new InetSocketAddress(hostName,port))) {
-                while (!socketChannel.finishConnect());
+            if (!socketChannel.connect(new InetSocketAddress(hostName, port))) {
+                while (!socketChannel.finishConnect()) ;
             }
             //创建选择器 进行监听读事件
             selector = Selector.open();
@@ -42,37 +43,34 @@ public class NIONonBlockingClient12 {
             //进行发送 发的太快了 来不及收到
             socketChannel.write(ByteBuffer.wrap(msg.getBytes(StandardCharsets.UTF_8)));
         } catch (IOException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
 
         //直接进行监听
-        while (true)
-        {
+        while (true) {
             //捕获异常  监听读事件
             try {
-                if (selector.select(1000)==0)
-                {
+                assert selector != null;
+                if (selector.select(1000) == 0) {
                     continue;
                 }
                 Iterator<SelectionKey> keyIterator = selector.selectedKeys().iterator();
-                while (keyIterator.hasNext())
-                {
+                while (keyIterator.hasNext()) {
                     SelectionKey key = keyIterator.next();
-                    ByteBuffer buffer = (ByteBuffer)key.attachment();
-                    SocketChannel channel = (SocketChannel)key.channel();
+                    ByteBuffer buffer = (ByteBuffer) key.attachment();
+                    SocketChannel channel = (SocketChannel) key.channel();
                     int read = 1;
                     //用这个的原因是怕 多线程出现影响
-                    StringBuffer stringBuffer = new StringBuffer();
-                    while (read!=0)
-                    {
+                    StringBuilder stringBuffer = new StringBuilder();
+                    while (read != 0) {
                         buffer.clear();
                         read = channel.read(buffer);
-                        stringBuffer.append(new String(buffer.array(),0,read));
+                        stringBuffer.append(new String(buffer.array(), 0, read));
                     }
                     return stringBuffer.toString();
                 }
             } catch (IOException e) {
-                log.error(e.getMessage(),e);
+                log.error(e.getMessage(), e);
             }
         }
     }

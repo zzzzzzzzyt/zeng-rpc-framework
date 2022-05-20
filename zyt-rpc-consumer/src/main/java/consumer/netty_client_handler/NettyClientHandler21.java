@@ -13,7 +13,7 @@ import java.util.concurrent.Callable;
  * @author 祝英台炸油条
  */
 @Slf4j
-public class NettyClientHandler21 extends ChannelInboundHandlerAdapter implements Callable{
+public class NettyClientHandler21 extends ChannelInboundHandlerAdapter implements Callable {
     //传入的参数
     private Object param;
     private Object response;
@@ -31,19 +31,19 @@ public class NettyClientHandler21 extends ChannelInboundHandlerAdapter implement
     }
 
     @Override
-    public synchronized void channelRead(ChannelHandlerContext ctx, Object msg){
+    public synchronized void channelRead(ChannelHandlerContext ctx, Object msg) {
         response = msg;
         notifyAll();
     }
 
     //调用的时候  就进行传输
     @Override
-    public synchronized Object call()  {
+    public synchronized Object call() {
         context.writeAndFlush(param);
         try {
             wait();
         } catch (InterruptedException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
         return response;
     }

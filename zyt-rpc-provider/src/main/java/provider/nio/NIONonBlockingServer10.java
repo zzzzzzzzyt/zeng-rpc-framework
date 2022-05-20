@@ -67,7 +67,7 @@ public class NIONonBlockingServer10 {
                     continue;
                 }
             } catch (IOException e) {
-                log.error(e.getMessage(),e);
+                log.error(e.getMessage(), e);
             }
 
             //获取所有的对象
@@ -83,7 +83,7 @@ public class NIONonBlockingServer10 {
                         socketChannel.configureBlocking(false);
                         socketChannel.register(selector, SelectionKey.OP_READ, ByteBuffer.allocate(1024));
                     } catch (IOException e) {
-                        log.error(e.getMessage(),e);
+                        log.error(e.getMessage(), e);
                     }
                 }
                 if (key.isReadable()) {

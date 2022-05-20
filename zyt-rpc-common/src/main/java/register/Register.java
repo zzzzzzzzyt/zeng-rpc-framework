@@ -9,6 +9,7 @@ import annotation.RegistryChosen;
     nacos       nacos实现注册中心
     zkCurator   Curator协助操作注册中心
 */
+
 /**
  * @author 祝英台炸油条
  */

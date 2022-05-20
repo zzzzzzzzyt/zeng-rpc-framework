@@ -1,8 +1,7 @@
 package consumer.proxy;
 
-import exception.RpcException;
-
 //模板
+
 /**
  * @author 祝英台炸油条
  */

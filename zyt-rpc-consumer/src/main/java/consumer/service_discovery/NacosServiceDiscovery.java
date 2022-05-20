@@ -16,7 +16,7 @@ import java.util.Properties;
  */
 @Slf4j
 public class NacosServiceDiscovery {
-    public static String getMethodAddress(String methodName)  {
+    public static String getMethodAddress(String methodName) {
         Properties properties = RpcConstants.propertiesInit();
         Instance instance = null;
         try {
@@ -25,25 +25,24 @@ public class NacosServiceDiscovery {
             //这个方法内部实现了负载均衡
             instance = namingService.selectOneHealthyInstance(methodName);
         } catch (NacosException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
-        if (instance==null)
-        {
+        if (instance == null) {
             log.info("没有提供该方法");
             try {
                 throw new RpcException("没有对应的方法");
             } catch (RpcException e) {
-                log.error(e.getMessage(),e);
+                log.error(e.getMessage(), e);
             }
         }
         //为空的化 就抛出异常
         assert instance != null;
         String ip = instance.getIp();
         int port = instance.getPort();
-        return ip+":"+port;
+        return ip + ":" + port;
     }
 
-    public static String getStart(String methodName,String msg) {
+    public static String getStart(String methodName, String msg) {
         //获取相应的远端地址
 
         String methodAddress = getMethodAddress(methodName);
@@ -52,6 +51,6 @@ public class NacosServiceDiscovery {
         //启动
         String address = strings[0];
         int port = Integer.parseInt(strings[1]);
-        return NIONonBlockingClient12.start(address,port,msg);
+        return NIONonBlockingClient12.start(address, port, msg);
     }
 }
