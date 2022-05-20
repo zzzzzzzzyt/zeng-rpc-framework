@@ -3,7 +3,6 @@ package serialization.kryo;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import entity.Person;
 import serialization.Serializer;
 
 import java.io.ByteArrayInputStream;
@@ -11,6 +10,9 @@ import java.io.ByteArrayOutputStream;
 
 
 //通过KryoUtils实现序列化
+/**
+ * @author 祝英台炸油条
+ */
 public class KryoUtils implements Serializer {
 
 

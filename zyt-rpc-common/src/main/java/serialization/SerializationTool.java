@@ -1,8 +1,8 @@
 package serialization;
 
 import annotation.CodecSelector;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import exception.RpcException;
+import lombok.extern.slf4j.Slf4j;
 import serialization.fst.FSTUtils;
 import serialization.hessian.HessianUtils;
 import serialization.json.FastJsonUtils;
@@ -11,15 +11,17 @@ import serialization.json.JacksonUtils;
 import serialization.kryo.KryoUtils;
 import serialization.protostuff.ProtostuffUtils;
 
-import java.io.IOException;
-
 //这是一个进行统一序列化的一个工具
+/**
+ * @author 祝英台炸油条
+ */
+@Slf4j
 public class SerializationTool implements Serializer {
 
     static String codec = Serialization.class.getAnnotation(CodecSelector.class).Codec();
 
     @Override
-    public byte[] serialize(Object obj) throws RpcException, JsonProcessingException {
+    public byte[] serialize(Object obj) {
         switch (codec) {
             case "kryo":
                 return new KryoUtils().serialize(obj);
@@ -36,12 +38,17 @@ public class SerializationTool implements Serializer {
             case "gson":
                 return new GsonUtils().serialize(obj);
             default:
-                throw new RpcException("你所找的序列化方法还没编写，或者可能在该版本被废弃了，你可以看看2.2版本");
+                try {
+                    throw new RpcException("你所找的序列化方法还没编写，或者可能在该版本被废弃了，你可以看看2.2版本");
+                } catch (RpcException e) {
+                    log.error(e.getMessage(),e);
+                    return new byte[0];
+                }
         }
     }
 
     @Override
-    public <T> T deserialize(byte[] bytes, Class<T> clazz) throws RpcException, IOException {
+    public <T> T deserialize(byte[] bytes, Class<T> clazz) {
         switch (codec) {
             case "kryo":
                 return new KryoUtils().deserialize(bytes, clazz);
@@ -58,7 +65,12 @@ public class SerializationTool implements Serializer {
             case "gson":
                 return new GsonUtils().deserialize(bytes,clazz);
             default:
-                throw new RpcException("你所找的序列化方法还没编写，或者可能在该版本被废弃了，你可以看看2.2版本");
+                try {
+                    throw new RpcException("你所找的序列化方法还没编写，或者可能在该版本被废弃了，你可以看看2.2版本");
+                } catch (RpcException e) {
+                    log.error(e.getMessage(),e);
+                    return null;
+                }
         }
     }
 }

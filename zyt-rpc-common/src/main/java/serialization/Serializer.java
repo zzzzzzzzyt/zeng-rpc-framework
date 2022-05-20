@@ -1,11 +1,9 @@
 package serialization;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import exception.RpcException;
-
-import java.io.IOException;
-
+/**
+ * @author 祝英台炸油条
+ */
 public interface Serializer {
     /**
      * 序列化
@@ -13,7 +11,7 @@ public interface Serializer {
      * @param obj 要序列化的对象
      * @return 字节数组
      */
-    byte[] serialize(Object obj) throws RpcException, JsonProcessingException;
+    byte[] serialize(Object obj) ;
 
     /**
      * 反序列化
@@ -24,5 +22,5 @@ public interface Serializer {
      *              如果不知道类的类型的话，使用 {@code Class<?>}
      * @return 反序列化的对象
      */
-    <T> T deserialize(byte[] bytes, Class<T> clazz) throws RpcException, IOException;
+    <T> T deserialize(byte[] bytes, Class<T> clazz);
 }
