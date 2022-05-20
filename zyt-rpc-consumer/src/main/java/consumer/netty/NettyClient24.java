@@ -5,7 +5,6 @@ import annotation.HeartBeatTool;
 import codec.AddCodec;
 import configuration.GlobalConfiguration;
 import consumer.netty_client_handler.NettyClientHandler24;
-import heartbeat.HeartBeat;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -51,7 +50,7 @@ public class NettyClient24 {
                     .channel(NioSocketChannel.class)
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
-                        protected void initChannel(SocketChannel socketChannel) throws Exception {
+                        protected void initChannel(SocketChannel socketChannel) {
                             ChannelPipeline pipeline = socketChannel.pipeline();
 
                             //加编解码器的逻辑，根据对应的注解进行编码器的添加 这里面有实现对应的逻辑 //

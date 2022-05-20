@@ -19,6 +19,7 @@ import java.util.concurrent.Executors;
 
 //实际客户端启动类  进行操作
 //不确定能返回什么 所以判断是对象
+
 /**
  * @author 祝英台炸油条
  */
@@ -30,8 +31,7 @@ public class NettyClient22 {
 
     static NettyClientHandler22 clientHandler;
 
-    public static void initClient(String hostName,int port,Method method)
-    {
+    public static void initClient(String hostName, int port, Method method) {
 
         clientHandler = new NettyClientHandler22();
         //建立客户端监听
@@ -43,11 +43,11 @@ public class NettyClient22 {
                     .channel(NioSocketChannel.class)
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
-                        protected void initChannel(SocketChannel socketChannel) throws Exception {
+                        protected void initChannel(SocketChannel socketChannel) {
                             ChannelPipeline pipeline = socketChannel.pipeline();
 
                             //加编解码器的逻辑，根据对应的注解进行编码器的添加 这里面有实现对应的逻辑 //
-                            AddCodec.addCodec(pipeline,method,true);
+                            AddCodec.addCodec(pipeline, method, true);
                             pipeline.addLast(clientHandler);
                         }
                     });
@@ -56,20 +56,20 @@ public class NettyClient22 {
             bootstrap.connect(hostName, port).sync();
 
         } catch (InterruptedException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
     }
 
     public static Object callMethod(String hostName, int port, Object param, Method method) {
 
         //我是有多个地方进行调用的 不能只连接一个
-        initClient(hostName,port,method);
+        initClient(hostName, port, method);
         clientHandler.setParam(param);
         //接下来这就有关系到调用 直接调用
         try {
             return executor.submit(clientHandler).get();
         } catch (InterruptedException | ExecutionException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
         return null;
     }

@@ -93,17 +93,17 @@ public class NIONonBlockingServer14 {
                         ByteBuffer buffer = (ByteBuffer) key.attachment();
                         //进行调用方法并返回
                         //获得信息
-                        StringBuilder stringBuffer = new StringBuilder();
+                        StringBuilder stringBuilder = new StringBuilder();
                         int read = 1;
                         while (read != 0) {
                             //先清空 防止残留
                             buffer.clear();
                             read = socketChannel.read(buffer);
                             //添加的时候  根据读入的数据进行
-                            stringBuffer.append(new String(buffer.array(), 0, read));
+                            stringBuilder.append(new String(buffer.array(), 0, read));
                         }
 
-                        String msg = stringBuffer.toString();
+                        String msg = stringBuilder.toString();
 
                         //这里要有新逻辑了 根据获得的方法名 去找到相应的方法
                         //方法我们保存在固定位置 同时含有固定后缀

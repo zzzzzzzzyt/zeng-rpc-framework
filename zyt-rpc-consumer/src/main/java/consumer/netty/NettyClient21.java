@@ -43,7 +43,7 @@ public class NettyClient21 {
                     .channel(NioSocketChannel.class)
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
-                        protected void initChannel(SocketChannel socketChannel) throws Exception {
+                        protected void initChannel(SocketChannel socketChannel) {
                             ChannelPipeline pipeline = socketChannel.pipeline();
                             pipeline.addLast(new StringEncoder());//传输必须加编解码器 不然不认识的类传不过去
                             pipeline.addLast(new StringDecoder());

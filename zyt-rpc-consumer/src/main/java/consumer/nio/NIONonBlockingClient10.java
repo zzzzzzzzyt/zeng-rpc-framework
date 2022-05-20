@@ -60,13 +60,13 @@ public class NIONonBlockingClient10 {
                         SocketChannel channel = (SocketChannel) key.channel();
                         int read = 1;
                         //用这个的原因是怕 多线程出现影响
-                        StringBuilder stringBuffer = new StringBuilder();
+                        StringBuilder stringBuilder = new StringBuilder();
                         while (read != 0) {
                             buffer.clear();
                             read = channel.read(buffer);
-                            stringBuffer.append(new String(buffer.array(), 0, read));
+                            stringBuilder.append(new String(buffer.array(), 0, read));
                         }
-                        log.info("收到服务端回信" + stringBuffer.toString());
+                        log.info("收到服务端回信" + stringBuilder.toString());
                         keyIterator.remove();
                     }
                 } catch (IOException e) {
@@ -80,7 +80,7 @@ public class NIONonBlockingClient10 {
         while (true) {
             int methodNum = scanner.nextInt();
             String message = scanner.next();
-            String msg = new String(methodNum + "#" + message);
+            String msg = methodNum + "#" + message;
             try {
                 socketChannel.write(ByteBuffer.wrap(msg.getBytes(StandardCharsets.UTF_8)));
             } catch (IOException e) {

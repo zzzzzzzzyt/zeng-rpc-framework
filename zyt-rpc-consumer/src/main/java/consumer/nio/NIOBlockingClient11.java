@@ -43,6 +43,7 @@ public class NIOBlockingClient11 {
         //输入输出通道都放在外面
 
         try {
+            assert socketChannel != null;
             ObjectOutputStream outputStream = new ObjectOutputStream(socketChannel.socket().getOutputStream());
             ObjectInputStream objectInputStream = new ObjectInputStream(socketChannel.socket().getInputStream());
             //都是阻塞等待 发完了 接收完了 才能进行下一步 不然会报异常
@@ -65,6 +66,7 @@ public class NIOBlockingClient11 {
             log.error(e.getMessage(), e);
         } finally {
             try {
+                assert socketChannel != null;
                 socketChannel.close();
             } catch (IOException ex) {
                 log.error(ex.getMessage(), ex);

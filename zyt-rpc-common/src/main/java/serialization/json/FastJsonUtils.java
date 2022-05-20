@@ -11,8 +11,6 @@ import serialization.Serializer;
 public class FastJsonUtils implements Serializer {
     @Override
     public byte[] serialize(Object obj) {
-
-        // return JSON.toJSONString(obj,true).getBytes(StandardCharsets.UTF_8);
         return JSON.toJSONBytes(obj);
     }
 

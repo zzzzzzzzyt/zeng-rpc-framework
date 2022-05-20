@@ -2,7 +2,6 @@ package consumer.netty_client_handler;
 
 
 import annotation.CompressFunction;
-import compress.Compress;
 import compress.CompressTypeTool;
 import configuration.GlobalConfiguration;
 import io.netty.channel.ChannelHandlerContext;

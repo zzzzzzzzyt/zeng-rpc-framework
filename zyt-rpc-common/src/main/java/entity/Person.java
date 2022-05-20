@@ -7,6 +7,7 @@ import java.io.Serializable;
 //千万注意要实现序列化接口
 
 //接口一定要实现正确
+
 /**
  * @author 祝英台炸油条
  */
@@ -14,20 +15,18 @@ public class Person implements Serializable {
     private String name;
 
     //构造方法
-    public  Person(String name)
-    {
+    public Person(String name) {
         this.name = name;
     }
 
     public Person() {
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
-    public void setName(String name)
-    {
+
+    public void setName(String name) {
         this.name = name;
     }
 

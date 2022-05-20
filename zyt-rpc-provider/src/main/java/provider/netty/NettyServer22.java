@@ -44,11 +44,17 @@ public class NettyServer22 {
                     .childOption(ChannelOption.SO_KEEPALIVE, true) //设置保持活动连接状态
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
-                        protected void initChannel(SocketChannel socketChannel) throws Exception {
+                        protected void initChannel(SocketChannel socketChannel) {
                             log.info(socketChannel.remoteAddress() + "连接上了");
                             ChannelPipeline pipeline = socketChannel.pipeline();
                             //添加的处理器 根据相应的注解而定
-                            Method method = Class.forName("provider.api." + methodName + "ServiceImpl").getMethods()[0];
+                            Method method = null;
+                            try {
+                                method = Class.forName("provider.api." + methodName + "ServiceImpl").getMethods()[0];
+                            } catch (ClassNotFoundException e) {
+                                log.error(e.getMessage(), e);
+                            }
+                            assert method != null;
                             AddCodec.addCodec(pipeline, method, false);
                             //传入的直接是方法本身了 而不是方法名字
                             pipeline.addLast(new NettyServerHandler22(methodName));

@@ -1,6 +1,5 @@
 package codec;
 
-import annotation.CodecSelector;
 import annotation.RpcSerializationSelector;
 import configuration.GlobalConfiguration;
 import entity.PersonPOJO;

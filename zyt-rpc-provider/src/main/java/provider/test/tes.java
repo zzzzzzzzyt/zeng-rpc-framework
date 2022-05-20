@@ -8,9 +8,8 @@ import org.junit.jupiter.api.Test;
  **/
 public class tes {
     @Test
-    public void test()
-    {
-        String s=null;
-        assert s!=null;
+    public void test() {
+        String s = null;
+        assert s != null;
     }
 }

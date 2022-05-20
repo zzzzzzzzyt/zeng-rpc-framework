@@ -27,8 +27,9 @@ public class NIONonBlockingClient12 {
     private static String start0(String hostName, int port, String msg) {
         //得到一个网络通道
         Selector selector = null;
+        SocketChannel socketChannel = null;
         try {
-            SocketChannel socketChannel = SocketChannel.open();
+            socketChannel = SocketChannel.open();
             log.info("-----------服务消费方启动-------------");
             socketChannel.configureBlocking(false);
             //建立链接  非阻塞连接  但我们是要等他连接上
@@ -61,18 +62,19 @@ public class NIONonBlockingClient12 {
                     SocketChannel channel = (SocketChannel) key.channel();
                     int read = 1;
                     //用这个的原因是怕 多线程出现影响
-                    StringBuilder stringBuffer = new StringBuilder();
+                    StringBuilder stringBuilder = new StringBuilder();
                     while (read != 0) {
                         buffer.clear();
                         read = channel.read(buffer);
-                        stringBuffer.append(new String(buffer.array(), 0, read));
+                        stringBuilder.append(new String(buffer.array(), 0, read));
                     }
-                    return stringBuffer.toString();
+                    return stringBuilder.toString();
                 }
             } catch (IOException e) {
                 log.error(e.getMessage(), e);
             }
         }
+
     }
 }
 

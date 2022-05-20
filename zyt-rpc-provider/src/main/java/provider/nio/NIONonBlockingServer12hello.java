@@ -95,17 +95,17 @@ public class NIONonBlockingServer12hello {
                         ByteBuffer buffer = (ByteBuffer) key.attachment();
                         //进行调用方法并返回
                         //获得信息
-                        StringBuffer stringBuffer = new StringBuffer();
+                        StringBuilder stringBuilder = new StringBuilder();
                         int read = 1;
                         while (read != 0) {
                             //先清空 防止残留
                             buffer.clear();
                             read = socketChannel.read(buffer);
                             //添加的时候  根据读入的数据进行
-                            stringBuffer.append(new String(buffer.array(), 0, read));
+                            stringBuilder.append(new String(buffer.array(), 0, read));
                         }
 
-                        String msg = stringBuffer.toString();
+                        String msg = stringBuilder.toString();
                         HelloService helloService = new HelloServiceImpl();
                         String response = helloService.sayHello(msg);
 

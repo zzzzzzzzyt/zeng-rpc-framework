@@ -6,7 +6,6 @@ import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooKeeper;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -27,7 +26,7 @@ public class AccessLoadBalance implements LoadBalance {
                 }
             }
             //进行排序 根据每个节点的访问次数 从小到大进行排序  然后选用最小的
-            Collections.sort(children, (o1, o2) -> {
+            children.sort((o1, o2) -> {
 
                 try {
                     return Integer.parseInt(new String(zooKeeper.getData(path + "/" + o1, false, null)))

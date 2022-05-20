@@ -15,13 +15,12 @@ import java.util.*;
 public class DiyZipUtils implements CompressType {
 
     //线程独享的霍夫曼编码表 因为害怕线程不安全导致错误 所以设置线程独享
-    private static final ThreadLocal<HashMap<Byte, String>> hashMapThreadLocal = ThreadLocal.withInitial(() -> new HashMap<>());
+    private static final ThreadLocal<HashMap<Byte, String>> hashMapThreadLocal = ThreadLocal.withInitial(HashMap::new);
 
 
     @Override
     public byte[] compress(byte[] bytes) {
-        byte[] compressBytes = huffmanZip(bytes);
-        return compressBytes;
+        return huffmanZip(bytes);
     }
 
 
@@ -63,7 +62,7 @@ public class DiyZipUtils implements CompressType {
         return nodes;
     }
 
-    private class Node1 implements Comparable<Node1> {
+    private static class Node1 implements Comparable<Node1> {
         //数值 存放字符本身
         Byte data;
         //权重

@@ -20,7 +20,7 @@ public class RandomLoadBalance implements LoadBalance {
         try {
             children = zooKeeper.getChildren(path, null, null);
         } catch (KeeperException | InterruptedException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
         assert children != null;
         if (children.isEmpty()) {
@@ -42,7 +42,7 @@ public class RandomLoadBalance implements LoadBalance {
             ++visitedCount;
             zooKeeper.setData(path + "/" + chooseNode, String.valueOf(visitedCount).getBytes(StandardCharsets.UTF_8), -1);
         } catch (KeeperException | InterruptedException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
         return chooseNode;
     }

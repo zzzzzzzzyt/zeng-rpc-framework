@@ -9,6 +9,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
 import serialization.SerializationTool;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 
@@ -41,10 +42,16 @@ public class NettyServerHandler24 extends ChannelInboundHandlerAdapter {
     //实现对应的方法
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
         log.info("收到来自" + ctx.channel().remoteAddress() + "的信息");
         //使用反射的方法获取对应的类 通过反射再进行执行
-        Class<?> calledClass = Class.forName("provider.api." + methodName + "ServiceImpl");
+        Class<?> calledClass = null;
+        try {
+            calledClass = Class.forName("provider.api." + methodName + "ServiceImpl");
+        } catch (ClassNotFoundException e) {
+            log.error(e.getMessage(), e);
+        }
+        assert calledClass != null;
         Method[] methods = calledClass.getMethods();
         Method method = methods[0];
 
@@ -66,8 +73,13 @@ public class NettyServerHandler24 extends ChannelInboundHandlerAdapter {
         // }
 
 
-        Object instance = calledClass.newInstance();
-        Object response = method.invoke(instance, msg);
+        Object response = null;
+        try {
+            Object instance = calledClass.newInstance();
+            response = method.invoke(instance, msg);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            log.error(e.getMessage(), e);
+        }
         //获得对应信息并进行回传
 
         //判断是否需要通过对应的方法进行序列化  序列化都集成了
@@ -85,7 +97,7 @@ public class NettyServerHandler24 extends ChannelInboundHandlerAdapter {
 
     //出现异常的话 如何进行处理
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         ctx.channel().close();
         cause.printStackTrace();
     }

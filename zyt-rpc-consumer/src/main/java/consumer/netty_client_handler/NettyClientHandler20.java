@@ -15,13 +15,13 @@ public class NettyClientHandler20 extends ChannelInboundHandlerAdapter {
 
     //通道就绪就会发的信息
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    public void channelActive(ChannelHandlerContext ctx) {
         ctx.writeAndFlush(Unpooled.copiedBuffer("你好，服务端", CharsetUtil.UTF_8));
     }
 
     //这个是收到信息
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
         ByteBuf buf = (ByteBuf) msg;
         log.info("收到来自" + ctx.channel().remoteAddress() + "的消息" + buf.toString(CharsetUtil.UTF_8));
     }

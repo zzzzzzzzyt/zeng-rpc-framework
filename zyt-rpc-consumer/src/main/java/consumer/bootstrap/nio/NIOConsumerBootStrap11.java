@@ -11,9 +11,7 @@ import consumer.nio.NIOBlockingClient11;
  */
 public class NIOConsumerBootStrap11 {
     public static void main(String[] args) {
-
         //阻塞启动
         NIOBlockingClient11.start("127.0.0.1", 6666);
-
     }
 }

@@ -25,7 +25,7 @@ public class NettyClient20 {
                     .channel(NioSocketChannel.class)
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
-                        protected void initChannel(SocketChannel socketChannel) throws Exception {
+                        protected void initChannel(SocketChannel socketChannel) {
                             ChannelPipeline pipeline = socketChannel.pipeline();
                             pipeline.addLast(new NettyClientHandler20());
                         }
