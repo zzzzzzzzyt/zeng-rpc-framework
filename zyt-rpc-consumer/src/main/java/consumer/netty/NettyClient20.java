@@ -6,11 +6,16 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import lombok.extern.slf4j.Slf4j;
 
 
 //实际客户端启动类
+/**
+ * @author 祝英台炸油条
+ */
+@Slf4j
 public class NettyClient20 {
-    public static void start(String hostName, int port) throws InterruptedException {
+    public static void start(String hostName, int port){
         Bootstrap bootstrap = new Bootstrap();
         EventLoopGroup workGroup = new NioEventLoopGroup();
 
@@ -32,17 +37,21 @@ public class NettyClient20 {
                 @Override
                 public void operationComplete(ChannelFuture channelFuture) throws Exception {
                     if (channelFuture.isSuccess()) {
-                        System.out.println("连接"+hostName+":"+port+"成功");
+                        log.info("连接"+hostName+":"+port+"成功");
                     }
                     else
                     {
-                        System.out.println("连接"+hostName+":"+port+"失败");
+                        log.info("连接"+hostName+":"+port+"失败");
                     }
                 }
             });
 
             //监听关闭事件，本来是异步的，现在转换为同步事件
-            channelFuture.channel().closeFuture().sync();
+            try {
+                channelFuture.channel().closeFuture().sync();
+            } catch (InterruptedException e) {
+                log.error(e.getMessage(),e);
+            }
         } finally
         {
             //优雅的关闭 group

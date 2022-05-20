@@ -11,12 +11,18 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 //实际客户端启动类  进行操作
 //不确定能返回什么 所以判断是对象
+/**
+ * @author 祝英台炸油条
+ */
+@Slf4j
 public class NettyClient21 {
 
     //线程池 实现异步调用
@@ -49,16 +55,21 @@ public class NettyClient21 {
             bootstrap.connect(hostName, port).sync();
 
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(),e);
         }
     }
 
-    public static Object callMethod(String hostName, int port, Object param) throws Exception {
+    public static Object callMethod(String hostName, int port, Object param) {
 
         //我是有多个地方进行调用的 不能只连接一个
         initClient(hostName,port);
         clientHandler.setParam(param);
         //接下来这就有关系到调用 直接调用
-        return executor.submit(clientHandler).get();
+        try {
+            return executor.submit(clientHandler).get();
+        } catch (InterruptedException | ExecutionException e) {
+            log.error(e.getMessage(),e);
+        }
+        return null;
     }
 }

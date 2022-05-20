@@ -2,7 +2,6 @@ package compress.diyzip;
 
 import compress.CompressType;
 
-import java.io.IOException;
 import java.util.*;
 
 // todo  尚未完成 有一定的问题 对这块完成度还有问题
@@ -17,7 +16,7 @@ public class DiyZipUtils implements CompressType {
 
 
     @Override
-    public byte[] compress(byte[] bytes) throws IOException {
+    public byte[] compress(byte[] bytes)  {
         byte[] compressBytes = huffmanZip(bytes);
         return compressBytes;
     }

@@ -3,6 +3,9 @@ package consumer.proxy;
 import exception.RpcException;
 
 //模板
+/**
+ * @author 祝英台炸油条
+ */
 public interface ClientProxy {
-    public  Object getBean(final Class<?> serviceClass) throws RpcException;
+    Object getBean(final Class<?> serviceClass) throws RpcException;
 }

@@ -1,5 +1,7 @@
 package consumer.nio;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -11,28 +13,37 @@ import java.util.Iterator;
 
 
 //v1.0版本非阻塞nio
+/**
+ * @author 祝英台炸油条
+ */
+@Slf4j
 public class NIONonBlockingClient12 {
-    public static String start(String HostName, int PORT,String msg) throws IOException{
-        return start0(HostName,PORT,msg);
+    public static String start(String hostName, int port, String msg) {
+        return start0(hostName, port,msg);
     }
 
     //真正启动在这
-    private static String start0(String hostName, int port,String msg) throws IOException {
+    private static String start0(String hostName, int port,String msg) {
         //得到一个网络通道
-        SocketChannel socketChannel = SocketChannel.open();
-        System.out.println("-----------服务消费方启动-------------");
-        socketChannel.configureBlocking(false);
-        //建立链接  非阻塞连接  但我们是要等他连接上
-        if (!socketChannel.connect(new InetSocketAddress(hostName,port))) {
-            while (!socketChannel.finishConnect());
+        Selector selector = null;
+        try {
+            SocketChannel socketChannel = SocketChannel.open();
+            log.info("-----------服务消费方启动-------------");
+            socketChannel.configureBlocking(false);
+            //建立链接  非阻塞连接  但我们是要等他连接上
+            if (!socketChannel.connect(new InetSocketAddress(hostName,port))) {
+                while (!socketChannel.finishConnect());
+            }
+            //创建选择器 进行监听读事件
+            selector = Selector.open();
+
+            socketChannel.register(selector, SelectionKey.OP_READ, ByteBuffer.allocate(1024));
+
+            //进行发送 发的太快了 来不及收到
+            socketChannel.write(ByteBuffer.wrap(msg.getBytes(StandardCharsets.UTF_8)));
+        } catch (IOException e) {
+            log.error(e.getMessage(),e);
         }
-        //创建选择器 进行监听读事件
-        Selector selector = Selector.open();
-
-        socketChannel.register(selector, SelectionKey.OP_READ, ByteBuffer.allocate(1024));
-
-        //进行发送 发的太快了 来不及收到
-        socketChannel.write(ByteBuffer.wrap(msg.getBytes(StandardCharsets.UTF_8)));
 
         //直接进行监听
         while (true)
@@ -61,7 +72,7 @@ public class NIONonBlockingClient12 {
                     return stringBuffer.toString();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage(),e);
             }
         }
     }

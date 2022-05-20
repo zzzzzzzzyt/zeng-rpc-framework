@@ -13,8 +13,10 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Method;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -23,6 +25,10 @@ import java.util.concurrent.Executors;
 
 //实际客户端启动类  进行操作
 //不确定能返回什么 所以判断是对象
+/**
+ * @author 祝英台炸油条
+ */
+@Slf4j
 public class NettyClient24 {
 
     //线程池 实现异步调用
@@ -31,7 +37,7 @@ public class NettyClient24 {
     // static NettyClientHandler24 clientHandler;//跟他没关系 因为每次都新建一个
     private static final ThreadLocal<NettyClientHandler24> nettyClientHandlerThreadLocal = ThreadLocal.withInitial(()->new NettyClientHandler24());
 
-    public static Object callMethod(String hostName, int port, Object param, Method method) throws Exception {
+    public static Object callMethod(String hostName, int port, Object param, Method method) {
 
         NettyClientHandler24 clientHandler = nettyClientHandlerThreadLocal.get();
         //建立客户端监听
@@ -75,16 +81,20 @@ public class NettyClient24 {
             bootstrap.connect(hostName, port).sync();
 
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(),e);
         }
         //我是有多个地方进行调用的 不能只连接一个
         // initClient(hostName,port,method);
         clientHandler.setParam(param);
         clientHandler.setMethod(method);
         //接下来这就有关系到调用 直接调用
-        Object response = executor.submit(clientHandler).get();
+        Object response = null;
+        try {
+            response = executor.submit(clientHandler).get();
+        } catch (InterruptedException | ExecutionException e) {
+            log.error(e.getMessage(),e);
+        }
         nettyClientHandlerThreadLocal.remove(); //一个handler不能加到两个管道中 你说是吧
         return response;
-
     }
 }

@@ -7,6 +7,7 @@ import compress.CompressTypeTool;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
+import lombok.extern.slf4j.Slf4j;
 import serialization.SerializationTool;
 
 import java.lang.reflect.Method;
@@ -17,7 +18,10 @@ import java.util.concurrent.Callable;
 *   在2.4版本之后我们就暂时淘汰JDK序列化和protoc编译成的类进行处理了
 * */
 //实现了Callable接口实现了异步调用
-
+/**
+ * @author 祝英台炸油条
+ */
+@Slf4j
 public class NettyClientHandler24 extends ChannelInboundHandlerAdapter implements Callable{
     //传入的参数
     private Object param;
@@ -43,13 +47,13 @@ public class NettyClientHandler24 extends ChannelInboundHandlerAdapter implement
 
     //当成功建立 就赋值上下文对象
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    public void channelActive(ChannelHandlerContext ctx) {
         context = ctx;
-        System.out.println("U•ェ•*U 成功连接");
+        log.info("U•ェ•*U 成功连接");
     }
 
     @Override
-    public synchronized void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    public synchronized void channelRead(ChannelHandlerContext ctx, Object msg) {
 
         byte[] msgByteArray = (byte[]) msg;
         // 根据是否解压 首先把收到的信息进行解压再进行反序列化
@@ -61,12 +65,12 @@ public class NettyClientHandler24 extends ChannelInboundHandlerAdapter implement
         msg = serializationTool.deserialize(msgByteArray,method.getReturnType());
 
         response = msg;
-        notify();
+        notifyAll();
     }
 
     //调用的时候  就进行传输
     @Override
-    public synchronized Object call() throws Exception {
+    public synchronized Object call() {
         //这个变量的目的就是保留原来的param实际参数类型，当返回的时候 可以当作反序列化的模板
         Object request = param;
         //判断是否需要进行序列化 因为使用这个进行序列话 是我没有相应的解码器 2.4之后 就算是string也进行序列化
@@ -80,13 +84,17 @@ public class NettyClientHandler24 extends ChannelInboundHandlerAdapter implement
 
         context.writeAndFlush(requestByteArray);
 
-        wait();
+        try {
+            wait();
+        } catch (InterruptedException e) {
+            log.error(e.getMessage(),e);
+        }
         return response;
     }
 
     //用来判断是否出现了空闲事件  如果出现了那就进行相应的处理
     @Override
-    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) {
         if (evt instanceof IdleStateEvent)
         {
             IdleStateEvent event = (IdleStateEvent) evt;
@@ -104,15 +112,15 @@ public class NettyClientHandler24 extends ChannelInboundHandlerAdapter implement
                     eventType = "读写空闲";
                     break;
             }
-            System.out.println(ctx.channel().remoteAddress()+"发生超时事件"+eventType+"：连接关闭");
+            log.info(ctx.channel().remoteAddress()+"发生超时事件"+eventType+"：连接关闭");
             ctx.close();
         }
     }
 
     //异常处理
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        cause.printStackTrace();
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        log.error(cause.getMessage(),cause);
         ctx.close();
     }
 }

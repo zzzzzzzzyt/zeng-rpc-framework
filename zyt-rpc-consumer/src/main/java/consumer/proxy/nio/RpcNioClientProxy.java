@@ -8,16 +8,17 @@ import consumer.service_discovery.ZkServiceDiscovery;
 import exception.RpcException;
 import register.Register;
 
-
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 //代理类的实现  小修改了一下 就是不用频繁的去创建对象了 单例模式 每次启用
+/**
+ * @author 祝英台炸油条
+ */
+
 public class RpcNioClientProxy implements ClientProxy {
-    public static Object rpcClientProxy;
+    static Object rpcClientProxy;
     //获取代理对象 并返回 当前类别
-    public  Object getBean(final Class<?> serviceClass){
+    public Object getBean(final Class<?> serviceClass){
         /*
             参数详解
             1、用哪个类加载器去加载对象
@@ -28,17 +29,10 @@ public class RpcNioClientProxy implements ClientProxy {
         {
             rpcClientProxy =  Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
                     new Class[]{serviceClass},
-                    new InvocationHandler() {
-                        @Override
-                        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                            //暂时还没有设置回信这个操作
-                            String methodName = method.getName();
-                            //String response = ZkServiceDiscovery.getStart(methodName, (String) args[0]);
-                            //String response = NacosServiceDiscovery.getStart(methodName, (String) args[0]);
-                            //根据注解类进行调用
-                            String response = getResponse(methodName,(String) args[0]);
-                            return response;
-                        }
+                    (proxy, method, args) -> {
+                        //暂时还没有设置回信这个操作
+                        String methodName = method.getName();
+                        return getResponse(methodName,(String) args[0]);
                     }
             );
         }
@@ -47,11 +41,9 @@ public class RpcNioClientProxy implements ClientProxy {
 
     /**
      * 实际去获得对应的服务 并完成方法调用的方法
-     * @param methodName
      * @param msg 消息
-     * @return
      */
-    private static String getResponse(String methodName, String msg) throws Exception {
+    private static String getResponse(String methodName, String msg) {
         //根据注解进行方法调用
         //根据在代理类上的注解调用  看清楚底下的因为是个class数组 可以直接继续获取 注解
         RegistryChosen annotation = Register.class.getAnnotation(RegistryChosen.class);
@@ -64,7 +56,12 @@ public class RpcNioClientProxy implements ClientProxy {
             case "zkCurator":
                 return ZkCuratorDiscovery.getStart(methodName,msg);
             default:
-                throw new RpcException("不存在该注册中心");
+                try {
+                    throw new RpcException("不存在该注册中心");
+                } catch (RpcException e) {
+                    log.error(e.getMessage(),e);
+                    return null;
+                }
         }
     }
 }

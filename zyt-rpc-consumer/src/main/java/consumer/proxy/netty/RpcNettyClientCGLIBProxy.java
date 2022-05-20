@@ -7,6 +7,7 @@ import consumer.service_discovery.NacosServiceDiscovery;
 import consumer.service_discovery.ZkCuratorDiscovery;
 import consumer.service_discovery.ZkServiceDiscovery;
 import exception.RpcException;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -15,6 +16,10 @@ import register.Register;
 import java.lang.reflect.Method;
 
 //Cglib实现代理模式
+/**
+ * @author 祝英台炸油条
+ */
+@Slf4j
 public class RpcNettyClientCGLIBProxy implements ClientProxy,MethodInterceptor{
 
     @Override
@@ -38,8 +43,13 @@ public class RpcNettyClientCGLIBProxy implements ClientProxy,MethodInterceptor{
      * @param methodProxy 用于调用原始方法
      */
     @Override //自定义对应的拦截 拦截方法并执行别的任务
-    public Object intercept(Object obj, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
-        String methodAddress = getMethodAddress(method.getName());
+    public Object intercept(Object obj, Method method, Object[] args, MethodProxy methodProxy) {
+        String methodAddress = null;
+        try {
+            methodAddress = getMethodAddress(method.getName());
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+        }
         String[] split = methodAddress.split(":");
         return NettyClient.callMethod(split[0],Integer.valueOf(split[1]),args[0],method);
     }
@@ -53,7 +63,7 @@ public class RpcNettyClientCGLIBProxy implements ClientProxy,MethodInterceptor{
      * @param
      * @return
      */
-    private static String getMethodAddress(String methodName) throws Exception {
+    private static String getMethodAddress(String methodName) {
         //根据注解进行方法调用
         //根据在代理类上的注解调用  看清楚底下的因为是个class数组 可以直接继续获取 注解
         RegistryChosen annotation = Register.class.getAnnotation(RegistryChosen.class);
@@ -66,7 +76,12 @@ public class RpcNettyClientCGLIBProxy implements ClientProxy,MethodInterceptor{
             case "zkCurator":
                 return ZkCuratorDiscovery.getMethodAddress(methodName);
             default:
-                throw new RpcException("不存在该注册中心");
+                try {
+                    throw new RpcException("不存在该注册中心");
+                } catch (RpcException e) {
+                    log.error(e.getMessage(),e);
+                    return null;
+                }
         }
     }
 }

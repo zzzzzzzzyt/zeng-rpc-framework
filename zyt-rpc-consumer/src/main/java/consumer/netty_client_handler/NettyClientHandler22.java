@@ -3,6 +3,7 @@ package consumer.netty_client_handler;
 import annotation.CodecSelector;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import lombok.extern.slf4j.Slf4j;
 import serialization.Serialization;
 import serialization.hessian.HessianUtils;
 import serialization.kryo.KryoUtils;
@@ -12,7 +13,10 @@ import java.util.concurrent.Callable;
 
 
 //实现了Callable接口实现了异步调用
-
+/**
+ * @author 祝英台炸油条
+ */
+@Slf4j
 public class NettyClientHandler22 extends ChannelInboundHandlerAdapter implements Callable{
     //传入的参数
     private Object param;
@@ -28,9 +32,9 @@ public class NettyClientHandler22 extends ChannelInboundHandlerAdapter implement
 
     //当成功建立 就赋值上下文对象
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    public void channelActive(ChannelHandlerContext ctx) {
         context = ctx;
-        System.out.println("U•ェ•*U 成功连接");
+        log.info("U•ェ•*U 成功连接");
         String codecType = Serialization.class.getAnnotation(CodecSelector.class).Codec();
         if (codecType.equals("protostuff"))isProtostuff = true;
         else if (codecType.equals("kryo"))isKryo = true;
@@ -38,7 +42,7 @@ public class NettyClientHandler22 extends ChannelInboundHandlerAdapter implement
     }
 
     @Override
-    public synchronized void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    public synchronized void channelRead(ChannelHandlerContext ctx, Object msg) {
         //在这要进行解码 获得传回来的信息  如果是遇到下面的msg 那就代表传回来的肯定是个byte[] 根据我们要的方法进行解码
         if (isProtostuff && msg.getClass()!=String.class)
         {
@@ -59,12 +63,12 @@ public class NettyClientHandler22 extends ChannelInboundHandlerAdapter implement
             msg = hessianUtils.deserialize((byte[]) msg,param.getClass());
         }
         response = msg;
-        notify();
+        notifyAll();
     }
 
     //调用的时候  就进行传输
     @Override
-    public synchronized Object call() throws Exception {
+    public synchronized Object call(){
 
         //这个变量的目的就是保留原来的param实际参数类型，当返回的时候 可以当作反序列化的模板
         Object request = param;
@@ -86,13 +90,17 @@ public class NettyClientHandler22 extends ChannelInboundHandlerAdapter implement
         }
 
         context.writeAndFlush(request);
-        wait();
+        try {
+            wait();
+        } catch (InterruptedException e) {
+            log.error(e.getMessage(),e);
+        }
         return response;
     }
 
     //异常处理
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         cause.printStackTrace();
         ctx.close();
     }

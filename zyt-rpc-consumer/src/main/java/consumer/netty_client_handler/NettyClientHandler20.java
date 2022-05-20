@@ -5,7 +5,12 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.CharsetUtil;
+import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @author 祝英台炸油条
+ */
+@Slf4j
 public class NettyClientHandler20 extends ChannelInboundHandlerAdapter {
 
     //通道就绪就会发的信息
@@ -18,6 +23,6 @@ public class NettyClientHandler20 extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf buf = (ByteBuf)msg;
-        System.out.println("收到来自"+ctx.channel().remoteAddress()+"的消息"+buf.toString(CharsetUtil.UTF_8));
+        log.info("收到来自"+ctx.channel().remoteAddress()+"的消息"+buf.toString(CharsetUtil.UTF_8));
     }
 }
