@@ -29,6 +29,7 @@ public class ChosenClientCall {
                     throw new RpcException("暂时还没有该方法，博主正在努力跟进中"); //抛出异常后进行捕获
                 } catch (RpcException e) {
                     log.error(e.getMessage(),e);
+                    return null;
                 }
         }
     }

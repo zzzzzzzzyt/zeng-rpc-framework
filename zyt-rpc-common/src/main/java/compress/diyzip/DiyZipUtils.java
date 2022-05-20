@@ -93,7 +93,6 @@ public class DiyZipUtils implements CompressType {
 
         //前序遍历
         public void preList() {
-            log.info(this);
             if (this.left != null) {
                 this.left.preList();
             }

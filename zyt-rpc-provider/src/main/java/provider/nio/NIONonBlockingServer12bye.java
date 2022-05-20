@@ -2,7 +2,6 @@ package provider.nio;
 
 import lombok.extern.slf4j.Slf4j;
 import method.ByeService;
-import org.apache.zookeeper.KeeperException;
 import provider.api.ByeServiceImpl;
 import provider.service_registry.ZkServiceRegistry;
 
@@ -55,7 +54,7 @@ public class NIONonBlockingServer12bye {
 
             //要先设置非阻塞 再注册  如果时先注册再设置非阻塞会报错
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-        } catch (IOException | InterruptedException | KeeperException e) {
+        } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
 

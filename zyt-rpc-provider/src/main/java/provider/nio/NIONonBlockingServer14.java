@@ -1,7 +1,6 @@
 package provider.nio;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.zookeeper.KeeperException;
 import provider.service_registry.ZkServiceRegistry;
 
 import java.io.IOException;
@@ -54,7 +53,7 @@ public class NIONonBlockingServer14 {
 
             //要先设置非阻塞 再注册  如果时先注册再设置非阻塞会报错
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-        } catch (IOException | InterruptedException | KeeperException e) {
+        } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
 
@@ -94,7 +93,7 @@ public class NIONonBlockingServer14 {
                         ByteBuffer buffer = (ByteBuffer) key.attachment();
                         //进行调用方法并返回
                         //获得信息
-                        StringBuffer stringBuffer = new StringBuffer();
+                        StringBuilder stringBuffer = new StringBuilder();
                         int read = 1;
                         while (read != 0) {
                             //先清空 防止残留

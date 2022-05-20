@@ -69,7 +69,7 @@ public class AddCodec {
                     }
 
                 }
-                else if (returnType==String.class&&parameterType!=String.class)
+                else if (parameterType != String.class)
                 {
                     //客户端 会对参数进行编码，服务端是解码
                     if (isConsumer)
@@ -98,7 +98,7 @@ public class AddCodec {
                     //对什么实例解码
                     pipeline.addLast(new ProtobufDecoder(PersonPOJO.Person.getDefaultInstance()));
                 }
-                else if (returnType!=String.class&&parameterType==String.class)
+                else if (returnType != String.class)
                 {
                     //如果是客户端的话那么传出的是服务端传入的  所以这边编码那边就是解码
                     if (isConsumer)
@@ -113,7 +113,7 @@ public class AddCodec {
                         pipeline.addLast(new StringDecoder());
                     }
                 }
-                else if (returnType==String.class&&parameterType!=String.class)
+                else if (parameterType != String.class)
                 {
                     //客户端 会对参数进行编码，服务端是解码
                     if (isConsumer)

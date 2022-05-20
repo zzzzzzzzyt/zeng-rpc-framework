@@ -43,6 +43,7 @@ public class NIOClientBootStrap {
                     throw new RpcException("太着急了兄弟，这个版本还没出呢！要不你给我提个PR");
                 } catch (RpcException e) {
                     log.error(e.getMessage(),e);
+                    return null;
                 }
         }
     }

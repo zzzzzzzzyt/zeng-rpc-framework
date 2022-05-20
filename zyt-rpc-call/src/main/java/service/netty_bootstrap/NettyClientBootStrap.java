@@ -46,6 +46,7 @@ public class NettyClientBootStrap {
                     throw new RpcException("该版本还没出呢，你如果有想法可以私信我，或者提个pr");
                 } catch (RpcException e) {
                     log.error(e.getMessage(),e);
+                    return null;
                 }
         }
     }
