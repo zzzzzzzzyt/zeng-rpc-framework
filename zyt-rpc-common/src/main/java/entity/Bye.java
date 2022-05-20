@@ -2,9 +2,12 @@ package entity;
 
 import lombok.Data;
 
-import java.io.Serializable;//jdk基本的序列化
+import java.io.Serializable;
 
 //这些都是之前封装好传过去的
+/**
+ * @author 祝英台炸油条
+ */
 @Data
 public class Bye implements Serializable {
     private Integer methodID;

@@ -2,8 +2,6 @@ package service;
 
 import annotation.RpcClientBootStrap;
 import annotation.RpcToolsSelector;
-import entity.Person;
-import entity.PersonPOJO;
 import method.Customer;
 import service.call.ChosenClientCall;
 

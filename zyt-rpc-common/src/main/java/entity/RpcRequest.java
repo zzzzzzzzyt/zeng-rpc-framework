@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 //网络传输请求
+/**
+ * @author 祝英台炸油条
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

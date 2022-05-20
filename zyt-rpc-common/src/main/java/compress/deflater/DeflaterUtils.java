@@ -2,6 +2,7 @@ package compress.deflater;
 
 import compress.CompressType;
 import lombok.extern.slf4j.Slf4j;
+
 import java.io.ByteArrayOutputStream;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;

@@ -1,6 +1,7 @@
 package codec;
 
 import annotation.CodecSelector;
+import entity.PersonPOJO;
 import exception.RpcException;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.bytes.ByteArrayDecoder;
@@ -14,7 +15,7 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import lombok.extern.slf4j.Slf4j;
 import serialization.Serialization;
-import entity.PersonPOJO;
+
 import java.lang.reflect.Method;
 
 //公共类 根据对应选择的注解进行编码器的添加

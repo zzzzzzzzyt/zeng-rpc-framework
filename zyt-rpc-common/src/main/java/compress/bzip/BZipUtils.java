@@ -4,6 +4,7 @@ import compress.CompressType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tools.bzip2.CBZip2InputStream;
 import org.apache.tools.bzip2.CBZip2OutputStream;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

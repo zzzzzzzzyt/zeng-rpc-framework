@@ -3,8 +3,10 @@ package init;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooKeeper;
+
 import java.io.IOException;
 import java.util.List;
+
 import static constants.RpcConstants.ZOOKEEPER_ADDRESS;
 import static constants.RpcConstants.ZOOKEEPER_SESSION_TIMEOUT;
 

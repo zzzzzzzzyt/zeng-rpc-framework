@@ -3,6 +3,7 @@ package compress.lz4;
 import compress.CompressType;
 import lombok.extern.slf4j.Slf4j;
 import net.jpountz.lz4.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
