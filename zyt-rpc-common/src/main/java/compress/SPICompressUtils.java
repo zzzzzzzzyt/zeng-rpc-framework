@@ -8,6 +8,7 @@ import java.util.ServiceLoader;
 
 //通过SPI机制获取对应需要的解压缩工具类  而不是用注解类获取
 @Slf4j
+
 public class SPICompressUtils {
     public static CompressType getUtils() {
         ServiceLoader<CompressType> loader = ServiceLoader.load(CompressType.class);
