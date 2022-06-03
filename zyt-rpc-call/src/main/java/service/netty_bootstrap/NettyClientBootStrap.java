@@ -31,16 +31,16 @@ public class NettyClientBootStrap {
                 NettyConsumerBootStrap20.main(new String[]{"127.0.0.1", String.valueOf(6668)});
                 return null;
             case "2.1":
-                return NettyConsumerBootStrap21.main(null);
+                return NettyConsumerBootStrap21.main();
             case "2.2":
-                return NettyConsumerBootStrap22.main(null);
+                return NettyConsumerBootStrap22.main();
             case "2.4": //这个版本各种序列化工具的使用
             case "2.5":
             case "2.6":
             case "2.7":
             case "2.8":
             case "2.9":
-                return NettyConsumerBootStrap24.main(null);
+                return NettyConsumerBootStrap24.main();
             default:
                 try {
                     throw new RpcException("该版本还没出呢，你如果有想法可以私信我，或者提个pr");

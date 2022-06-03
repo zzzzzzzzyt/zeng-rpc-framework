@@ -13,7 +13,7 @@ import method.Customer;
  * @author 祝英台炸油条
  */
 public class NettyConsumerBootStrap24 {
-    public static Customer main(String[] args) {
+    public static Customer main() {
         ClientProxyTool proxy = new ClientProxyTool();
         return (Customer) proxy.getBean(Customer.class);
     }

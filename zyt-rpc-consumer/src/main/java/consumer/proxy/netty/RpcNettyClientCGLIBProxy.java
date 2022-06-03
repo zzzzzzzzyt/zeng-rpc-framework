@@ -9,6 +9,7 @@ import consumer.service_discovery.ZkCuratorDiscovery;
 import consumer.service_discovery.ZkServiceDiscovery;
 import exception.RpcException;
 import lombok.extern.slf4j.Slf4j;
+import monitor.RpcMonitorOperator;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -52,6 +53,11 @@ public class RpcNettyClientCGLIBProxy implements ClientProxy, MethodInterceptor 
             log.error(e.getMessage(), e);
         }
         assert methodAddress != null;
+
+        //每次调用时 更新对应方法的调用次数和调用方法
+        RpcMonitorOperator rpcMonitorOperator = new RpcMonitorOperator();
+        rpcMonitorOperator.updateServer(methodAddress);
+
         String[] split = methodAddress.split(":");
         return NettyClient.callMethod(split[0], Integer.parseInt(split[1]), args[0], method);
     }
