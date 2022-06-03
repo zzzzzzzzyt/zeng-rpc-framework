@@ -28,20 +28,26 @@ public class NettyServerBootStrap {
         RpcMethodCluster nowAnnotation = ServerCall.class.getAnnotation(RpcMethodCluster.class);
         String[] methods = nowAnnotation.method();
         int[] startNums = nowAnnotation.startNum();
-        //如果不存在那就返回
-        if (methods.length == 0) return;
+
+        //如果不存在那就返回  或者 不一致 就抛出异常
+        try {
+            if (methods.length == 0) throw new RpcException("传入方法数为0");
+            if (methods.length != startNums.length) throw new RpcException("传入方法和启动无法一一对应");
+        } catch (RpcException e) {
+            log.error(e.getMessage(), e);
+            return;
+        }
+
         //2.需要组合在一起传过去  如果不组合分别传 我怕就是端口号会出现问题
         StringBuilder methodBuilder = new StringBuilder();
         StringBuilder numBuilder = new StringBuilder();
-        for (String method : methods) {
-            methodBuilder.append(method);
+        for (int i = 0; i < methods.length; ++i) {
+            methodBuilder.append(methods[i]);
             methodBuilder.append(",");
-        }
-        methodBuilder.deleteCharAt(methodBuilder.length() - 1);
-        for (int startNum : startNums) {
-            numBuilder.append(startNum);
+            numBuilder.append(startNums[i]);
             numBuilder.append(",");
         }
+        methodBuilder.deleteCharAt(methodBuilder.length() - 1);
         numBuilder.deleteCharAt(numBuilder.length() - 1);
 
         //根据对应的启动版本进行启动

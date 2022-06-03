@@ -3,8 +3,8 @@ package compress;
 import annotation.CompressFunction;
 
 /**
- * @author ×£Ó¢Ì¨Õ¨ÓÍÌõ
- * Ö®Ç°µÄ½âÑ¹ËõÊÇ·ñ¿ªÆô×¢²áÀà  Õâ¸öÏÖÔÚÒÑ¾­¹ıÊ±ÁË
+ * @author ç¥è‹±å°ç‚¸æ²¹æ¡
+ * ä¹‹å‰çš„è§£å‹ç¼©æ˜¯å¦å¼€å¯æ³¨å†Œç±»  è¿™ä¸ªç°åœ¨å·²ç»è¿‡æ—¶äº†
  */
 @Deprecated
 @CompressFunction(isOpenFunction = true)
