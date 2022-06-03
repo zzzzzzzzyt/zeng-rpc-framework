@@ -20,7 +20,7 @@ public class NIOProviderBootStrap14 {
         String[] methods = methodStr.split(",");
         String[] nums = numStr.split(",");
         //进行创建  可能会出问题 这边的端口
-        for (int i = 0; i < methods.length; i++) {
+        for (int i = 0; i < methods.length; ++i) {
             String methodName = methods[i];
             for (int methodNum = 0; methodNum < Integer.parseInt(nums[i]); methodNum++) {
                 new Thread(() -> NIONonBlockingServer14.start(methodName, port++)).start();

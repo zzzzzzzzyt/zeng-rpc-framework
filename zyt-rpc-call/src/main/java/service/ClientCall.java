@@ -32,10 +32,9 @@ public class ClientCall {
         log.info(msg1);
         //
         new Thread(() -> {
-            Customer customer1 = null;
-            customer1 = ChosenClientCall.start();
+            Customer customer1 = ChosenClientCall.start();
             Person person2 = customer1.GetPerson(new Person("zz"));
-            String msg2 = new String("获取对应类" + person2.getClass() + "，名字为" + person2.getName());
+            String msg2 = "获取对应类" + person2.getClass() + "，名字为" + person2.getName();
             log.info(msg2);
         }).start();
 
