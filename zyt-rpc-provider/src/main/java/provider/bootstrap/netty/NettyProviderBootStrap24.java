@@ -2,6 +2,7 @@ package provider.bootstrap.netty;
 
 
 import lombok.extern.slf4j.Slf4j;
+import provider.monitor.RpcMonitorOperator;
 import provider.netty.NettyServer24;
 
 
@@ -17,7 +18,12 @@ import provider.netty.NettyServer24;
 public class NettyProviderBootStrap24 {
     static volatile int port = 6666; //对应的端口 要传过去 注册到注册中心去
 
+
     public static void main(String[] args) {
+        //首先对原先数据库中的数据进行清空
+        RpcMonitorOperator rpcMonitorOperator = new RpcMonitorOperator();
+        rpcMonitorOperator.deleteAll();
+
         //直接在这里将对应的方法什么的进行分开 然后传过去
         String methods = args[0];
         String nums = args[1];

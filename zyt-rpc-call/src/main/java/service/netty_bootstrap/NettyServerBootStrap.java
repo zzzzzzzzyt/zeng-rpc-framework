@@ -68,6 +68,8 @@ public class NettyServerBootStrap {
             case "2.7":
             case "2.8":
             case "2.9":
+            case "2.10":
+            case "2.11":
                 NettyProviderBootStrap24.main(new String[]{methodBuilder.toString(), numBuilder.toString()});
                 break;
             default:

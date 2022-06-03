@@ -1,4 +1,4 @@
-package monitor;
+package provider.monitor;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -10,11 +10,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 
- * @TableName rpc_monitor
- */
-@TableName(value ="rpc_monitor")
+ * @Author 祝英台炸油条
+ * @Time : 2022/6/3 18:41
+ **/
 @Data
+@TableName("rpc_monitor")
 public class RpcMonitor implements Serializable {
     /**
      * id
