@@ -1,0 +1,5 @@
+
+f
+java:S2095 "KUse try-with-resources or close this "SocketChannel" in a "finally" clause.(ªÒàëùÿÿÿÿ
+U
+java:S1118":Add a private constructor to hide the implicit public one.(Áº¤¹úÿÿÿÿ

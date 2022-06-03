@@ -1,0 +1,7 @@
+
+g	java:S112o"FDefine and throw a dedicated exception instead of using a generic one.(³ïÛ¸øÿÿÿÿ8¾ïË…0
+g	java:S112z"FDefine and throw a dedicated exception instead of using a generic one.(³ïÛ¸øÿÿÿÿ8¿ïË…0
+\
+java:S1118":Add a private constructor to hide the implicit public one.(†ë›­ıÿÿÿÿ8ÙõË…0
+t
+java:S3776&"RRefactor this method to reduce its Cognitive Complexity from 36 to the 15 allowed.(¸Ñ°âøÿÿÿÿ8ÛõË…0

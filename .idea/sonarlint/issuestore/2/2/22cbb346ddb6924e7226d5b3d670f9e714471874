@@ -1,0 +1,18 @@
+
+w
+java:S1104"\Make NACOS_PROPERTIES a static final constant or non-public and provide accessors if needed.(üñ¿¥ÿÿÿÿÿ
+Q
+java:S1444"6Make this "public static NACOS_PROPERTIES" field final(üñ¿¥ÿÿÿÿÿ
+v
+java:S3008"[Rename this field "NACOS_PROPERTIES" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(üñ¿¥ÿÿÿÿÿ
+8
+java:S2386"Make this member "protected".(üñ¿¥ÿÿÿÿÿ
+P
+java:S1118
+":Add a private constructor to hide the implicit public one.(÷ƒöÛ
+[
+java:S1124"EReorder the modifiers to comply with the Java Language Specification.(ÇÜ¶â
+`
+java:S1124"EReorder the modifiers to comply with the Java Language Specification.(ãÅ“µûÿÿÿÿ
+`
+java:S1124"EReorder the modifiers to comply with the Java Language Specification.(†³´‡ûÿÿÿÿ

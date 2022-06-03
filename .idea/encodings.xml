@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/zyt-rpc-api/src/main/resources/log4j.properties" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zyt-rpc-call/src/main/java/service/call/netty_call/NettyServerCall.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zyt-rpc-call/src/main/java/service/netty_bootstrap/NettyClientBootStrap.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zyt-rpc-call/src/main/java/service/netty_bootstrap/NettyServerBootStrap.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zyt-rpc-call/src/main/resources/log4j.properties" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zyt-rpc-common/src/main/java/compress/Compress.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zyt-rpc-common/src/main/java/monitor/RpcMonitor.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zyt-rpc-common/src/main/resources/application-prod.yml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zyt-rpc-common/src/main/resources/application.yml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zyt-rpc-common/src/main/resources/log4j.properties" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zyt-rpc-consumer/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zyt-rpc-consumer/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zyt-rpc-provider/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zyt-rpc-provider/src/main/java/provider/bootstrap/netty/NettyProviderBootStrap20.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zyt-rpc-provider/src/main/resources" charset="UTF-8" />
+    <file url="PROJECT" charset="GBK" />
+  </component>
+</project>
