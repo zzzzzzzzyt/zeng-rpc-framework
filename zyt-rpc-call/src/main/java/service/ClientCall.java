@@ -48,12 +48,11 @@ public class ClientCall {
         // log.info(customer.GetName(PersonPOJO.Person.newBuilder().setName("炸油条").build()));
 
 
-        // nio使用测试
-        //
-        // log.info(customer.Hello("success"));
-        // log.info(customer.Bye("fail"));
-        // log.info(customer.Bye("fail"));
-        // log.info(customer.Bye("fail"));
+        // nio使用测试  netty也可以使用
+        log.info(customer.Hello("success"));
+        log.info(customer.Bye("fail"));
+        log.info(customer.Bye("fail"));
+        log.info(customer.Bye("fail"));
 
 
         // long end = System.currentTimeMillis();

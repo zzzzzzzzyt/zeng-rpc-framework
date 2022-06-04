@@ -38,7 +38,7 @@ public class NettyProviderBootStrap24 {
             for (int methodNum = 0; methodNum < Integer.parseInt(methodNumArray[i]); methodNum++) {
                 RpcMonitor rpcMonitor = new RpcMonitor();
                 //TODO 这里之后还可以继续进行更改 因为这块的话 如果放在服务器上 那么就可以采用服务器相关的设置
-                rpcMonitor.setMethodName("127.0.0.1:"+ port);
+                rpcMonitor.setMethodName("127.0.0.1:" + port);
                 rpcMonitor.setMethodDescription(methodName);
                 rpcMonitorOperator.addServer(rpcMonitor);
                 int nowPort = port.get();

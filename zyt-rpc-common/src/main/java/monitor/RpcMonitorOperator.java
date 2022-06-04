@@ -1,7 +1,6 @@
 package monitor;
 
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import exception.RpcException;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +23,6 @@ public class RpcMonitorOperator {
     }
 
 
-
     /**
      * 作用 就是每次开启服务提供商的时候 删除掉所有的对应项目
      */
@@ -45,15 +43,16 @@ public class RpcMonitorOperator {
     public synchronized void updateServer(String methodAddress) {
         QueryWrapper<RpcMonitor> wrapper = new QueryWrapper<>();
         // 没问题 查询的时候 是跟对应的列名进行比较
-        wrapper.eq("method_name",methodAddress);
+        wrapper.eq("method_name", methodAddress);
         RpcMonitor rpcMonitor = rpcMonitorMapper.selectOne(wrapper);
-        if (rpcMonitor==null) try {
+        if (rpcMonitor == null) try {
             throw new RpcException("监控中心出现错误");
         } catch (RpcException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             return;
         }
-        rpcMonitor.setCallNum(rpcMonitor.getCallNum()+1);
-        rpcMonitorMapper.update(rpcMonitor,new QueryWrapper<RpcMonitor>().eq("id",rpcMonitor.getId()));
+        rpcMonitor.setCallNum(rpcMonitor.getCallNum() + 1);
+        rpcMonitor.setCallTime(null);
+        rpcMonitorMapper.update(rpcMonitor, new QueryWrapper<RpcMonitor>().eq("id", rpcMonitor.getId()));
     }
 }
