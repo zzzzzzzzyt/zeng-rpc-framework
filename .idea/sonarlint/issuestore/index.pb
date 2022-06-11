@@ -247,8 +247,6 @@ Uzyt-rpc-consumer/src/main/java/consumer/bootstrap/netty/NettyConsumerBootStrap2
 Uzyt-rpc-consumer/src/main/java/consumer/bootstrap/netty/NettyConsumerBootStrap22.java,9\e\9e1a394f7d4cb67121ab5315f935fbc8dc6d2546
 
 Ozyt-rpc-consumer/src/main/java/consumer/proxy/netty/RpcNettyClientJDKProxy.java,b\d\bdcca8e9f9f93a86d8059caf79b1c8c415b3bf79
-9
-	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
 7
 LICENSE,0\3\0398ccd0f49298b10a3d76a47800d2ebecd49859
 …
@@ -287,3 +285,5 @@ w
 Gzyt-rpc-call/src/main/java/service/call/netty_call/NettyClientCall.java,8\b\8b95edbc86fe61bac650eb93259c1c564c0c03a8
 w
 Gzyt-rpc-call/src/main/java/service/call/netty_call/NettyServerCall.java,b\5\b5285667fe7d89924c45613bd13119d9d948f122
+m
+=zyt-rpc-call/src/main/java/service/call/ChosenClientCall.java,e\0\e09c188ff7e870e16f16da4217ee82a73fc5d5f2
