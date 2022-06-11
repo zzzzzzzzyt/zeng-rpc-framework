@@ -9,7 +9,7 @@
 代理 : 静态代理 动态代理JDK 动态代理CGLIB
 注册中心 : Zookeeper Curator SpringCloud Alibaba Nacos
 传输协议 : 自己构造
-负载均衡 : 自己构造
+负载均衡 : 随机均衡策略 获取次数均衡策略 一致性哈希均衡策略
 压缩机制 : BZip Deflater GZip Lz4 Zip 霍夫曼编码实现编解码器
 操作系统 : Linux Windows
 容器化 : Docker 
