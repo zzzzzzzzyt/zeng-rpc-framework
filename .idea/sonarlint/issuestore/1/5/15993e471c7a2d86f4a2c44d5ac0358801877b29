@@ -1,0 +1,37 @@
+
+f	java:S117F"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ß”â¢
+?
+java:S1604ó"(Make this anonymous inner class a lambda(ş¦•Ã
+u
+java:S1488¹"_Immediately return this expression instead of assigning it to the temporary variable "builder".(«‰Ÿ~
+S
+java:S2589Î"7Remove this expression which always evaluates to "true"(ÙÀæÒøÿÿÿÿ
+œ
+java:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ƒ°‡ıÿÿÿÿ
+J
+java:S1172"/Remove this unused method parameter "registry".(•óÊõÿÿÿÿÿ
+j	java:S116x"PRename this field "name_" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¥Ğ¸«úÿÿÿÿ
+
+java:S4144Û"cUpdate this method so that its implementation is not identical to "getDefaultInstance" on line 578.(èşì€ıÿÿÿÿ
+B
+java:S1948x"'Make "name_" transient or serializable.(¥Ğ¸«úÿÿÿÿ
+r
+java:S3077x"WUse a thread-safe type; adding "volatile" is not enough to make this field thread-safe.(¥Ğ¸«úÿÿÿÿ
+M
+java:S1481F"7Remove this unused "mutable_bitField0_" local variable.(ß”â¢
+k	java:S116Ô"PRename this field "name_" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Øá™şúÿÿÿÿ
+?	java:S108à")Either remove or fill this block of code.(º„ç½
+o
+java:S2975ˆ"SRemove this "clone" implementation; use a copy constructor or copy factory instead.(Îõ¾Òûÿÿÿÿ
+A
+java:S1905‰"*Remove this unnecessary cast to "Builder".(¥ùšÏ
+A
+java:S1905"*Remove this unnecessary cast to "Builder".(ê„£
+F
+java:S1905”"*Remove this unnecessary cast to "Builder".(Æ÷¾¢ûÿÿÿÿ
+A
+java:S1905™"*Remove this unnecessary cast to "Builder".(ƒ¦†
+F
+java:S1905Ÿ"*Remove this unnecessary cast to "Builder".(ˆÎ…•şÿÿÿÿ
+@
+java:S1905¥"*Remove this unnecessary cast to "Builder".(İ¤Â\

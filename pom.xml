@@ -13,6 +13,7 @@
         <module>zyt-rpc-provider</module>
         <module>zyt-rpc-api</module>
         <module>zyt-rpc-common</module>
+        <module>zyt-rpc-call</module>
     </modules>
 
     <properties>
@@ -24,7 +25,8 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.22</version>
+            <!--<version>1.18.22</version>-->
+            <version>1.18.24</version>
         </dependency>
         <!--打印日志信息-->
         <dependency>
@@ -35,48 +37,201 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.25</version>
+            <!--<version>1.7.32</version>-->
+            <version>1.7.36</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.25</version>
+            <!--<version>1.7.25</version>-->
+            <version>1.7.36</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.25</version>
+            <!--<version>1.7.25</version>-->
+            <version>1.7.36</version>
             <scope>test</scope>
         </dependency>
+
         <!--测试-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>2.5.1</version>
+            <!--<version>2.5.1</version>-->
+            <version>2.6.7</version>
         </dependency>
-
 
         <!--Zookeeper的依赖 客户端-->
         <dependency>
             <groupId>org.apache.zookeeper</groupId>
             <artifactId>zookeeper</artifactId>
-            <version>3.5.7</version>
+            <!--<version>3.5.7</version>-->
+            <version>3.8.0</version>
         </dependency>
+
         <!--顺带引入的更便捷操作的curator的依赖 Curator是Netflix公司开源的一个Zookeeper客户端 简化了原生的开发-->
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
-            <version>4.3.0</version>
+            <!--<version>4.3.0</version>-->
+            <version>5.2.1</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-recipes</artifactId>
-            <version>4.3.0</version>
+            <!--<version>4.3.0</version>-->
+            <version>5.2.1</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-client</artifactId>
-            <version>4.3.0</version>
+            <!--<version>4.3.0</version>-->
+            <version>5.2.1</version>
+        </dependency>
+
+        <!--添加Nacos依赖  使用服务注册 服务发现-->
+        <dependency>
+            <groupId>com.alibaba.nacos</groupId>
+            <artifactId>nacos-spring-context</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+        <!--引入netty的依赖-->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <!--<version>4.1.66.Final</version>-->
+            <version>4.1.77.Final</version>
+        </dependency>
+
+        <!--对应protobuf的依赖坐标  protobuf是用来进行序列化和反序列化的  google的插件-->
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <!--<version>3.6.1</version>-->
+            <version>3.20.1</version>
+        </dependency>
+
+        <!--引入 protostuff是一个基于protobuf实现的序列化方法  就免去了手写.proto文件了-->
+        <dependency>
+            <groupId>io.protostuff</groupId>
+            <artifactId>protostuff-runtime</artifactId>
+            <!--<version>1.3.8</version>-->
+            <version>1.8.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.protostuff</groupId>
+            <artifactId>protostuff-core</artifactId>
+            <!--<version>1.3.8</version>-->
+            <version>1.8.0</version>
+        </dependency>
+
+        <!--引入kryo依赖-->
+        <dependency>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>kryo</artifactId>
+            <version>5.3.0</version>
+        </dependency>
+
+        <!--引入hessian依赖-->
+        <dependency>
+            <groupId>com.caucho</groupId>
+            <artifactId>hessian</artifactId>
+            <!--<version>4.0.65</version>-->
+            <version>4.0.66</version>
+        </dependency>
+
+        <!--引入Fst依赖  如果是2.57就会和nacos起冲突-->
+        <dependency>
+            <groupId>de.ruedigermoeller</groupId>
+            <artifactId>fst</artifactId>
+            <version>2.04</version>
+        </dependency>
+
+        <!--jackson依赖引用-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <!--<version>2.9.5</version>-->
+            <version>2.13.3</version>
+        </dependency>
+
+        <!--fastjson依赖引用-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <!--<version>1.2.80</version>-->
+            <version>2.0.3</version>
+        </dependency>
+
+        <!--gson依赖引用-->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <!--<version>2.8.8</version>-->
+            <version>2.9.0</version>
+        </dependency>
+
+        <!--Bzip依赖引入-->
+        <dependency>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant</artifactId>
+            <!--<version>1.10.6</version>-->
+            <version>1.10.12</version>
+        </dependency>
+
+        <!--Lz4依赖引入 进行解压缩-->
+        <dependency>
+            <groupId>org.lz4</groupId>
+            <artifactId>lz4-java</artifactId>
+            <!--<version>1.7.1</version>-->
+            <version>1.8.0</version>
+        </dependency>
+
+
+        <!--CGLIB依赖引入-->
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+
+
+        <!--数据库连接驱动-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <!--<version>8.0.28</version>-->
+            <version>8.0.29</version>
+        </dependency>
+
+        <!-- 数据库连接池：c3p0-->
+        <dependency>
+            <groupId>com.mchange</groupId>
+            <artifactId>c3p0</artifactId>
+            <!--<version>0.9.5.2</version>-->
+            <version>0.9.5.5</version>
+        </dependency>
+
+        <!--mybatis用来和数据库进行交互-->
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus</artifactId>
+            <!--<version>3.4.3.4</version>-->
+            <version>3.5.1</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <!--<version>5.2.15.RELEASE</version>-->
+            <version>5.3.20</version>
         </dependency>
 
     </dependencies>

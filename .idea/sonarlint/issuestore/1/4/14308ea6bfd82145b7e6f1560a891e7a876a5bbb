@@ -1,0 +1,13 @@
+
+s	java:S127ä"XRefactor the code in order to not assign to this loop counter from within the loop body.(ÌÍ×µþÿÿÿÿ
+k	java:S117i"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ž‚ã±üÿÿÿÿ
+F
+java:S1135"2Complete the task associated to this TODO comment.(™—?
+o
+java:S1210Y"YOverride "equals(Object obj)" to comply with the contract of the "compareTo(T o)" method.(ùæô™
+E
+java:S1940Æ")Use the opposite operator ("!=") instead.(¬âþÈúÿÿÿÿ
+W	java:S125Ë"<This block of commented-out lines of code should be removed.(¡—‚°ýÿÿÿÿ
+W	java:S125Ô"<This block of commented-out lines of code should be removed.(Ì…ñôÿÿÿÿÿ
+W	java:S125ë"<This block of commented-out lines of code should be removed.(¦¼éûÿÿÿÿ
+R	java:S125ò"<This block of commented-out lines of code should be removed.(Ð Ùæ

@@ -1,10 +1,13 @@
 package provider.api;
 
-import api.ByeService;
+import method.ByeService;
 
+/**
+ * @author 祝英台炸油条
+ */
 public class ByeServiceImpl implements ByeService {
     @Override
     public String sayBye(String saying) {
-        return "Bye,"+saying;
+        return "Bye," + saying;
     }
 }
