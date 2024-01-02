@@ -24,7 +24,6 @@ public class ZK {
         try {
             zooKeeper = new ZooKeeper(ZOOKEEPER_ADDRESS, ZOOKEEPER_SESSION_TIMEOUT, watchedEvent -> {
             });
-
             //如果存在就删  不存在就不删
             if (zooKeeper.exists("/service", false) != null) {
                 //内部得实现递归删除
